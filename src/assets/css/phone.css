@@ -1,0 +1,49 @@
+.numberOne {
+    max-width: 95%; 
+    margin: -20px 0px 0px 0px; white-space: nowrap; overflow: hidden; text-overflow: clip;
+}
+.numberDail {
+    font-size: 20px !important;
+    margin-top: -5px;
+    display: none;
+}
+.numberTwo {
+    max-width: 280px;font-size: 15px !important;
+}
+.inComeOne {
+    margin-bottom: 5px; margin-right: 3px; width: 48px !important; height: 48px !important; font-size: 20px; font-weight: bold;
+    text-align: center !important;
+    justify-content: center;
+    align-items: center;
+    padding: 0px
+}
+#isIncomingcall {
+    margin-top: 10px;
+}
+.redail {
+    margin-bottom: 8px; width: 100%;
+}
+.callbtn{
+    margin-top: 5px; margin-bottom: 5px; margin-right: 8px; width: 82px !important;font-size:10px;
+}
+#incall{
+    display: none;
+}
+.className{
+    font-size: 20px !important;
+}
+.removetype{
+    position: absolute;
+    top:-8px;
+    right:30px;
+    z-index: 99999999;
+}
+.iframe{
+    border-radius: 10px;
+}
+#audio {
+    object-fit: contain;
+}
+#video1 {
+    cacawidth: 640px;
+}

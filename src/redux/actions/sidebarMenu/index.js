@@ -1,0 +1,1 @@
+export const getSidebarMenu = value => dispatch => dispatch({ type: 'MENU_MOUNTED', payload:value })

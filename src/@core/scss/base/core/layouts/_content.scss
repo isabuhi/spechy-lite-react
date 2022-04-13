@@ -1,0 +1,728 @@
+// ================================================================================================
+//     File Name: content.scss
+//     Description: Page content level SCSS for different screen size, layout and device.
+//     ----------------------------------------------------------------------------------------------
+//     Item Name: Vuexy  - Vuejs, HTML & Laravel Admin Dashboard Template
+//     Author: PIXINVENT
+//     Authuseror URL: http://www.themeforest.net//pixinvent
+// ================================================================================================
+
+// Contest margin left for expanded & collapsed stats width & margin left
+// ================================================================================================
+
+@import '../mixins/main-menu-mixin';
+
+html {
+  font-size: $base-font-size;
+  height: 100%;
+  letter-spacing: 0.01rem;
+  body {
+    height: 100%;
+    background-color: $body-bg;
+    direction: $body-direction;
+    // paragraph line-height
+    p {
+      line-height: 1.5rem;
+    }
+  }
+  .content {
+    padding: 0;
+    position: relative;
+    transition: 300ms ease all;
+    backface-visibility: hidden;
+    min-height: calc(100% - #{$footer-height});
+    margin-left: $menu-expanded-width;
+    &.app-content {
+      padding: calc(#{$content-padding} + #{$navbar-height} + #{$floating-nav-margin}) #{$content-padding} 0;
+      &.show-overlay {
+        .content-overlay {
+          z-index: 10;
+          opacity: 1;
+          ~ .header-navbar-shadow {
+            display: none;
+          }
+        }
+      }
+      .content-overlay {
+        position: fixed;
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba($black, 0.5);
+        cursor: pointer;
+        transition: all 0.7s, z-index 0s;
+        z-index: -1;
+      }
+      .content-area-wrapper {
+        display: flex;
+        position: relative;
+        overflow: hidden; // Required in apps
+        .content-wrapper,
+        .content-body {
+          height: 100%;
+        }
+      }
+    }
+    .body-content-overlay {
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      position: absolute;
+      display: block;
+      z-index: 4;
+      visibility: hidden;
+      opacity: 0;
+      transition: all 0.3s ease;
+      &.show {
+        visibility: visible;
+        transition: all 0.3s ease;
+        opacity: 1;
+        background-color: rgba($black, 0.2);
+        border-radius: $border-radius/2;
+      }
+    }
+    .content-wrapper {
+      .content-header-title {
+        font-weight: 500;
+        color: $gray-400;
+        padding-right: $spacer;
+        border-right: 1px solid lighten($gray-600, 10%);
+      }
+      .content-header-right {
+        .dropdown-toggle {
+          &::after {
+            display: none;
+          }
+          i,
+          svg {
+            margin-right: 0;
+          }
+        }
+        .btn-icon {
+          padding: 0.8rem;
+          i,
+          svg {
+            height: $font-size-base;
+            width: $font-size-base;
+          }
+        }
+      }
+    }
+  }
+
+  // kanban app uses kanban-wrapper class as not having content-layout so added this class with all the options
+  // For floating navbar
+  .navbar-floating {
+    &.footer-static {
+      .app-content {
+        .content-area-wrapper,
+        .kanban-wrapper {
+          @include content-area-wrapper-height(
+            #{$content-padding},
+            #{$navbar-height},
+            #{$footer-height},
+            #{$floating-nav-margin}
+          );
+        }
+      }
+    }
+    &.footer-hidden {
+      .app-content {
+        .content-area-wrapper,
+        .kanban-wrapper {
+          @include content-area-wrapper-height(
+            #{$content-padding},
+            #{$navbar-height},
+            0rem,
+            #{$floating-nav-margin},
+            0rem,
+            2
+          );
+        }
+      }
+    }
+    &.footer-fixed {
+      .app-content {
+        .content-area-wrapper,
+        .kanban-wrapper {
+          @include content-area-wrapper-height(
+            #{$content-padding},
+            #{$navbar-height},
+            #{$footer-height},
+            #{$floating-nav-margin},
+            0rem,
+            2
+          );
+        }
+      }
+    }
+  }
+
+  //for navbar hidden
+  .navbar-hidden {
+    .app-content {
+      padding: #{$content-padding} #{$content-padding} 0 #{$content-padding} !important;
+    }
+    &.footer-static {
+      .app-content {
+        .content-area-wrapper,
+        .kanban-wrapper {
+          @include content-area-wrapper-height(#{$content-padding}, 0rem, #{$footer-height});
+        }
+      }
+    }
+    &.footer-hidden {
+      .app-content {
+        .content-area-wrapper,
+        .kanban-wrapper {
+          @include content-area-wrapper-height(#{$content-padding}, 0rem, 0rem, 0rem, 0rem, 2);
+        }
+      }
+    }
+    &.footer-fixed {
+      .app-content {
+        .content-area-wrapper,
+        .kanban-wrapper {
+          @include content-area-wrapper-height(#{$content-padding}, 0rem, #{$footer-height}, 0rem, 0rem, 2);
+        }
+      }
+    }
+  }
+
+  // for static navbar
+  .navbar-static {
+    .main-menu {
+      top: 0;
+    }
+    .content {
+      min-height: calc(100% - calc(#{$navbar-height} + #{$footer-height}));
+    }
+    .app-content {
+      padding: #{$content-padding} #{$content-padding} 0 #{$content-padding};
+    }
+    &.footer-static {
+      .app-content {
+        .content-area-wrapper,
+        .kanban-wrapper {
+          @include content-area-wrapper-height(#{$content-padding}, #{$navbar-height}, #{$footer-height});
+        }
+      }
+    }
+    &.footer-hidden {
+      .app-content {
+        .content-area-wrapper,
+        .kanban-wrapper {
+          @include content-area-wrapper-height(#{$content-padding}, #{$navbar-height}, 0rem, 0rem, 0rem, 2);
+        }
+      }
+    }
+    &.footer-fixed {
+      .app-content {
+        .content-area-wrapper,
+        .kanban-wrapper {
+          @include content-area-wrapper-height(
+            #{$content-padding},
+            #{$navbar-height},
+            #{$footer-height},
+            0rem,
+            0rem,
+            2
+          );
+        }
+      }
+    }
+  }
+
+  // for sticky navbar
+  .navbar-sticky {
+    .app-content {
+      padding: calc(#{$content-padding} + #{$navbar-height}) #{$content-padding} 0 #{$content-padding};
+    }
+    &.footer-static {
+      .app-content {
+        .content-area-wrapper,
+        .kanban-wrapper {
+          @include content-area-wrapper-height(#{$content-padding}, #{$navbar-height}, #{$footer-height});
+        }
+      }
+    }
+    &.footer-hidden {
+      .app-content {
+        .content-area-wrapper,
+        .kanban-wrapper {
+          @include content-area-wrapper-height(#{$content-padding}, #{$navbar-height}, 0rem, 0rem, 0rem, 2);
+        }
+      }
+    }
+    &.footer-fixed {
+      .app-content {
+        .content-area-wrapper,
+        .kanban-wrapper {
+          @include content-area-wrapper-height(
+            #{$content-padding},
+            #{$navbar-height},
+            #{$footer-height},
+            0rem,
+            0rem,
+            2
+          );
+        }
+      }
+    }
+  }
+
+  // navbar search width for sticky and static navbar
+  .navbar-static,
+  .navbar-sticky {
+    .nav.header-navbar {
+      .navbar-container {
+        padding-left: 1.6rem;
+        padding-right: 1.6rem;
+        .search-input {
+          .search-list {
+            &.show {
+              width: 98%;
+              left: 1%;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Fixed layout
+  .footer-fixed {
+    .content {
+      &.app-content {
+        padding-bottom: $footer-height !important; // ? Added extra padding bottom due to fixed footer height
+      }
+    }
+  }
+
+  //Remove left margin for 1 column layout
+  [data-col='1-column'] {
+    .header-navbar {
+      // Custom width for floating nav
+      &.floating-nav {
+        width: calc(
+          100vw - (100vw - 100%) - calc(#{$content-padding} * 2)
+        ) !important; // ? override all navbar type width
+      }
+      width: 100%; // Full width for other nav options
+      left: 0 !important;
+    }
+    .content,
+    .footer {
+      margin-left: 0px !important;
+    }
+
+    // horizontal layout
+    &.horizontal-layout {
+      .header-navbar {
+        width: 100% !important;
+      }
+      .app-content {
+        padding: calc(#{$content-padding} + #{$navbar-height} + #{$floating-nav-margin}) #{$content-padding} 0 #{$content-padding} !important; // ? need to check all navbar types case
+      }
+      &.footer-fixed {
+        .app-content {
+          padding: calc(#{$content-padding} + #{$navbar-height} + #{$floating-nav-margin}) #{$content-padding} #{$footer-height}
+            #{$content-padding} !important; // ? need to check all navbar types case
+        }
+      }
+    }
+  }
+
+  /*
+    * Blank page
+    */
+
+  .blank-page {
+    .content {
+      margin-left: 0; // not using in both cases
+      // overflow-x hidden, overflow for y in sm screen issue resolved default
+      &.app-content {
+        overflow: overlay;
+        overflow-x: hidden;
+        padding: 0 !important;
+        transition: none;
+        // remove white space on top by header-navbar-shadow class
+        .header-navbar-shadow {
+          display: none;
+        }
+      }
+    }
+    // blank page content-wrapper
+    .content-wrapper {
+      padding: 0 !important;
+      // content to be in center horizontally and vertically
+      .flexbox-container {
+        display: flex;
+        align-items: center;
+        height: 100vh;
+        height: calc(var(--vh, 1vh) * 100);
+        justify-content: center;
+      }
+    }
+  }
+
+  .pace {
+    .pace-progress {
+      background: $primary;
+    }
+  }
+}
+
+.app-content.center-layout {
+  overflow: hidden;
+}
+
+/*
+* Col 3 layout for detached and general type
+*/
+
+@include media-breakpoint-up(lg) {
+  body {
+    // Normal sidebar
+    .content-right {
+      width: calc(100vw - (100vw - 100%) - #{$sidebar-width});
+      float: right;
+    }
+    .content-left {
+      width: calc(100vw - (100vw - 100%) - #{$sidebar-width});
+      float: left;
+    }
+    // Detached sidebar
+    .content-detached {
+      width: 100%;
+      &.content-right {
+        float: right;
+        margin-left: -$sidebar-width;
+        .content-body {
+          margin-left: calc(#{$sidebar-width} + #{$content-padding});
+        }
+      }
+      &.content-left {
+        float: left;
+        margin-right: -$sidebar-width;
+        .content-body {
+          margin-right: calc(#{$sidebar-width} + #{$content-padding});
+        }
+      }
+    }
+  }
+  .sidebar-right.sidebar-sticky {
+    float: right !important;
+    margin-left: -$sidebar-width;
+    width: $sidebar-width !important;
+    margin-top: $navbar-height + 1.25;
+  }
+}
+
+@include media-breakpoint-down(xs) {
+  html body .app-content {
+    padding: calc(#{$content-padding} - 0.8rem + #{$navbar-height} + #{$floating-nav-margin})
+      calc(#{$content-padding} - 0.8rem) 0 calc(#{$content-padding} - 0.8rem) !important; // - 0.8rem to reduce padding in small screen
+  }
+
+  // For static navbar
+  html body.navbar-static .app-content {
+    padding: calc(#{$content-padding} - 0.8rem) calc(#{$content-padding} - 0.8rem) 0 calc(#{$content-padding} - 0.8rem) !important; // - 0.8rem to reduce padding in small screen
+  }
+
+  // For sticky navbar
+  html body.navbar-sticky .app-content {
+    padding: calc(#{$content-padding} - 0.8rem + #{$navbar-height}) calc(#{$content-padding} - 0.8rem) 0
+      calc(#{$content-padding} - 0.8rem) !important; // - 0.8rem to reduce padding in small screen
+  }
+
+  // For Hidden navbar
+  html body.navbar-hidden .app-content {
+    padding: calc(#{$content-padding} - 0.8rem) calc(#{$content-padding} - 0.8rem) 0 calc(#{$content-padding} - 0.8rem) !important; // - 0.8rem to reduce padding in small screen
+  }
+}
+
+@include media-breakpoint-down(xs) {
+  .navbar-static,
+  .navbar-sticky {
+    .app-content {
+      .header-navbar {
+        .navbar-container {
+          padding-left: 1rem;
+          padding-right: 0.5rem;
+        }
+      }
+    }
+  }
+}
+
+// For Fullscreen IE
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  html.full-screen {
+    width: 100%;
+    .content.app-content {
+      height: 100%;
+      overflow: scroll;
+      overflow-x: hidden;
+    }
+  }
+}
+.center{
+  text-align: center;
+}
+.topDivider{
+  margin-top:30px;
+}
+.widget-submit-right{
+  width: 35%;
+  float:right;
+}
+.qrwhatsapp{
+  padding-bottom: 20px !important;
+  text-align: center;
+}
+.colorPicker{
+  width: 50px;
+  height : 50px;
+  margin-top: 0px;
+  position: relative;
+  right:0px;
+  border: 1px solid #000;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.colorText{
+  margin-right : 10px;
+  position: relative;
+  top:10px;
+}
+.chatContainer{
+  width: 60%;
+  box-shadow: 0px 15px 20px rgba(0,0,0,0.1);
+  height:400px;
+  margin: 0 auto;
+  border-radius: 15px;
+  overflow: hidden;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.chatHeader{
+  width: 100%;
+  height:40px;
+  background-color: #1c4588;
+  color : #FFF;
+}
+.chatHeader p{
+  line-height: 38px;
+  font-weight: bold;
+  margin-left: 10px;
+}
+.chatHeader-theme2{
+  width: 100%;
+  height:40px;
+  color : #FFF;
+}
+.chatHeader-theme2 span{
+  line-height: 38px;
+  font-weight: bold;
+  margin-left: 0px;
+}
+.chatBody{
+  width: 100%;
+  background-color: #f2f2f2;
+  height:100%;
+}
+.chatBody-theme2{
+  width: 100%;
+  height:100%;
+  padding-top: 20px;
+}
+.chat-list {
+  padding: 10px;
+  font-size: .8rem;
+  width: 100%;
+  min-height : 310px;
+  max-height : 1010px;
+  overflow-y: scroll;
+  resize: vertical;
+}
+
+.chat-list li {
+  margin-bottom: 10px;
+  overflow: hidden;
+  color: #ffffff;
+}
+
+.chat-list .chat-img {
+  float: left;
+  width: 30px;
+  margin-top:0px;
+}
+
+.chat-list .chat-img img {
+  -webkit-border-radius: 50px;
+  -moz-border-radius: 50px;
+  border-radius: 50px;
+  width: 100%;
+}
+
+.chat-list .chat-message {
+  -webkit-border-radius: 15px;
+  -moz-border-radius: 15px;
+  border-radius: 15px;
+  background: #5a99ee;
+  display: inline-block;
+  padding: 10px 20px;
+  max-width: 100%;
+  position: relative;
+}
+
+
+.chat-list .chat-message h5 {
+  margin: 0 0 5px 0;
+  font-weight: 600;
+  line-height: 100%;
+  font-size: .5rem;
+}
+
+.chat-list .chat-message span {
+  line-height: 12px;
+  margin: 0;
+  padding: 0;
+  font-size : 10px;
+  word-wrap: break-word;
+  text-align: left;
+
+}
+
+.chat-list .chat-body {
+  margin-left: 6px;
+  float: left;
+  width: 70%;
+}
+
+.chat-list .out .chat-img {
+  float: right;
+  margin-right: 10px;
+}
+
+.chat-list .out .chat-body {
+  float: right;
+  margin-right: 6px;
+  text-align: right;
+}
+
+.chat-list .out .chat-message {
+  background: #FFF;
+  color : #000;
+}
+
+#messageBox {
+  width: 230px !important;
+  height:40px;
+  border:0px;
+  padding:10px;
+  background-color: #FFF;
+  margin-top:-10px;
+  margin-left: 10px;
+  margin-bottom:10px;
+}
+#messageBox-theme2 {
+  width: 230px !important;
+  height:40px;
+  border:0px;
+  padding:10px;
+  background-color: #FFF;
+  margin-top:-10px;
+  margin-left: 10px;
+  margin-bottom:10px;
+}
+.chatFooter-theme2{
+  margin-top: -20px;
+}
+.bg-infos{
+  background-color: #ffffff00 !important;
+  font-size: 2rem !important;
+}
+.bg-infos svg{
+  font-size: 2rem !important;
+  height: 1.5rem !important;
+  width:1.5rem !important;
+}
+.mic-chat{
+  position: absolute;
+  right: 30px;
+}
+.attach-chat{
+  position: absolute;
+  left: 245px;
+  z-index: 99999;
+  top:-40px;
+}
+.sign-chat{
+  margin-top: 10px;
+  margin-left:10px;
+  margin-right: 5px;
+}
+.bg-infoss{
+  background-color: #0066ff !important;
+  font-size: 2rem !important;
+}
+.bg-infos svg{
+  font-size: 2rem !important;
+  height: 1.5rem !important;
+  width:1.5rem !important;
+}
+.online-status-chat{
+  position: absolute;
+  top:45px;
+  right : 285px;
+  font-size: 10px;
+}
+.gradiant-chat{
+  margin-top: 20px;
+}
+.mail-offline-container{
+  margin : 0 auto;
+  display: table;
+  width: 90px;
+  height : 90px;
+  border-radius: 45px;
+}
+.offline-chat-botton{
+  margin:0 auto;
+  display: table !important;
+  margin-top:20px;
+}
+.afb-container-center{
+  flex: 0 0 73%;
+  max-width: 73%;
+  margin-left: 0px !important;
+  margin-top: 00px;
+  display: block;
+  padding-left: 0px;
+  font-family: "Montserrat", Helvetica, Arial, serif;
+  font-size: 1.1rem;
+}
+.afb-container-center h3{
+  font-size: 1.1rem;
+}
+.afb-container-left{
+    position: unset !important;
+    display: block;
+    min-width: 74%;
+    font-family: "Montserrat", Helvetica, Arial, serif;
+    font-size: 1.1rem;
+}
+.afb-toolbar-item-parent{
+  font-family: "Montserrat", Helvetica, Arial, serif;
+  font-size: 1.1rem;
+}
+.fas{
+  margin-right: 0px !important;
+}

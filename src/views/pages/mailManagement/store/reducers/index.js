@@ -1,0 +1,60 @@
+const initialState = {
+  allData: [],
+  data: [],
+  total: 1,
+  params: {},
+  selectedUser: null,
+  addedUser: null,
+  filterItems: [],
+  userLogData: [],
+  totalLogPage: 1,
+  isDeleteModalOpen: {
+    status: false,
+    id: null,
+  },
+};
+
+const userGroups = (state = initialState, action) => {
+  switch (action.type) {
+    case "GET_FILTER_ITEMS":
+      return { ...state, filterItems: action.data };
+
+    case "GET_USER_GROUPS_DATA":
+      return { ...state, allData: action.data, total: action.total };
+    case "GET_DATA":
+      return {
+        ...state,
+        data: action.data,
+        totalPage: action.totalPages,
+        params: action.params,
+      };
+    case "GET_USER":
+      return { ...state, selectedUser: action.data };
+    case "ADD_USER":
+      return { ...state, addedUser: action.data };
+    case "DELETE_USER":
+      let newState = state.allData.filter((c) => c.team_id !== action.data);
+      return {
+        ...state,
+        allData: newState,
+      };
+    case "USER_LOG_DATA":
+      return {
+        ...state,
+        userLogData: action.data.data,
+        totalLogPage: action.totalLogPage,
+      };
+    case "DELETE_MODAL_OPEN":
+      return {
+        ...state,
+        isDeleteModalOpen: {
+          status: action.data,
+          id: action.id,
+        },
+      };
+
+    default:
+      return { ...state };
+  }
+};
+export default userGroups;
