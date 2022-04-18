@@ -440,6 +440,7 @@ const ChatLog = (props) => {
     }
   };
   const [tooltipOpen, setTooltipOpen] = useState(false);
+
   const [basicModal, setBasicModal] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
   const [emailList, setEmailList] = useState([]);
@@ -593,6 +594,7 @@ const ChatLog = (props) => {
           Start Conversation
         </h4>
       </div>
+
       {Object.keys(selectedUser).length ? (
         <div
           className={classnames("active-chat", {

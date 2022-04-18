@@ -16,6 +16,8 @@ import $ from "jquery";
 import Card from "@components/card-snippet";
 import PillsBasic from "./PillsBasic";
 
+import { MessageSquare } from "react-feather";
+
 // ** Third Party Components
 import classnames from "classnames";
 
@@ -773,6 +775,16 @@ const AppChat = (props) => {
     $(".chat-app-window").animate({ width: "40%" }, { duration: 250 });
     $(".card-snippet").show();
   };
+
+  const handleStartConversation = () => {
+    if (
+      !Object.keys(selectedUser).length &&
+      !userSidebarLeft &&
+      window.innerWidth <= 1200
+    ) {
+      handleSidebar();
+    }
+  };
   const endChat = () => {
     socket.emit("panel_close_conversation", {
       roomId: myRoomId,
@@ -783,14 +795,20 @@ const AppChat = (props) => {
       emailId: null,
       mailboxId: null,
     });
+    setShowChat(true);
   };
 
   const openContactOn = async (e) => {
     e.preventDefault();
-    await childCompRef.current.getContactCardData();
+
+    setShowChat(false);
+    if (showChat === false) {
+      await childCompRef.current.getContactCardData();
+    }
   };
   const openContactOf = async (e, data) => {
     e.preventDefault();
+
     await childCompRef.current.getContactCardData();
   };
   const closeConsole = async (e, data) => {
@@ -855,56 +873,70 @@ const AppChat = (props) => {
         openContactOf={openContactOf}
       />
 
-      <div className="content-right">
-        <div className="content-wrapper">
-          <div className="content-body">
-            <div
-              className={classnames("body-content-overlay", {
-                show:
-                  userSidebarRight == true ||
-                  sidebar == true ||
-                  userSidebarLeft == true,
-              })}
-              onClick={handleOverlayClick}
-            ></div>
+      {showChat === true ? (
+        <div className={classnames("start-chat-area")}>
+          {/* <div className="start-chat-icon mb-1">
+            <MessageSquare />
+          </div> */}
+          <h4
+            className="sidebar-toggle start-chat-text"
+            onClick={handleStartConversation}
+          >
+            Start Conversation
+          </h4>
+        </div>
+      ) : (
+        <div className="content-right">
+          <div className="content-wrapper">
+            <div className="content-body">
+              <div
+                className={classnames("body-content-overlay", {
+                  show:
+                    userSidebarRight == true ||
+                    sidebar == true ||
+                    userSidebarLeft == true,
+                })}
+                onClick={handleOverlayClick}
+              ></div>
 
-            <Chat
-              store={store}
-              handleUser={handleUser}
-              handleSidebar={handleSidebar}
-              userSidebarLeft={userSidebarLeft}
-              handleUserSidebarRight={handleUserSidebarRight}
-              message={newMessage}
-              sending={sendMessage}
-              fileUpload={fileUpload}
-              recordVoice={recordVoice}
-              fullName={fullName}
-              avatarIcon={avatar}
-              rightBar={rightBar}
-              chatBarWidth={chatBarWidth}
-              close={close}
-              closeConsole={closeConsole}
-              mailContent={chatContent}
-              channelId={mychannelId}
-              selectedReasonCode={selectedReasonCode}
-            />
-
-            <Card title="" className="information-chat">
-              <PillsBasic
-                className="tab-chat"
-                customer_id={customerId}
-                channel_id={mychannelId}
-                log_id={logId}
+              <Chat
+                store={store}
+                handleUser={handleUser}
+                handleSidebar={handleSidebar}
+                userSidebarLeft={userSidebarLeft}
+                handleUserSidebarRight={handleUserSidebarRight}
+                message={newMessage}
+                sending={sendMessage}
+                fileUpload={fileUpload}
+                recordVoice={recordVoice}
+                fullName={fullName}
+                avatarIcon={avatar}
+                rightBar={rightBar}
+                chatBarWidth={chatBarWidth}
                 close={close}
                 closeConsole={closeConsole}
-                endChat={endChat}
-                ref={childCompRef}
-                dataOfReason={dataOfReason}
+                mailContent={chatContent}
+                channelId={mychannelId}
+                selectedReasonCode={selectedReasonCode}
               />
-            </Card>
+
+              <Card title="" className="information-chat">
+                <PillsBasic
+                  className="tab-chat"
+                  customer_id={customerId}
+                  channel_id={mychannelId}
+                  log_id={logId}
+                  close={close}
+                  closeConsole={closeConsole}
+                  endChat={endChat}
+                  ref={childCompRef}
+                  dataOfReason={dataOfReason}
+                />
+              </Card>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </Fragment>
   );
 };
