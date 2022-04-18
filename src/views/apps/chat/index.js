@@ -48,6 +48,7 @@ const AppChat = (props) => {
   const [from, setFromId] = useState("");
   const [session, setSessionId] = useState("");
   const [newMessage, setNewMessage] = useState([]);
+
   const [chatContent, setChatContent] = useState([]);
   const [socketstop, setSocketStop] = useState(null);
   const [phone_number, setPhoneNumber] = useState("");
@@ -679,7 +680,6 @@ const AppChat = (props) => {
             mailboxId: "",
           });
         } else if (data[i].channelId == 1) {
-          console.log("datasender", data);
           let from = "";
           let session = "";
           if (data[i].channelId == 1) {
@@ -750,7 +750,7 @@ const AppChat = (props) => {
     socket.on("conversationStarter", (data) => {});
 
     //-----------
-  }, [newMessage]);
+  }, [newMessage.length]);
 
   const rightBar = () => {
     axios
@@ -776,15 +776,6 @@ const AppChat = (props) => {
     $(".card-snippet").show();
   };
 
-  const handleStartConversation = () => {
-    if (
-      !Object.keys(selectedUser).length &&
-      !userSidebarLeft &&
-      window.innerWidth <= 1200
-    ) {
-      handleSidebar();
-    }
-  };
   const endChat = () => {
     socket.emit("panel_close_conversation", {
       roomId: myRoomId,
@@ -878,12 +869,7 @@ const AppChat = (props) => {
           {/* <div className="start-chat-icon mb-1">
             <MessageSquare />
           </div> */}
-          <h4
-            className="sidebar-toggle start-chat-text"
-            onClick={handleStartConversation}
-          >
-            Start Conversation
-          </h4>
+          <h4 className="sidebar-toggle start-chat-text">Start Conversation</h4>
         </div>
       ) : (
         <div className="content-right">
