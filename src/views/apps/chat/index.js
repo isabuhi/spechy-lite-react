@@ -865,11 +865,15 @@ const AppChat = (props) => {
       />
 
       {showChat === true ? (
-        <div className={classnames("start-chat-area")}>
-          {/* <div className="start-chat-icon mb-1">
+        <div className="chat-app-window">
+          <div className={classnames("start-chat-area")}>
+            {/* <div className="start-chat-icon mb-1">
             <MessageSquare />
           </div> */}
-          <h4 className="sidebar-toggle start-chat-text">Start Conversation</h4>
+            <h4 className="sidebar-toggle start-chat-text">
+              Start Conversation
+            </h4>
+          </div>
         </div>
       ) : (
         <div className="content-right">
