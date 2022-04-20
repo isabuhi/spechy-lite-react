@@ -63,7 +63,7 @@ const GeneralInfo = (props) => {
     AllCountries: [{}],
   });
 
-  const [phone_number, setPhoneNumber] = useState(null);
+  const [phone_number, setPhoneNumber] = useState("");
   const [email_address, setEmailAddress] = useState(null);
   const [valueOfPhone, setValueOfPhone] = useState(null);
 
@@ -273,13 +273,9 @@ const GeneralInfo = (props) => {
 
   const onChangePhoneHandler = (e) => {
     console.log("phonenen", e);
-    setPhoneNumber({
-      ...phone_number,
-
-      [e]: e,
-    });
+    setPhoneNumber(e);
   };
-  console.log("pickedPhone", valueOfPhone);
+  console.log("pickedPhone", phone_number);
 
   const onSubmit = async () => {
     if (1) {
@@ -292,7 +288,8 @@ const GeneralInfo = (props) => {
             customer_id: formState.customer_id,
             country: formState.country,
             city: formState.city,
-            phone_number: [valueOfPhone],
+            phone_number:
+              valueOfPhone === null ? [phone_number] : [valueOfPhone],
             email_address: email_address,
             // customer_company_id: formState.customer_company_id,
           }

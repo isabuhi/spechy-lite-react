@@ -94,14 +94,9 @@ const PillBasic = forwardRef((props, ref) => {
     status: 0,
   });
 
-  // const [email_address, setEmailAddress] = useState(null);
   const [name_surname, setCustomerName] = useState("");
   const [phone_number, setPhoneNumber] = useState([{}]);
-  const [email_address, setEmailAddress] = useState([{}]);
-
-  // const [phone_number, setPhoneNumber] = useState(null);
-
-  const [address_detail, setAddressDetail] = useState([]);
+  const [email_address, setEmailAddress] = useState([{ email: "" }]);
 
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenAddress, setIsOpenAddress] = useState(false);
@@ -117,12 +112,6 @@ const PillBasic = forwardRef((props, ref) => {
   useEffect(() => {
     dispatch(getCountries());
   }, []);
-
-  const { register, errors, handleSubmit, control, setValue, trigger } =
-    useForm({
-      defaultValues: { gender: "gender-female", dob: null },
-      mode: "onSubmit",
-    });
 
   const toggle = (tab) => {
     setActive(tab);
@@ -219,17 +208,6 @@ const PillBasic = forwardRef((props, ref) => {
     height: "100%",
 
     overflowY: "scroll",
-  };
-
-  const inputChangeHandler = (e, type) => {
-    current.name_surname = { ...current.name_surname, [type]: e.target.value };
-
-    if (current.timer) clearTimeout(current.timer);
-
-    current.timer = setTimeout(() => {
-      current.timer = null;
-      setCustomerName(current.name_surname);
-    }, 1000);
   };
 
   const options = store.filterItems ? store.filterItems : null;
@@ -341,7 +319,7 @@ const PillBasic = forwardRef((props, ref) => {
             setValueOfPhone(pickedPhone[0]);
           }
 
-          setAddressDetail(response.data.data.profile.address_detail);
+          // setAddressDetail(response.data.data.profile.address_detail);
           setCustomerName(response.data.data.profile.name_surname);
         }
       });
@@ -370,7 +348,6 @@ const PillBasic = forwardRef((props, ref) => {
                 setValueOfPhone(pickedPhone[0]);
               }
 
-              setAddressDetail(response.data.data.profile.address_detail);
               setCustomerName(response.data.data.profile.name_surname);
             }
           });
@@ -383,10 +360,8 @@ const PillBasic = forwardRef((props, ref) => {
             customer_id: formState.customer_id,
             country: formState.country,
             city: formState.city,
-            phone_number: valueOfPhone == [] ? valueOfPhone : [""],
+            phone_number: valueOfPhone == null ? [""] : [valueOfPhone],
             email_address: email_address == [] ? email_address : [""],
-
-            // customer_company_id: formState.customer_company_id,
           }
         );
         await axios
@@ -402,7 +377,6 @@ const PillBasic = forwardRef((props, ref) => {
               log_id: log_id,
               channel_id: channel_id,
               reason_codes: dataOfReason > 0 ? [dataOfReason] : [],
-              // customer_company_id: formState.customer_company_id,
             }
           )
           .then((response) => {
@@ -446,13 +420,13 @@ const PillBasic = forwardRef((props, ref) => {
   };
 
   const handleEmailChange = (e, i) => {
-    const value = e.target.value;
+    const { name, value } = e.target;
 
     const emailList = [...email_address];
 
     emailList[i] = value;
 
-    setEmailAddress(emailList[i]);
+    setEmailAddress(emailList);
   };
 
   // handle click event of the Remove button
@@ -472,7 +446,7 @@ const PillBasic = forwardRef((props, ref) => {
   };
 
   const handleAddEmail = () => {
-    setEmailAddress([...email_address, { email_address: "" }]);
+    setEmailAddress([...email_address, { email: "" }]);
   };
 
   return (
@@ -577,80 +551,96 @@ const PillBasic = forwardRef((props, ref) => {
               </FormGroup>
 
               <FormGroup>
-                {email_address.length > 0 ? (
-                  <div className="box">
-                    <div
+                {email_address.length === 0 ? (
+                  <div className="box" style={{ marginBottom: "10px" }}>
+                    <input
                       style={{
+                        width: "300px",
+                        padding: "5px",
+                        borderRadius: "5px",
+                      }}
+                      name="email Address"
+                      placeholder="Enter Email"
+                      // value={x}
+                      onChange={(e) => handleEmailChange(e, i)}
+                    />
+
+                    <div
+                      className="btn-box"
+                      style={{
+                        marginLeft: "10px",
+                        width: "50px",
                         display: "inline-block",
                       }}
                     >
-                      <Label for="email_address">
-                        <FormattedMessage id="Email"></FormattedMessage>{" "}
-                        <span className="text-danger">*</span>
-                      </Label>
-                      <Input
-                        value={email_address.toString()}
-                        onChange={(e) => handleEmailChange(e, i)}
-                      />
-                    </div>
-                    <div
-                      style={{
-                        display: "inline-block",
-                      }}
-                    ></div>
-
-                    <div style={{ paddingTop: "10px" }}>
-                      {email_address.length !== 0 && (
+                      {email_address.length - 1 === i && (
                         <Button.Ripple
-                          color="primary"
+                          color="danger"
                           onClick={() => handleRemoveEmail(i)}
+                          style={{ margin: "1px" }}
                         >
-                          <FormattedMessage id="Remove"></FormattedMessage>
+                          X
                         </Button.Ripple>
                       )}
-                      {email_address.length - 1 === i && (
-                        <Button.Ripple color="primary" onClick={handleAddEmail}>
-                          <FormattedMessage id="Add"></FormattedMessage>
+                      {email_address.length !== 1 && (
+                        <Button.Ripple
+                          color="primary"
+                          onClick={handleAddEmail}
+                          style={{ margin: "1px", maxHeight: "34px" }}
+                        >
+                          +
                         </Button.Ripple>
                       )}
                     </div>
                   </div>
                 ) : (
-                  <div className="box">
-                    <div
-                      style={{
-                        display: "inline-block",
-                      }}
-                    >
-                      <Label for="email_address">
-                        <FormattedMessage id="Email"></FormattedMessage>{" "}
-                        <span className="text-danger">*</span>
-                      </Label>
-                      <Input onChange={(e) => handleEmailChange(e, i)} />
-                    </div>
-                    <div
-                      style={{
-                        display: "inline-block",
-                      }}
-                    ></div>
+                  email_address.map((x, i) => {
+                    return (
+                      <div className="box" style={{ marginBottom: "10px" }}>
+                        <input
+                          style={{
+                            width: "300px",
+                            padding: "5px",
+                            borderRadius: "5px",
+                          }}
+                          name="email Address"
+                          placeholder="Enter Email"
+                          value={x}
+                          onChange={(e) => handleEmailChange(e, i)}
+                        />
 
-                    <div style={{ paddingTop: "10px" }}>
-                      {email_address.length !== 0 && (
-                        <Button.Ripple
-                          color="primary"
-                          onClick={() => handleRemoveEmail(i)}
+                        <div
+                          className="btn-box"
+                          style={{
+                            marginLeft: "10px",
+                            width: "50px",
+                            display: "inline-block",
+                          }}
                         >
-                          <FormattedMessage id="Remove"></FormattedMessage>
-                        </Button.Ripple>
-                      )}
-                      {email_address.length - 1 === i && (
-                        <Button.Ripple color="primary" onClick={handleAddEmail}>
-                          <FormattedMessage id="Add"></FormattedMessage>
-                        </Button.Ripple>
-                      )}
-                    </div>
-                  </div>
+                          {email_address.length !== 1 && (
+                            <Button.Ripple
+                              color="danger"
+                              onClick={() => handleRemoveEmail(i)}
+                              style={{ margin: "1px" }}
+                            >
+                              X
+                            </Button.Ripple>
+                          )}
+                          {email_address.length - 1 === i && (
+                            <Button.Ripple
+                              color="primary"
+                              onClick={handleAddEmail}
+                              style={{ margin: "1px", maxHeight: "34px" }}
+                            >
+                              +
+                            </Button.Ripple>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })
                 )}
+                {}
               </FormGroup>
 
               <FormGroup>
