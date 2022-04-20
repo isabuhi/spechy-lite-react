@@ -59,15 +59,7 @@ import AddNote from "./addNote";
 import AddTicket from "./addTicket";
 
 const PillBasic = forwardRef((props, ref) => {
-  const {
-    customer_id,
-    log_id,
-    channel_id,
-    close,
-    endChat,
-    childFunc,
-    dataOfReason,
-  } = props;
+  const { customer_id, log_id, channel_id, endChat, dataOfReason } = props;
 
   const dispatch = useDispatch();
 
@@ -229,14 +221,6 @@ const PillBasic = forwardRef((props, ref) => {
     overflowY: "scroll",
   };
 
-  const onChangePhoneHandler = (e) => {
-    setPhoneNumber({
-      ...phone_number,
-
-      [e]: e,
-    });
-  };
-
   const inputChangeHandler = (e, type) => {
     current.name_surname = { ...current.name_surname, [type]: e.target.value };
 
@@ -348,18 +332,14 @@ const PillBasic = forwardRef((props, ref) => {
           const emailTOSet = response.data.data.emails.map((x) => {
             return x.email_address;
           });
-          // const phoneTOSet = response.data.data.phones.map((x) => {
-          //   return x.phone_number;
-          // });
+
           setEmailAddress(emailTOSet);
           if (response.data.data.phones.length > 0) {
             const pickedPhone = response.data.data.phones.map((x) => {
               return x.phone_number;
             });
-            // setPhoneNumber(pickedPhone);
             setValueOfPhone(pickedPhone[0]);
           }
-          // setPhoneNumber(phoneTOSet);
 
           setAddressDetail(response.data.data.profile.address_detail);
           setCustomerName(response.data.data.profile.name_surname);
@@ -367,11 +347,6 @@ const PillBasic = forwardRef((props, ref) => {
       });
   };
 
-  // useImperativeHandle(ref, () => ({
-  //   async getConsoleLog() {
-  //     await console.log("fuckingwork");
-  //   },
-  // }));
   useImperativeHandle(
     ref,
     () => ({
@@ -459,52 +434,8 @@ const PillBasic = forwardRef((props, ref) => {
     [customer_id, getContactCardDatas]
   );
 
-  // const onSubmit = async () => {
-
-  //   await axios
-  //     .all([requestOne, requestTwo], {
-  //       name_surname: formState.name_surname,
-  //       customer_id: formState.customer_id,
-  //       country: formState.country,
-  //       city: formState.city,
-  //       phone_number: phone_number,
-  //       email_address: email_address,
-  //       // customer_company_id: formState.customer_company_id,
-  //     })
-  //     .then(
-  //       axios.spread((...responses) => {
-  //         const responseOne = responses[0];
-  //         const responseTwo = responses[1];
-  //         if (responses.status === 200) {
-  //           toast.success(
-  //             <ToastContent
-  //               type={"success"}
-  //               content={"You have successfully update a company."}
-  //               header={"Congratulations !!"}
-  //             />,
-  //             { transition: Slide, hideProgressBar: true, autoClose: 3000 }
-  //           );
-  //           history.goBack();
-  //         }
-  //       })
-  //     )
-  //     .catch(() =>
-  //       toast.error(
-  //         <ToastContent
-  //           type={"error"}
-  //           content={"Something went wrong. Please try again!"}
-  //           header={"Error !!"}
-  //         />,
-  //         { transition: Slide, hideProgressBar: true, autoClose: 3000 }
-  //       )
-  //     );
-  // };
   const onChanceHandler = (e) => {
     setCustomerName(e.target.value);
-    // setFormState({
-    //   ...phone_number,
-    //   [e.target.name]: e.target.value,
-    // });
   };
 
   const handlePhoneChange = (e, index) => {
@@ -562,20 +493,7 @@ const PillBasic = forwardRef((props, ref) => {
             onClick={toggleSidebarChat}
           />
         </div>
-        {/* <div className="header-profile-sidebar">
-          <Avatar
-            className="box-shadow-1 avatar-border"
-            size="xl"
-            status="online"
-            img="/static/media/avatar-s-2.d21f2121.jpg"
-            imgHeight="70"
-            imgWidth="70"
-            id="userAvatar"
-          />
-          <h4 className="chat-user-name">Metin Ageturk</h4>
-          <span className="user-post email-sidebar">Big Bos</span> /{" "}
-          <span className="user-post phone-sidebar">Big Bos</span>
-        </div> */}
+
         <Nav pills>
           <NavItem>
             <NavLink
@@ -643,7 +561,6 @@ const PillBasic = forwardRef((props, ref) => {
             </Card>
           </TabPane>
           <TabPane tabId="2">
-            {/* <PerfectScrollbar className="customizer-content"> */}
             <Form onSubmit={useImperativeHandle}>
               <FormGroup>
                 <Label for="name_surname">
@@ -656,12 +573,7 @@ const PillBasic = forwardRef((props, ref) => {
                   defaultValue={name_surname}
                   name="name_surname"
                   onChange={(e) => onChanceHandler(e)}
-                  // innerRef={register({ required: true })}
-                  // invalid={errors.name_surname && true}
                 />
-                {/* {errors && errors.name_surname && (
-                      <FormFeedback>{errors.name_surname.message}</FormFeedback>
-                    )} */}
               </FormGroup>
 
               <FormGroup>
@@ -677,19 +589,9 @@ const PillBasic = forwardRef((props, ref) => {
                         <span className="text-danger">*</span>
                       </Label>
                       <Input
-                        // type="email_address"
-                        // name="email_address"
-                        // id="email_address"
                         value={email_address.toString()}
                         onChange={(e) => handleEmailChange(e, i)}
-                        // innerRef={register({ required: true })}
-                        // invalid={errors.email_address && true}
                       />
-                      {/* {errors && errors.email_address && (
-                    <FormFeedback>
-                      {errors.email_address.message}
-                    </FormFeedback>
-                  )} */}
                     </div>
                     <div
                       style={{
@@ -724,20 +626,7 @@ const PillBasic = forwardRef((props, ref) => {
                         <FormattedMessage id="Email"></FormattedMessage>{" "}
                         <span className="text-danger">*</span>
                       </Label>
-                      <Input
-                        // type="email_address"
-                        // name="email_address"
-                        // id="email_address"
-                        // placeholder="john.doe@example.com"
-                        onChange={(e) => handleEmailChange(e, i)}
-                        // innerRef={register({ required: true })}
-                        // invalid={errors.email_address && true}
-                      />
-                      {/* {errors && errors.email_address && (
-                        <FormFeedback>
-                          {errors.email_address.message}
-                        </FormFeedback>
-                      )} */}
+                      <Input onChange={(e) => handleEmailChange(e, i)} />
                     </div>
                     <div
                       style={{
@@ -829,14 +718,8 @@ const PillBasic = forwardRef((props, ref) => {
                   classNamePrefix="select"
                   options={listItems}
                   defaultValue={formState.countryCode}
-                  // placeholder={formState.countryCode}
                   onChange={(e) => onChangeCountry(e)}
-                  // innerRef={register({ required: true })}
-                  // invalid={errors.countryCode && true}
                 />
-                {/* {errors && errors.countryCode && (
-                      <FormFeedback>{errors.countryCode.message}</FormFeedback>
-                    )} */}
               </FormGroup>
 
               <FormGroup>
@@ -850,14 +733,8 @@ const PillBasic = forwardRef((props, ref) => {
                   classNamePrefix="select"
                   options={formState.cities}
                   defaultValue={formState.districtCode}
-                  // placeholder={formState.cityCode}
                   onChange={(e) => onChangeCities(e)}
-                  // innerRef={register({ required: true })}
-                  // invalid={errors.cityCode && true}
                 />
-                {/* {errors && errors.cityCode && (
-                      <FormFeedback>{errors.cityCode.message}</FormFeedback>
-                    )} */}
               </FormGroup>
 
               <FormGroup>
@@ -869,7 +746,6 @@ const PillBasic = forwardRef((props, ref) => {
                   name="cityID"
                   className="react-select"
                   classNamePrefix="select"
-                  // placeholder={formState.districtCode}
                   options={formState.distirct}
                   defaultValue={formState.districtCode}
                   onChange={(data) =>
@@ -878,44 +754,9 @@ const PillBasic = forwardRef((props, ref) => {
                       districtCode: data.id,
                     })
                   }
-                  // innerRef={register({ required: true })}
-                  // invalid={errors.districtCode && true}
                 />
-                {/* {errors && errors.districtCode && (
-                      <FormFeedback>{errors.districtCode.message}</FormFeedback>
-                    )} */}
               </FormGroup>
-
-              {/* <Button.Ripple
-                className="mb-1 mb-sm-0 mr-0 mr-sm-1"
-                type="submit"
-                color="primary"
-                onClick={() => toggle("1")}
-              >
-                <FormattedMessage id="Save Changes"></FormattedMessage>
-              </Button.Ripple> */}
             </Form>
-
-            {/* <Collapse isOpen={isOpen}>
-              <InputGroup className="mb-2">
-                <InputGroupText>@</InputGroupText>
-                <Input
-                  type="email"
-                  id="email"
-                  defaultValue={email_address}
-                  disabled
-                  name="email"
-                  // onChange={onChanceHandler}
-                />
-              </InputGroup>
-
-              <Input
-                type="text"
-                id="phone"
-                defaultValue={phone_number}
-                name="phone"
-              />
-            </Collapse> */}
 
             <Collapse isOpen={isOpenAddress}>
               <div className="d-flex p-1 ">
@@ -925,18 +766,6 @@ const PillBasic = forwardRef((props, ref) => {
                   name="templateName"
                   id="templateName"
                   placeholder="Write the Template Name..."
-                  // className={classnames({
-                  //   "is-invalid": errors["template-name"],
-                  // })}
-                  // defaultValue={formState.templateName}
-                  // onChange={(e) =>
-                  //   setFormState({
-                  //     ...formState,
-                  //     [e.target.name]: e.target.value,
-                  //   })
-                  // }
-                  // innerRef={register({ required: true })}
-                  // invalid={errors.templateName && true}
                 />
               </div>
             </Collapse>
