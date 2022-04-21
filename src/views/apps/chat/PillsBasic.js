@@ -53,7 +53,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { getCountries } from "../../customerManagement/store/Actions";
 import { useForm, Controller } from "react-hook-form";
 import { Slide, toast } from "react-toastify";
-import { Lock, Edit, Trash2, Coffee, AlertCircle } from "react-feather";
+import {
+  Lock,
+  Edit,
+  Trash2,
+  Coffee,
+  AlertCircle,
+  Plus,
+  X,
+} from "react-feather";
 
 import AddNote from "./addNote";
 import AddTicket from "./addTicket";
@@ -536,7 +544,11 @@ const PillBasic = forwardRef((props, ref) => {
           </TabPane>
           <TabPane tabId="2">
             <Form onSubmit={useImperativeHandle}>
-              <FormGroup>
+              <FormGroup
+                style={{
+                  width: "300px",
+                }}
+              >
                 <Label for="name_surname">
                   <FormattedMessage id="Customer Name"></FormattedMessage>
                 </Label>
@@ -571,25 +583,28 @@ const PillBasic = forwardRef((props, ref) => {
                         marginLeft: "10px",
                         width: "50px",
                         display: "inline-block",
+                        outline: "none",
                       }}
                     >
                       {email_address.length - 1 === i && (
-                        <Button.Ripple
-                          color="danger"
-                          onClick={() => handleRemoveEmail(i)}
-                          style={{ margin: "1px" }}
-                        >
-                          X
-                        </Button.Ripple>
+                        <X onClick={() => handleRemoveEmail(i)}></X>
+                        // <Button.Ripple
+                        //   color="danger"
+                        //   onClick={() => handleRemoveEmail(i)}
+                        //   style={{ margin: "1px" }}
+                        // >
+                        //   X
+                        // </Button.Ripple>
                       )}
                       {email_address.length !== 1 && (
-                        <Button.Ripple
-                          color="primary"
-                          onClick={handleAddEmail}
-                          style={{ margin: "1px", maxHeight: "34px" }}
-                        >
-                          +
-                        </Button.Ripple>
+                        <Plus onClick={handleAddEmail}></Plus>
+                        // <Button.Ripple
+                        //   color="primary"
+                        //   onClick={handleAddEmail}
+                        //   style={{ margin: "1px", maxHeight: "34px" }}
+                        // >
+                        //   +
+                        // </Button.Ripple>
                       )}
                     </div>
                   </div>
@@ -618,22 +633,10 @@ const PillBasic = forwardRef((props, ref) => {
                           }}
                         >
                           {email_address.length !== 1 && (
-                            <Button.Ripple
-                              color="danger"
-                              onClick={() => handleRemoveEmail(i)}
-                              style={{ margin: "1px" }}
-                            >
-                              X
-                            </Button.Ripple>
+                            <X onClick={() => handleRemoveEmail(i)}></X>
                           )}
                           {email_address.length - 1 === i && (
-                            <Button.Ripple
-                              color="primary"
-                              onClick={handleAddEmail}
-                              style={{ margin: "1px", maxHeight: "34px" }}
-                            >
-                              +
-                            </Button.Ripple>
+                            <Plus onClick={handleAddEmail}></Plus>
                           )}
                         </div>
                       </div>
@@ -697,12 +700,15 @@ const PillBasic = forwardRef((props, ref) => {
                 })}
               </FormGroup>
 
-              <FormGroup>
+              <FormGroup
+                style={{
+                  width: "300px",
+                }}
+              >
                 <Label for="role">
                   <FormattedMessage id="Country List"></FormattedMessage>
                 </Label>
                 <Select
-                  isClearable={true}
                   name="countyID"
                   className="react-select"
                   classNamePrefix="select"
@@ -712,12 +718,15 @@ const PillBasic = forwardRef((props, ref) => {
                 />
               </FormGroup>
 
-              <FormGroup>
+              <FormGroup
+                style={{
+                  width: "300px",
+                }}
+              >
                 <Label for="role">
                   <FormattedMessage id="City List"></FormattedMessage>
                 </Label>
                 <Select
-                  isClearable={true}
                   name="cityID"
                   className="react-select"
                   classNamePrefix="select"
@@ -727,12 +736,15 @@ const PillBasic = forwardRef((props, ref) => {
                 />
               </FormGroup>
 
-              <FormGroup>
+              <FormGroup
+                style={{
+                  width: "300px",
+                }}
+              >
                 <Label for="role">
                   <FormattedMessage id="Districts List"></FormattedMessage>
                 </Label>
                 <Select
-                  isClearable={true}
                   name="cityID"
                   className="react-select"
                   classNamePrefix="select"
