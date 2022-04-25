@@ -81,8 +81,30 @@ import { selectThemeColors } from "@utils";
 import { Editor } from "react-draft-wysiwyg";
 import { EditorState } from "draft-js";
 import { Slide, toast } from "react-toastify";
+// import { socket } from "../../../socket/index";
 
 const ChatLog = (props) => {
+  const {
+    handleUser,
+    handleUserSidebarRight,
+    handleSidebar,
+    store,
+    userSidebarLeft,
+    message,
+    sending,
+    fileUpload,
+    recordVoice,
+    fullName,
+    avatarIcon,
+    rightBar,
+    close,
+    closeConsole,
+    mailContent,
+    channelId,
+    selectedReasonCode,
+    roomId,
+    startConference,
+  } = props;
   // ** State
   const [record, setRecord] = useState(false);
   const [mic, setMic] = useState("#82868b");
@@ -117,25 +139,6 @@ const ChatLog = (props) => {
   };
   const [msg, setMsg] = useState("");
   // ** Props & Store
-  const {
-    handleUser,
-    handleUserSidebarRight,
-    handleSidebar,
-    store,
-    userSidebarLeft,
-    message,
-    sending,
-    fileUpload,
-    recordVoice,
-    fullName,
-    avatarIcon,
-    rightBar,
-    close,
-    closeConsole,
-    mailContent,
-    channelId,
-    selectedReasonCode,
-  } = props;
 
   const { userProfile, selectedUser } = store;
   // ** Refs & Dispatch
@@ -148,6 +151,7 @@ const ChatLog = (props) => {
     const chatContainer = ReactDOM.findDOMNode(chatArea.current);
     chatContainer.scrollTop = Number.MAX_SAFE_INTEGER;
   };
+
   // ** If user chat is not empty scrollToBottom
   useEffect(() => {
     scrollToBottom1();
@@ -328,6 +332,13 @@ const ChatLog = (props) => {
           }
         });
       }
+    } else if (channelId == 5) {
+      return (
+        <div style={containerStyle}>
+          {loading && <ProgressComponent />}
+          <div id="jitsi-container" style={jitsiContainerStyle} />
+        </div>
+      );
     } else {
       return (
         <Card>

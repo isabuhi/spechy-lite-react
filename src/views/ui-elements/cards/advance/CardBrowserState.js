@@ -91,6 +91,14 @@ const CardBrowserState = ({ colors, trackBgColor }) => {
       linked: false,
       name: "@spechycom",
     },
+    {
+      avatar: require("@src/assets/images/icons/live-chat-icon.png").default,
+      title: "Vedio Chat",
+      value: "8.4%",
+      url: "/vedio-chat-widget/list",
+      linked: false,
+      name: "@spechycom",
+    },
   ];
 
   const renderStates1 = () => {

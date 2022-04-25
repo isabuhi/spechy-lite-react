@@ -55,6 +55,7 @@ const AppChat = (props) => {
   const childCompRef = useRef();
   const childOpenRef = useRef();
   const [dataOfReason, setDataOfReason] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const selectedReasonCode = (childdata) => {
     setDataOfReason(childdata);
@@ -88,6 +89,44 @@ const AppChat = (props) => {
   };
   let totalConversation = 0;
 
+  const containerStyle = {
+    width: "800px",
+    height: "400px",
+  };
+
+  const jitsiContainerStyle = {
+    display: loading ? "none" : "block",
+    width: "100%",
+    height: "100%",
+  };
+
+  const startConference = () => {
+    try {
+      const domain = "vchat.teknosa.com";
+      const options = {
+        roomName: myRoomId,
+        height: 400,
+        parentNode: document.getElementById("jitsi-container"),
+        interfaceConfigOverwrite: {
+          filmStripOnly: false,
+          SHOW_JITSI_WATERMARK: false,
+        },
+        configOverwrite: {
+          disableSimulcast: false,
+        },
+      };
+
+      const api = new JitsiMeetExternalAPI(domain, options);
+      api.addEventListener("videoConferenceJoined", () => {
+        console.log("Local User Joined");
+        setLoading(false);
+        api.executeCommand("displayName", "MyName");
+      });
+    } catch (error) {
+      console.error("Failed to load Jitsi API", error);
+    }
+  };
+
   const chatMessage = (
     id,
     channelId,
@@ -108,6 +147,8 @@ const AppChat = (props) => {
       let message = [];
       if (data.channelId !== 8) {
         if (data.channelId === 6) {
+        } else if (data.channelId === 5) {
+          startConference();
         } else {
           for (let i = 0; i < data.messages.length; i++) {
             if (data.messages[i].type === "T") {
@@ -288,6 +329,12 @@ const AppChat = (props) => {
       );
     }
   };
+
+  useEffect(() => {
+    // verify the JitsiMeetExternalAPI constructor is added to the global..
+    if (window.JitsiMeetExternalAPI) startConference();
+    else alert("Jitsi Meet API script not loaded");
+  }, []);
 
   const fileUpload = (myfile) => {
     const roomId = myRoomId;
@@ -528,6 +575,7 @@ const AppChat = (props) => {
 
     //--------------
     socket.on("panel_set_active_conversations", (data) => {
+      console.log("idofchanr", data);
       let chatf = [];
       for (let i = 0; i < data.length; i++) {
         if (data[i].channelId == 6) {
@@ -715,6 +763,42 @@ const AppChat = (props) => {
             session: session,
             mailboxId: "",
           });
+        } else if (data[i].channelId == 5) {
+          let from = "";
+          let session = "";
+          if (data[i].channelId == 5) {
+            from = data[i].from;
+            session = data[i].session;
+            setFromId(from);
+            setSessionId(session);
+          }
+          let date = new Date(data[i].createdAt);
+          chatf.push({
+            about: "new",
+            avatar: "https://app.spechy.com:8000/" + data[i].profile_image,
+            chat: {
+              id: data[i].messageId,
+              type: data[i].type,
+              lastMessage: {
+                message: data[i].message,
+                time: date.toLocaleTimeString(),
+                senderId: data[i].sender,
+              },
+              unseenMsgs: data[i].isNotReadCount,
+            },
+            fullName: data[i].name_surname,
+            id: data[i].roomId,
+            role: "Video Widget Chat",
+            status: "online",
+            channelId: data[i].channelId,
+            customerId: data[i].customerId,
+            logId: data[i].logId,
+            roomId: data[i].roomId,
+            time: date.toLocaleTimeString(),
+            from: from,
+            session: session,
+            mailboxId: "",
+          });
         }
       }
 
@@ -863,17 +947,18 @@ const AppChat = (props) => {
         openContactOn={openContactOn}
         openContactOf={openContactOf}
       />
-
       {showChat === true ? (
         <div className="chat-app-window">
           <div className={classnames("start-chat-area")}>
-            {/* <div className="start-chat-icon mb-1">
-            <MessageSquare />
-          </div> */}
             <h4 className="sidebar-toggle start-chat-text">
               Start Conversation
             </h4>
           </div>
+        </div>
+      ) : mychannelId === 5 ? (
+        <div style={containerStyle}>
+          {loading && <h1>loading..</h1>}
+          <div id="jitsi-container" style={jitsiContainerStyle} />
         </div>
       ) : (
         <div className="content-right">
@@ -888,7 +973,6 @@ const AppChat = (props) => {
                 })}
                 onClick={handleOverlayClick}
               ></div>
-
               <Chat
                 store={store}
                 handleUser={handleUser}
@@ -908,8 +992,8 @@ const AppChat = (props) => {
                 mailContent={chatContent}
                 channelId={mychannelId}
                 selectedReasonCode={selectedReasonCode}
+                roomId={myRoomId}
               />
-
               <Card title="" className="information-chat">
                 <PillsBasic
                   className="tab-chat"
