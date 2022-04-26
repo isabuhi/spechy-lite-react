@@ -123,8 +123,6 @@ const SidebarLeft = (props) => {
         const arrToMap =
           query.length && filteredChat.length ? filteredChat : chatList;
 
-        console.log("arrToMap", arrToMap);
-
         return arrToMap.map((item) => {
           if (item.chat != null) {
             return (

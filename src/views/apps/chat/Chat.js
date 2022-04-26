@@ -104,6 +104,7 @@ const ChatLog = (props) => {
     selectedReasonCode,
     roomId,
     startConference,
+    jitsiContainer,
   } = props;
   // ** State
   const [record, setRecord] = useState(false);
@@ -114,6 +115,7 @@ const ChatLog = (props) => {
   const [centeredModal2, setCenteredModal2] = useState(false);
   const [openSide, setOpenSide] = useState(false);
   const [show, setShow] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const childCompRef = useRef();
   const listReasonCode = [
@@ -152,6 +154,17 @@ const ChatLog = (props) => {
     chatContainer.scrollTop = Number.MAX_SAFE_INTEGER;
   };
 
+  const containerStyle = {
+    width: "800px",
+    height: "400px",
+  };
+
+  const jitsiContainerStyle = {
+    display: "block",
+    width: "100%",
+    height: "100%",
+  };
+
   // ** If user chat is not empty scrollToBottom
   useEffect(() => {
     scrollToBottom1();
@@ -184,9 +197,29 @@ const ChatLog = (props) => {
     //-----------
   }, []);
 
+  // const renderChats = () => {
+  //   return (
+  //     <div className="chat-body">
+  //       <div style={containerStyle}>
+  //         <div id={jitsiContainer} style={jitsiContainerStyle} />
+  //       </div>
+  //     </div>
+  //   );
+  // };
+
   // ** Renders user chat
   const renderChats = () => {
     scrollToBottom1();
+    if (channelId == 5) {
+      return (
+        <div className="chat-body">
+          <div style={containerStyle}>
+            <div id={jitsiContainer} style={jitsiContainerStyle} />
+          </div>
+        </div>
+      );
+    }
+
     if (channelId !== 8) {
       if (channelId == 6) {
         <div>Phone Call</div>;
@@ -332,13 +365,6 @@ const ChatLog = (props) => {
           }
         });
       }
-    } else if (channelId == 5) {
-      return (
-        <div style={containerStyle}>
-          {loading && <ProgressComponent />}
-          <div id="jitsi-container" style={jitsiContainerStyle} />
-        </div>
-      );
     } else {
       return (
         <Card>

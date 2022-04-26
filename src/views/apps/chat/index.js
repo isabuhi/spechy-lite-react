@@ -28,6 +28,14 @@ import jwt_decode from "jwt-decode";
 import useJwt from "@src/auth/jwt/useJwt";
 import axios from "axios";
 import { BASE_URL } from "../../../@core/auth/jwt/jwtService";
+import Avatar from "../../../../src/@core/components/avatar";
+import { Slide, toast } from "react-toastify";
+import {
+  AlertCircle,
+  ArrowLeftCircle,
+  Coffee,
+  FolderPlus,
+} from "react-feather";
 // import { getAtiveConversation, ActiveCoversations } from "../../../token";
 import Breadcrumbs from "./subComponents/breadCrumbs";
 import Router from "../../../router/Router";
@@ -56,6 +64,7 @@ const AppChat = (props) => {
   const childOpenRef = useRef();
   const [dataOfReason, setDataOfReason] = useState([]);
   const [loading, setLoading] = useState(true);
+  const jitsiContainer = "jitsiContainer";
 
   const selectedReasonCode = (childdata) => {
     setDataOfReason(childdata);
@@ -89,42 +98,32 @@ const AppChat = (props) => {
   };
   let totalConversation = 0;
 
-  const containerStyle = {
-    width: "800px",
-    height: "400px",
-  };
+  // function startConference() {
 
-  const jitsiContainerStyle = {
-    display: loading ? "none" : "block",
-    width: "100%",
-    height: "100%",
-  };
+  // }
 
-  const startConference = () => {
-    try {
-      const domain = "vchat.teknosa.com";
-      const options = {
-        roomName: myRoomId,
-        height: 400,
-        parentNode: document.getElementById("jitsi-container"),
-        interfaceConfigOverwrite: {
-          filmStripOnly: false,
-          SHOW_JITSI_WATERMARK: false,
-        },
-        configOverwrite: {
-          disableSimulcast: false,
-        },
-      };
-
-      const api = new JitsiMeetExternalAPI(domain, options);
-      api.addEventListener("videoConferenceJoined", () => {
-        console.log("Local User Joined");
-        setLoading(false);
-        api.executeCommand("displayName", "MyName");
-      });
-    } catch (error) {
-      console.error("Failed to load Jitsi API", error);
-    }
+  const ToastContent = ({ header, content, type }) => {
+    return (
+      <Fragment>
+        <div className="toastify-header">
+          <div className="title-wrapper">
+            {type === "success" ? (
+              <Avatar size="sm" color="success" icon={<Coffee size={12} />} />
+            ) : (
+              <Avatar
+                size="sm"
+                color="danger"
+                icon={<AlertCircle size={12} />}
+              />
+            )}
+            <h6 className="toast-title font-weight-bold">{header}</h6>
+          </div>
+        </div>
+        <div className="toastify-body">
+          <span>{content}</span>
+        </div>
+      </Fragment>
+    );
   };
 
   const chatMessage = (
@@ -143,12 +142,53 @@ const AppChat = (props) => {
     setAvatar(avatar);
     setFullName(name);
     setCustomerId(customerId);
+    socket.on("conversation_visitor_close", (data) => {
+      setShowChat(true);
+      // if (data.roomId == activeConversation.roomId && data.channelId == activeConversation.channelId){
+      //     $(".chats").html("");
+      // }
+    });
     socket.on("panel_set_active_conversation", (data) => {
       let message = [];
       if (data.channelId !== 8) {
         if (data.channelId === 6) {
         } else if (data.channelId === 5) {
-          startConference();
+          if (data.status == 2) {
+            toast.error(
+              <ToastContent
+                type={"error"}
+                content={"This video chat has been ended by the client"}
+                header={"Error !!"}
+              />,
+
+              { transition: Slide, hideProgressBar: true, autoClose: 3000 }
+            );
+          } else {
+            try {
+              const domain = "vchat.teknosa.com";
+              const options = {
+                roomName: myRoomId,
+                height: 400,
+                parentNode: document.getElementById(jitsiContainer),
+                interfaceConfigOverwrite: {
+                  filmStripOnly: false,
+                  SHOW_JITSI_WATERMARK: false,
+                },
+                configOverwrite: {
+                  disableSimulcast: false,
+                },
+              };
+
+              const api = new JitsiMeetExternalAPI(domain, options);
+              api.addEventListener("videoConferenceJoined", () => {
+                console.log("Local User Joined");
+                setLoading(false);
+                api.executeCommand("displayName", name);
+              });
+            } catch (error) {
+              console.error("Failed to load Jitsi API", error);
+            }
+          }
         } else {
           for (let i = 0; i < data.messages.length; i++) {
             if (data.messages[i].type === "T") {
@@ -329,12 +369,6 @@ const AppChat = (props) => {
       );
     }
   };
-
-  useEffect(() => {
-    // verify the JitsiMeetExternalAPI constructor is added to the global..
-    if (window.JitsiMeetExternalAPI) startConference();
-    else alert("Jitsi Meet API script not loaded");
-  }, []);
 
   const fileUpload = (myfile) => {
     const roomId = myRoomId;
@@ -564,6 +598,35 @@ const AppChat = (props) => {
   }, []);
 
   useEffect(() => {
+    if (window.JitsiMeetExternalAPI) {
+      try {
+        const domain = "vchat.teknosa.com";
+        const options = {
+          roomName: myRoomId,
+          height: 400,
+          parentNode: document.getElementById(jitsiContainer),
+          interfaceConfigOverwrite: {
+            filmStripOnly: false,
+            SHOW_JITSI_WATERMARK: false,
+          },
+          configOverwrite: {
+            disableSimulcast: false,
+          },
+        };
+
+        const api = new JitsiMeetExternalAPI(domain, options);
+        api.addEventListener("videoConferenceJoined", () => {
+          console.log("Local User Joined");
+          setLoading(false);
+          api.executeCommand("displayName");
+        });
+      } catch (error) {
+        console.error("Failed to load Jitsi API", error);
+      }
+    } else alert("Jitsi Meet API script not loaded");
+  }, []);
+
+  useEffect(() => {
     //socket bağlandığında mevcut oda var ise bağlan
     if (activeConversation.channelId !== 0) {
       // getAtiveConversation(activeConversation);
@@ -575,7 +638,6 @@ const AppChat = (props) => {
 
     //--------------
     socket.on("panel_set_active_conversations", (data) => {
-      console.log("idofchanr", data);
       let chatf = [];
       for (let i = 0; i < data.length; i++) {
         if (data[i].channelId == 6) {
@@ -870,6 +932,7 @@ const AppChat = (props) => {
       emailId: null,
       mailboxId: null,
     });
+
     setShowChat(true);
   };
 
@@ -955,11 +1018,6 @@ const AppChat = (props) => {
             </h4>
           </div>
         </div>
-      ) : mychannelId === 5 ? (
-        <div style={containerStyle}>
-          {loading && <h1>loading..</h1>}
-          <div id="jitsi-container" style={jitsiContainerStyle} />
-        </div>
       ) : (
         <div className="content-right">
           <div className="content-wrapper">
@@ -993,6 +1051,7 @@ const AppChat = (props) => {
                 channelId={mychannelId}
                 selectedReasonCode={selectedReasonCode}
                 roomId={myRoomId}
+                jitsiContainer={jitsiContainer}
               />
               <Card title="" className="information-chat">
                 <PillsBasic
