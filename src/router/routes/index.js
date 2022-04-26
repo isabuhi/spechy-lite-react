@@ -678,12 +678,7 @@ const Routes = [
     exact: true,
     breadcrumb: "call list",
   },
-  {
-    path: "/settings/plansandbillings",
-    component: lazy(() => import("../../views/pages/404")),
-    exact: true,
-    breadcrumb: "call list",
-  },
+
   {
     path: "/settings/security",
     component: lazy(() => import("../../views/pages/404")),
@@ -753,6 +748,12 @@ const Routes = [
   {
     path: "/facebook/edit/:id",
     component: lazy(() => import("../../views/social/facebook/edit")),
+    exact: true,
+    breadcrumb: "call list",
+  },
+  {
+    path: "/settings/plansandbillings",
+    component: lazy(() => import("../../views/pages/pricing/index")),
     exact: true,
     breadcrumb: "call list",
   },
