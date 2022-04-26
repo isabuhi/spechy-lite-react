@@ -24,6 +24,7 @@ import ticketReasonCode from "../../../src/views/pages/ticketreasoncode/store/re
 import autoAssign from "../../views/pages/autoAssign/store/reducers";
 import roleReducer from "../../views/pages/rolemanagement/store/reducers";
 import chatWidget from "../../views/chat-widget/store/reducers";
+import chatWidgetVedio from "../../views/video-chat-widget/store/reducers";
 
 import userGroups from "../../views/pages/userGroups/store/reducers";
 import ticketcategory from "../../views/pages/ticketcategory/store/reducers";
@@ -68,6 +69,7 @@ const rootReducer = combineReducers({
   chatWidget,
   callList,
   smstemplateReducer,
+  chatWidgetVedio,
 });
 
 export default rootReducer;

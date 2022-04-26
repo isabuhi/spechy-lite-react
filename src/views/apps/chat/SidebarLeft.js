@@ -169,6 +169,8 @@ const SidebarLeft = (props) => {
                   <h5 className="mb-0">{item.fullName}</h5>
                   {item.channelId == 6 ? (
                     <CardText>{item.number}</CardText>
+                  ) : item.channelId == 5 ? (
+                    console.log("first")
                   ) : item.chat.lastMessage ? (
                     <CardText>
                       {item.chat.lastMessage.message.message === undefined

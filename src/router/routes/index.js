@@ -138,6 +138,43 @@ const Routes = [
     component: lazy(() => import("../../views/chat-widget/form/index")),
   },
   {
+    path: "/vedio-chat-widget/list",
+    component: lazy(() => import("../../views/video-chat-widget/list")),
+  },
+  {
+    path: "/vedio-chat-widget/edit/:id",
+    component: lazy(() =>
+      import("../../views/video-chat-widget/editVedioCallButton/index")
+    ),
+  },
+  {
+    path: "/vedio-chat-widget/js/:id/:file",
+    component: lazy(() => import("../../views/video-chat-widget/js/index")),
+  },
+  {
+    path: "/vedio-chat-widget/window/:id",
+    component: lazy(() => import("../../views/video-chat-widget/window/index")),
+  },
+  {
+    path: "/vedio-chat-widget/offline/:id",
+    component: lazy(() =>
+      import("../../views/video-chat-widget/offline/index")
+    ),
+  },
+  {
+    path: "/vedio-chat-widget/button/:id",
+    component: lazy(() =>
+      import("../../views/video-chat-widget/onlineChatButton/index")
+    ),
+  },
+  {
+    path: "/vedio-chat-widget/form/:id",
+    component: lazy(() =>
+      import("../../views/video-chat-widget/offlineForm/index")
+    ),
+  },
+
+  {
     path: "/social/whatsapp/index",
     component: lazy(() => import("../../views/social/whatsapp/list/index")),
   },

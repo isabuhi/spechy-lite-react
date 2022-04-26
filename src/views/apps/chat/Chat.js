@@ -81,8 +81,31 @@ import { selectThemeColors } from "@utils";
 import { Editor } from "react-draft-wysiwyg";
 import { EditorState } from "draft-js";
 import { Slide, toast } from "react-toastify";
+// import { socket } from "../../../socket/index";
 
 const ChatLog = (props) => {
+  const {
+    handleUser,
+    handleUserSidebarRight,
+    handleSidebar,
+    store,
+    userSidebarLeft,
+    message,
+    sending,
+    fileUpload,
+    recordVoice,
+    fullName,
+    avatarIcon,
+    rightBar,
+    close,
+    closeConsole,
+    mailContent,
+    channelId,
+    selectedReasonCode,
+    roomId,
+    startConference,
+    jitsiContainer,
+  } = props;
   // ** State
   const [record, setRecord] = useState(false);
   const [mic, setMic] = useState("#82868b");
@@ -92,6 +115,7 @@ const ChatLog = (props) => {
   const [centeredModal2, setCenteredModal2] = useState(false);
   const [openSide, setOpenSide] = useState(false);
   const [show, setShow] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const childCompRef = useRef();
   const listReasonCode = [
@@ -117,25 +141,6 @@ const ChatLog = (props) => {
   };
   const [msg, setMsg] = useState("");
   // ** Props & Store
-  const {
-    handleUser,
-    handleUserSidebarRight,
-    handleSidebar,
-    store,
-    userSidebarLeft,
-    message,
-    sending,
-    fileUpload,
-    recordVoice,
-    fullName,
-    avatarIcon,
-    rightBar,
-    close,
-    closeConsole,
-    mailContent,
-    channelId,
-    selectedReasonCode,
-  } = props;
 
   const { userProfile, selectedUser } = store;
   // ** Refs & Dispatch
@@ -148,6 +153,18 @@ const ChatLog = (props) => {
     const chatContainer = ReactDOM.findDOMNode(chatArea.current);
     chatContainer.scrollTop = Number.MAX_SAFE_INTEGER;
   };
+
+  const containerStyle = {
+    width: "800px",
+    height: "400px",
+  };
+
+  const jitsiContainerStyle = {
+    display: "block",
+    width: "100%",
+    height: "100%",
+  };
+
   // ** If user chat is not empty scrollToBottom
   useEffect(() => {
     scrollToBottom1();
@@ -180,9 +197,29 @@ const ChatLog = (props) => {
     //-----------
   }, []);
 
+  // const renderChats = () => {
+  //   return (
+  //     <div className="chat-body">
+  //       <div style={containerStyle}>
+  //         <div id={jitsiContainer} style={jitsiContainerStyle} />
+  //       </div>
+  //     </div>
+  //   );
+  // };
+
   // ** Renders user chat
   const renderChats = () => {
     scrollToBottom1();
+    if (channelId == 5) {
+      return (
+        <div className="chat-body">
+          <div style={containerStyle}>
+            <div id={jitsiContainer} style={jitsiContainerStyle} />
+          </div>
+        </div>
+      );
+    }
+
     if (channelId !== 8) {
       if (channelId == 6) {
         <div>Phone Call</div>;
