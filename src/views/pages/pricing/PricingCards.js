@@ -20,8 +20,8 @@ const PricingCards = ({ data, duration }) => {
       return data.map((item, index) => {
 
 
-        // const monthlyPrice = duration === 'yearly' ? item.yearlyPlan.perMonth : item.monthlyPrice,
-        //   yearlyPrice = duration === 'yearly' ? item.yearlyPlan.totalAnnual : item.monthlyPrice,
+        const monthly_prices = duration === 'yearly' ? item.yearly_price : item.monthly_price
+        // yearly_price = duration === 'yearly' ? item.yearlyPlan.totalAnnual : item.monthlyPrice,
           // imgClasses = item.title === 'Basic' ? 'mb-2 mt-5' : item.title === 'Standard' ? 'mb-1' : 'mb-2'
         return (
           <Col key={index} md='3' xs='12'>
@@ -32,13 +32,7 @@ const PricingCards = ({ data, duration }) => {
               })}
             >
               <CardBody>
-                {/* {item.popular === true ? (
-                  <div className='pricing-badge text-right'>
-                    <Badge color='light-primary' pill>
-                      Popular
-                    </Badge>
-                  </div>
-                ) : null} */}
+                
                 {/* <img className={imgClasses} src={item.img} alt='pricing svg' /> */}
                 <h3>{item.name}</h3>
                 {/* <CardText>{item.subtitle}</CardText> */}
@@ -46,9 +40,9 @@ const PricingCards = ({ data, duration }) => {
                   <div className='plan-price mt-2'>
                     <sup className='font-medium-1 font-weight-bold text-primary mr-25'>$</sup>
                     <span className={`pricing-${item.name.toLowerCase()}-value font-weight-bolder text-primary`}>
-                      {item.monthly_price}
+                      {monthly_prices }
                     </span>
-                    <span className='pricing-duration text-body font-medium-1 font-weight-bold ml-25'>/month</span>
+                    <span className='pricing-duration text-body font-medium-1 font-weight-bold ml-25'>/{duration}</span>
                   
                   </div>
                   {item.name !== 'Basic' && duration === 'yearly' ? (
@@ -59,7 +53,7 @@ const PricingCards = ({ data, duration }) => {
                   {item.features.map((benefit, i) => (
                     // console.log("benefit",benefit)
                     <ListGroupItem  >
-                      {benefit.limit === 0 ? 'Unlimited' : benefit.limit}: {benefit.channel.name}
+                    {benefit.channel.name} 
                     </ListGroupItem>
                   ))}
                 </ListGroup>
