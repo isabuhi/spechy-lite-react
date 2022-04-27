@@ -18,7 +18,6 @@ const PricingCards = ({ data, duration }) => {
   const renderPricingCards = () => {
     if(data !== null){
       return data.map((item, index) => {
-  console.log("first", item)
 
 
         // const monthlyPrice = duration === 'yearly' ? item.yearlyPlan.perMonth : item.monthlyPrice,
@@ -50,6 +49,7 @@ const PricingCards = ({ data, duration }) => {
                       {item.monthly_price}
                     </span>
                     <span className='pricing-duration text-body font-medium-1 font-weight-bold ml-25'>/month</span>
+                  
                   </div>
                   {item.name !== 'Basic' && duration === 'yearly' ? (
                     <small className='annual-pricing text-muted'>USD {item.yearly_price} / year</small>
