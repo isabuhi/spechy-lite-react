@@ -1,70 +1,105 @@
+import React, {useState,useEffect} from 'react'
 import classnames from 'classnames'
-import { Row, Col, Card, CardBody, CardText, Badge, ListGroup, ListGroupItem, Button } from 'reactstrap'
+import { Row, Col, Card, CardBody, CardText, Badge, ListGroup, ListGroupItem,Button, Modal, ModalHeader, ModalBody, ModalFooter, Alert} from 'reactstrap'
+
+
+import PaymentForm from './cardInfo'
+
 
 const PricingCards = ({ data, duration }) => {
+
+  const [basicModal, setBasicModal] = useState(false)
+
+
+
+
+
+  
   const renderPricingCards = () => {
-    return data.map((item, index) => {
-      const monthlyPrice = duration === 'yearly' ? item.yearlyPlan.perMonth : item.monthlyPrice,
-        yearlyPrice = duration === 'yearly' ? item.yearlyPlan.totalAnnual : item.monthlyPrice,
-        imgClasses = item.title === 'Basic' ? 'mb-2 mt-5' : item.title === 'Standard' ? 'mb-1' : 'mb-2'
-      return (
-        <Col key={index} md='4' xs='12'>
-          <Card
-            className={classnames('text-center', {
-              [`${item.title.toLowerCase()}-pricing`]: item.title,
-              popular: item.popular === true
-            })}
-          >
-            <CardBody>
-              {item.popular === true ? (
-                <div className='pricing-badge text-right'>
-                  <Badge color='light-primary' pill>
-                    Popular
-                  </Badge>
+    if(data !== null){
+      return data.map((item, index) => {
+  console.log("first", item)
+
+
+        // const monthlyPrice = duration === 'yearly' ? item.yearlyPlan.perMonth : item.monthlyPrice,
+        //   yearlyPrice = duration === 'yearly' ? item.yearlyPlan.totalAnnual : item.monthlyPrice,
+          // imgClasses = item.title === 'Basic' ? 'mb-2 mt-5' : item.title === 'Standard' ? 'mb-1' : 'mb-2'
+        return (
+          <Col key={index} md='3' xs='12'>
+            <Card
+              className={classnames('text-center', {
+                [`${item.name.toLowerCase()}-pricing`]: item.name,
+                popular: item.popular === true
+              })}
+            >
+              <CardBody>
+                {/* {item.popular === true ? (
+                  <div className='pricing-badge text-right'>
+                    <Badge color='light-primary' pill>
+                      Popular
+                    </Badge>
+                  </div>
+                ) : null} */}
+                {/* <img className={imgClasses} src={item.img} alt='pricing svg' /> */}
+                <h3>{item.name}</h3>
+                {/* <CardText>{item.subtitle}</CardText> */}
+                <div className='annual-plan'>
+                  <div className='plan-price mt-2'>
+                    <sup className='font-medium-1 font-weight-bold text-primary mr-25'>$</sup>
+                    <span className={`pricing-${item.name.toLowerCase()}-value font-weight-bolder text-primary`}>
+                      {item.monthly_price}
+                    </span>
+                    <span className='pricing-duration text-body font-medium-1 font-weight-bold ml-25'>/month</span>
+                  </div>
+                  {item.name !== 'Basic' && duration === 'yearly' ? (
+                    <small className='annual-pricing text-muted'>USD {item.yearly_price} / year</small>
+                  ) : null}
                 </div>
-              ) : null}
-              <img className={imgClasses} src={item.img} alt='pricing svg' />
-              <h3>{item.title}</h3>
-              <CardText>{item.subtitle}</CardText>
-              <div className='annual-plan'>
-                <div className='plan-price mt-2'>
-                  <sup className='font-medium-1 font-weight-bold text-primary mr-25'>$</sup>
-                  <span className={`pricing-${item.title.toLowerCase()}-value font-weight-bolder text-primary`}>
-                    {monthlyPrice}
-                  </span>
-                  <span className='pricing-duration text-body font-medium-1 font-weight-bold ml-25'>/month</span>
-                </div>
-                {item.title !== 'Basic' && duration === 'yearly' ? (
-                  <small className='annual-pricing text-muted'>USD {yearlyPrice} / year</small>
-                ) : null}
-              </div>
-              <ListGroup tag='ul' className='list-group-circle text-left mb-2'>
-                {item.planBenefits.map((benefit, i) => (
-                  <ListGroupItem key={i} tag='li'>
-                    {benefit}
-                  </ListGroupItem>
-                ))}
-              </ListGroup>
-              <Button.Ripple
-                color={item.title === 'Basic' ? 'success' : 'primary'}
-                outline={item.title !== 'Standard'}
-                block
-              >
-                {item.title === 'Basic' ? 'Your current plan' : 'Upgrade'}
-              </Button.Ripple>
-            </CardBody>
-          </Card>
-        </Col>
-      )
-    })
+                <ListGroup tag='ul' className='list-group-circle text-left mb-2'>
+                  {item.features.map((benefit, i) => (
+                    // console.log("benefit",benefit)
+                    <ListGroupItem  >
+                      {benefit.limit === 0 ? 'Unlimited' : benefit.limit}: {benefit.channel.name}
+                    </ListGroupItem>
+                  ))}
+                </ListGroup>
+                <Button.Ripple
+                onClick={() => setBasicModal(!basicModal)}
+                  color={item.name === 'Basic' ? 'success' : 'primary'}
+                  outline={item.name !== 'Standard'}
+                  block
+                >
+                  {item.name === 'Basic' ? 'Your current plan' : 'Upgrade'}
+                </Button.Ripple>
+              </CardBody>
+            </Card>
+          </Col>
+        )
+      })
+    }
+
+    
+  
   }
 
   return (
+    <>
+      <div className='basic-modal'>
+        
+        <Modal isOpen={basicModal} toggle={() => setBasicModal(!basicModal)}>
+          <ModalHeader toggle={() => setBasicModal(!basicModal)}>Card Information</ModalHeader>
+          <ModalBody>
+            <PaymentForm/>
+          </ModalBody>
+         
+        </Modal>
+      </div>
     <Row className='pricing-card'>
       <Col className='mx-auto' sm={{ offset: 2, size: 10 }} lg={{ offset: 2, size: 10 }} md='12'>
         <Row>{renderPricingCards()}</Row>
       </Col>
     </Row>
+    </>
   )
 }
 
