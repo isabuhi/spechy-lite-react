@@ -817,12 +817,21 @@ const PillBasic = forwardRef((props, ref) => {
           </TabPane>
           <TabPane tabId="5">
             <Card>
+            <div className="col-12 row">
+              <div className="col-4">
+              </div>
+              <div className="col-4">
               <Button.Ripple
                 color="primary"
                 onClick={() => setBasicModal(!basicModal)}
+                size="md"
               >
-                Add New Note
+                Add Note
               </Button.Ripple>
+              </div>
+              <div className="col-4">
+              </div>
+              </div>
               <DataTable
                 noHeader
                 responsive
