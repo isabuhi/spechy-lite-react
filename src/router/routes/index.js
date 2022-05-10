@@ -267,7 +267,7 @@ const Routes = [
     path: "/auto-assign/list",
     component: lazy(() => import("../../views/pages/autoAssign/list")),
     exact: true,
-    breadcrumb: "Email Templates",
+    breadcrumb: "auto assign",
   },
   {
     path: "/auto-assign/add",
@@ -278,6 +278,7 @@ const Routes = [
   {
     path: "/auto-assign/edit/:id",
     component: lazy(() => import("../../views/pages/autoAssign/edit")),
+    exact: true,
   },
   {
     path: "/reasoncode/add",

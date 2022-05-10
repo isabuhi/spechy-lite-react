@@ -13,28 +13,26 @@ const Pricing = () => {
     [duration, setDuration] = useState("monthly");
 
   useEffect(() => {
-    const fetchPricing = async ()=>{
-     await  axios.get(
-        `${BASE_URL}/api/plan-management/plan/get-all-plans/tr`
-       
-      ).then((res) => {
-        setData(res.data.data)
-      });
-    }
-    fetchPricing()
-    
+    const fetchPricing = async () => {
+      await axios
+        .get(
+          `${BASE_URL}/api/plan-management/plan/get-all-plans-with-current-plan/tr`
+        )
+        .then((res) => {
+          setData(res.data.data);
+        });
+    };
+    fetchPricing();
   }, []);
-
 
   return (
     <div id="pricing-table">
       <PricingHeader duration={duration} setDuration={setDuration} />
-      
-        <Fragment>
-          <PricingCards data={data} duration={duration} />
-          <PricingTrial />
-        </Fragment>
-     
+
+      <Fragment>
+        <PricingCards data={data} duration={duration} />
+        <PricingTrial />
+      </Fragment>
     </div>
   );
 };

@@ -16,15 +16,59 @@ import {
   ModalFooter,
   Alert,
 } from "reactstrap";
+import axios from "axios";
+import { BASE_URL } from "../../../@core/auth/jwt/jwtService";
 
 import PaymentForm from "./cardInfo";
 
 const PricingCards = ({ data, duration }) => {
   const [basicModal, setBasicModal] = useState(false);
 
+  const proceedWithPayment = async () => {
+    await axios
+      .get(`${BASE_URL}/api/plan-management/plan/pay`)
+      .then((response) => {
+        if (response.status === 200) {
+          console.log("amazing");
+        }
+      })
+      .catch((error) => {
+        toast.error(
+          <ToastContent
+            type={"error"}
+            errorResTo={"something went wronge, please try again"}
+            header={"Error !!"}
+          />,
+          { transition: Slide, hideProgressBar: true, autoClose: 3000 }
+        );
+      });
+  };
+
+  const handlePayment = async () => {
+    await axios
+      .get(`${BASE_URL}/api/plan-management/plan/change-plan/3/monthly`)
+      .then((response) => {
+        if (response.status === 200) {
+          console.log("yes");
+          // proceedWithPayment()
+        }
+      })
+      .catch((error) => {
+        toast.error(
+          <ToastContent
+            type={"error"}
+            errorResTo={"something went wronge, please try again"}
+            header={"Error !!"}
+          />,
+          { transition: Slide, hideProgressBar: true, autoClose: 3000 }
+        );
+      });
+  };
+
   const renderPricingCards = () => {
     if (data !== null) {
-      return data.map((item, index) => {
+      return data.plans.map((item, index) => {
+        console.log("currentplam", item);
         const monthly_prices =
           duration === "yearly" ? item.yearly_price : item.monthly_price;
         // yearly_price = duration === 'yearly' ? item.yearlyPlan.totalAnnual : item.monthlyPrice,
@@ -72,7 +116,11 @@ const PricingCards = ({ data, duration }) => {
                 </ListGroup>
                 <Button.Ripple
                   onClick={() => setBasicModal(!basicModal)}
-                  color={item.name === "Basic" ? "success" : "primary"}
+                  color={
+                    data.current_plan_info.plan_id === item.plan_id
+                      ? "success"
+                      : "primary"
+                  }
                   outline={item.name !== "Standard"}
                   block
                 >
