@@ -21,6 +21,7 @@ import {
   Card,
   CardHeader,
   CardTitle,
+  ButtonGroup,
 } from "reactstrap";
 import DualList from "./dualList";
 import * as yup from "yup";
@@ -233,7 +234,7 @@ function Index(props) {
             </Col>
             <Col xs={8} className="d-flex ml-3">
               <UserPlus />
-              <h3 className="ml-1">New Auto Assign</h3>
+              <h3 className="ml-1 text-nowrap">New Auto Assign</h3>
             </Col>
           </Row>
         </Col>
@@ -297,23 +298,26 @@ function Index(props) {
                 getTheHours={getTheHours}
               />
             </FormGroup>
-
-            <Button
-              onClick={onSubmit}
-              type="submit"
-              className="mr-1"
-              color="primary"
+            <ButtonGroup
+            className="col text-center"
             >
-              Submit
-            </Button>
-            <Button
-              onClick={history.goBack}
-              type="reset"
-              color="secondary"
-              outline
-            >
-              Cancel
-            </Button>
+              <Button
+                onClick={onSubmit}
+                type="submit"
+                className="mr-1"
+                color="primary"
+              >
+                Submit
+              </Button>
+              <Button
+                onClick={history.goBack}
+                type="reset"
+                color="secondary"
+                outline
+              >
+                Cancel
+              </Button>
+            </ButtonGroup>
           </Form>
         </Col>
       </Col>
