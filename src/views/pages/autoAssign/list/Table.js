@@ -212,16 +212,32 @@ const DataTableServerSide = () => {
       </Modal>
       <Card>
         <CardHeader className="border-bottom">
-          <CardTitle tag="h4">Auto Assign List</CardTitle>
+          <CardTitle tag="h4">Auto Assignments</CardTitle>
           <Button className="ml-2" color="primary" onClick={handleAddClick}>
             <Plus size={15} />
             <span className="align-middle ml-50">Add Auto Assign</span>
           </Button>
         </CardHeader>
         <Row className="mx-0 mt-1 mb-50">
+          <Col
+            className="d-flex align-items-center justify-content-sm-start mt-sm-0 mt-1"
+            sm="6"
+          >
+            <Label className="mr-1" size='lg'  for="search-input">
+              Search
+            </Label>
+            <Input
+              className="dataTable-filter"
+              type="text"
+              bsSize="sm"
+              id="search-input"
+              value={searchValue}
+              onChange={handleFilter}
+            />
+          </Col>
           <Col sm="6">
-            <div className="d-flex align-items-center">
-              <Label for="sort-select">show</Label>
+            <div className="d-flex align-items-center justify-content-sm-end">
+              <Label className='mr-1' for="sort-select" size="lg">Show entries</Label>
               <Input
                 className="dataTable-select"
                 type="select"
@@ -236,24 +252,7 @@ const DataTableServerSide = () => {
                 <option value={75}>75</option>
                 <option value={100}>100</option>
               </Input>
-              <Label for="sort-select">entries</Label>
             </div>
-          </Col>
-          <Col
-            className="d-flex align-items-center justify-content-sm-end mt-sm-0 mt-1"
-            sm="6"
-          >
-            <Label className="mr-1" for="search-input">
-              Search
-            </Label>
-            <Input
-              className="dataTable-filter"
-              type="text"
-              bsSize="sm"
-              id="search-input"
-              value={searchValue}
-              onChange={handleFilter}
-            />
           </Col>
         </Row>
         <DataTable
