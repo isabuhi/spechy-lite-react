@@ -18,11 +18,20 @@ import {
 } from "reactstrap";
 import axios from "axios";
 import { BASE_URL } from "../../../@core/auth/jwt/jwtService";
+import { selectThemeColors } from "@utils";
+import Select from "react-select";
 
 import PaymentForm from "./cardInfo";
 
 const PricingCards = ({ data, duration }) => {
   const [basicModal, setBasicModal] = useState(false);
+
+  function range(start, end) {
+    return Array(end - start + 1)
+      .fill()
+      .map((_, idx) => start + idx);
+  }
+  var result = range(1, 99);
 
   const proceedWithPayment = async () => {
     await axios
@@ -85,6 +94,7 @@ const PricingCards = ({ data, duration }) => {
                 {/* <img className={imgClasses} src={item.img} alt='pricing svg' /> */}
                 <h3>{item.name}</h3>
                 {/* <CardText>{item.subtitle}</CardText> */}
+
                 <div className="annual-plan">
                   <div className="plan-price mt-2">
                     <sup className="font-medium-1 font-weight-bold text-primary mr-25">
@@ -105,6 +115,7 @@ const PricingCards = ({ data, duration }) => {
                     </small>
                   ) : null}
                 </div>
+
                 <ListGroup
                   tag="ul"
                   className="list-group-circle text-left mb-2"
@@ -114,8 +125,27 @@ const PricingCards = ({ data, duration }) => {
                     <ListGroupItem>{benefit.channel.name}</ListGroupItem>
                   ))}
                 </ListGroup>
+                <ListGroup style={{ paddingBottom: "10px" }}>
+                  <Select
+                    required
+                    theme={selectThemeColors}
+                    className="react-select"
+                    classNamePrefix="select"
+                    isClearable={false}
+                    options={result}
+                    name="List Type"
+                    // onChange={(e) =>
+                    //   setFormState({
+                    //     ...formState,
+                    //     listType: e.value,
+                    //     showUser: e.value === 1 ? true : false,
+                    //     showTeams: e.value === 0 ? true : false,
+                    //   })
+                    // }
+                  />
+                </ListGroup>
                 <Button.Ripple
-                  onClick={() => setBasicModal(!basicModal)}
+                  onClick={handlePayment}
                   color={
                     data.current_plan_info.plan_id === item.plan_id
                       ? "success"
