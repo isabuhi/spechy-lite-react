@@ -774,12 +774,20 @@ const PillBasic = forwardRef((props, ref) => {
           </TabPane>
           <TabPane tabId="3">
             <Card>
+            <div className="col-12 row" style={{paddingBottom:"10px"}}>
+              <div className="col-4">
+              </div>
+              <div className="col-4">
               <Button.Ripple
                 color="primary"
                 onClick={() => setCenteredModal(!centeredModal)}
               >
-                Add New Ticket
+                Add Ticket
               </Button.Ripple>
+              </div>
+              <div className="col-4">
+              </div>
+              </div>
               <DataTable
                 noHeader
                 responsive
@@ -800,7 +808,7 @@ const PillBasic = forwardRef((props, ref) => {
                 Ticket Name
               </ModalHeader>
               <ModalBody>
-                <AddTicket />
+                <AddTicket customer_id={customer_id} setCenteredModal={setCenteredModal} />
               </ModalBody>
             </Modal>
           </TabPane>
