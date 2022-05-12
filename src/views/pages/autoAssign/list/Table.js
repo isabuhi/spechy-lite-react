@@ -10,13 +10,16 @@ import { useSelector, useDispatch } from "react-redux";
 
 // ** Third Party Components
 import ReactPaginate from "react-paginate";
-import { ChevronDown, Plus } from "react-feather";
+import { ChevronDown, Plus, Search } from "react-feather";
 import DataTable from "react-data-table-component";
 import {
   Card,
   CardHeader,
   CardTitle,
   Input,
+  InputGroup,
+  InputGroupAddon,
+  InputGroupText,
   Label,
   Row,
   Col,
@@ -223,21 +226,29 @@ const DataTableServerSide = () => {
             className="d-flex align-items-center justify-content-sm-start mt-sm-0 mt-1"
             sm="6"
           >
-            <Label className="mr-1" size='lg'  for="search-input">
-              Search
-            </Label>
-            <Input
-              className="dataTable-filter"
-              type="text"
-              bsSize="sm"
-              id="search-input"
-              value={searchValue}
-              onChange={handleFilter}
-            />
+            
+            <div className="chat-fixed-search">
+            <div className="d-flex align-items-center w-100">
+              <div className="sidebar-profile-toggle"></div>
+              <InputGroup className="input-group-merge ml-1 w-100 sreach-chat">
+                <InputGroupAddon addonType="prepend">
+                  <InputGroupText className="round">
+                    <Search className="text-muted" size={14} />
+                  </InputGroupText>
+                </InputGroupAddon>
+                <Input
+                  value={searchValue}
+                  className="round"
+                  placeholder="Search"
+                  onChange={handleFilter}
+                />
+              </InputGroup>
+            </div>
+          </div>
           </Col>
           <Col sm="6">
             <div className="d-flex align-items-center justify-content-sm-end">
-              <Label className='mr-1' for="sort-select" size="lg">Show entries</Label>
+              <Label className='mr-1' for="sort-select" size='lg'>Show entries</Label>
               <Input
                 className="dataTable-select"
                 type="select"
