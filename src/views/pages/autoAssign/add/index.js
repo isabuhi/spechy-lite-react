@@ -13,14 +13,6 @@ import {
   Col,
   FormFeedback,
   Row,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Alert,
-  Card,
-  CardHeader,
-  CardTitle,
   ButtonGroup,
 } from "reactstrap";
 import DualList from "./dualList";
@@ -39,16 +31,6 @@ import WorkingHours from "../components/working_hours";
 import "../working_hours.scss";
 
 function Index(props) {
-  const call = [
-    {
-      val: 1,
-      label: "Yes",
-    },
-    {
-      val: 0,
-      label: "No",
-    },
-  ];
   const [formState, setFormState] = useState({
     name: "",
     call: null,
@@ -58,19 +40,15 @@ function Index(props) {
     request: 1,
     // users: [],
   });
-  const [basicModal, setBasicModal] = useState(true);
   const [projects, setProjectList] = useState([]);
   const [users, setUsersList] = useState([]);
-  const [selectedProject, setSelectedProject] = useState([]);
   const [selectedUser, setSelectedUser] = useState([]);
   const [workingTimes, setWorkingTimes] = useState([]);
-
-  const [lang, setLangs] = useState([]);
-  const [types, setTypesList] = useState([]);
+  const [disabled, setDisabled] = useState(false);
   const history = useHistory();
 
   const SignInSchema = yup.object().shape({
-    title: yup
+    name: yup
       .string()
       .required("Ready Answer Title is a required field.")
       .min(5),
@@ -110,7 +88,18 @@ function Index(props) {
       });
   }, []);
 
-  const ToastContent = ({ header, content, type, errorResTo }) => {
+  useEffect(() => {
+    if(
+      formState.name &&
+      formState.source_id &&
+      selectedUser.length &&
+      workingTimes
+) {setDisabled(false)} else {
+  setDisabled(true)
+}
+  }, [formState,selectedUser,workingTimes]);
+
+  const ToastContent = ({ header, type, errorResTo }) => {
     return (
       <Fragment>
         <div className="toastify-header">
@@ -150,9 +139,8 @@ function Index(props) {
           .post(`${BASE_URL}/api/project-management/auto-assign/create`, {
             name: formState.name,
             users: selectedUser,
-            type: formState.type,
             source_id: formState.source_id,
-            workingtimes: workingTimes,
+            // workingtimes: workingTimes,
           })
           .then((response) => {
             if (response.status === 200) {
@@ -195,9 +183,6 @@ function Index(props) {
     }
   };
 
-  const projectIds = (id) => {
-    setSelectedProject(id);
-  };
   const usersIds = (id) => {
     setSelectedUser(id);
   };
@@ -216,7 +201,6 @@ function Index(props) {
   var fieldName = "location[working_hours]";
 
   const getTheHours = (data) => {
-    console.log("ddddddd", data);
     setWorkingTimes(data);
   };
 
@@ -234,7 +218,7 @@ function Index(props) {
             </Col>
             <Col xs={9} className="d-flex ml-1">
               <UserPlus size="35px" className="d-flex align-items-center"/>
-              <h3 className="ml-1 d-flex align-items-center text-nowrap" style >New Auto Assign</h3>
+              <h3 className="ml-1 d-flex align-items-center text-nowrap" >New Auto Assign</h3>
             </Col>
           </Row>
         </Col>
