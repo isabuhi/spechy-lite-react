@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import classnames from "classnames";
 import {
   Row,
@@ -20,22 +20,54 @@ import axios from "axios";
 import { BASE_URL } from "../../../@core/auth/jwt/jwtService";
 import { selectThemeColors } from "@utils";
 import Select from "react-select";
+import { AlertCircle, ArrowLeftCircle, Coffee, UserPlus } from "react-feather";
+import { Slide, toast } from "react-toastify";
+import Avatar from "@components/avatar";
 
 import PaymentForm from "./cardInfo";
 
 const PricingCards = ({ data, duration }) => {
   const [basicModal, setBasicModal] = useState(false);
+  const [userCount, setUserCount] = useState(null);
 
   function range(start, end) {
     return Array(end - start + 1)
       .fill()
+
       .map((_, idx) => start + idx);
   }
   var result = range(1, 99);
+  let typeTemp = [];
+  result.map((item) => {
+    return typeTemp.push({ value: item, label: item });
+  });
+  const ToastContent = ({ header, content, type, errorResTo }) => {
+    return (
+      <Fragment>
+        <div className="toastify-header">
+          <div className="title-wrapper">
+            {type === "success" ? (
+              <Avatar size="sm" color="success" icon={<Coffee size={12} />} />
+            ) : (
+              <Avatar
+                size="sm"
+                color="danger"
+                icon={<AlertCircle size={12} />}
+              />
+            )}
+            <h6 className="toast-title font-weight-bold">{header}</h6>
+          </div>
+        </div>
+        <div className="toastify-body">
+          <span>{errorResTo}</span>
+        </div>
+      </Fragment>
+    );
+  };
 
   const proceedWithPayment = async () => {
     await axios
-      .get(`${BASE_URL}/api/plan-management/plan/pay`)
+      .post(`${BASE_URL}/api/plan-management/plan/pay`)
       .then((response) => {
         if (response.status === 200) {
           console.log("amazing");
@@ -55,11 +87,13 @@ const PricingCards = ({ data, duration }) => {
 
   const handlePayment = async () => {
     await axios
-      .get(`${BASE_URL}/api/plan-management/plan/change-plan/3/monthly`)
+      .get(
+        `${BASE_URL}/api/plan-management/plan/change-plan/3/monthly/${userCount}`
+      )
       .then((response) => {
-        if (response.status === 200) {
+        if (response.status === 201) {
           console.log("yes");
-          // proceedWithPayment()
+          proceedWithPayment();
         }
       })
       .catch((error) => {
@@ -77,7 +111,6 @@ const PricingCards = ({ data, duration }) => {
   const renderPricingCards = () => {
     if (data !== null) {
       return data.plans.map((item, index) => {
-        console.log("currentplam", item);
         const monthly_prices =
           duration === "yearly" ? item.yearly_price : item.monthly_price;
         // yearly_price = duration === 'yearly' ? item.yearlyPlan.totalAnnual : item.monthlyPrice,
@@ -125,25 +158,23 @@ const PricingCards = ({ data, duration }) => {
                     <ListGroupItem>{benefit.channel.name}</ListGroupItem>
                   ))}
                 </ListGroup>
-                <ListGroup style={{ paddingBottom: "10px" }}>
-                  <Select
-                    required
-                    theme={selectThemeColors}
-                    className="react-select"
-                    classNamePrefix="select"
-                    isClearable={false}
-                    options={result}
-                    name="List Type"
-                    // onChange={(e) =>
-                    //   setFormState({
-                    //     ...formState,
-                    //     listType: e.value,
-                    //     showUser: e.value === 1 ? true : false,
-                    //     showTeams: e.value === 0 ? true : false,
-                    //   })
-                    // }
-                  />
-                </ListGroup>
+                {item.name !== "Basic" ? (
+                  <ListGroup style={{ paddingBottom: "10px" }}>
+                    <Select
+                      required
+                      theme={selectThemeColors}
+                      className="react-select"
+                      classNamePrefix="select"
+                      placeholder="Users Count"
+                      isClearable={false}
+                      options={typeTemp}
+                      name="List Type"
+                      onChange={(e) => setUserCount(e.value)}
+                    />
+                  </ListGroup>
+                ) : (
+                  ""
+                )}
                 <Button.Ripple
                   onClick={handlePayment}
                   color={
