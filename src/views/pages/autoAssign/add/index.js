@@ -21,6 +21,7 @@ import {
   Card,
   CardHeader,
   CardTitle,
+  ButtonGroup,
 } from "reactstrap";
 import DualList from "./dualList";
 import * as yup from "yup";
@@ -57,7 +58,7 @@ function Index(props) {
     request: 1,
     // users: [],
   });
-  const [basicModal, setBasicModal] = useState(false);
+  const [basicModal, setBasicModal] = useState(true);
   const [projects, setProjectList] = useState([]);
   const [users, setUsersList] = useState([]);
   const [selectedProject, setSelectedProject] = useState([]);
@@ -231,13 +232,13 @@ function Index(props) {
                 style={{ cursor: "pointer" }}
               />
             </Col>
-            <Col xs={8} className="d-flex ml-3">
-              <UserPlus />
-              <h3 className="ml-1">New Auto Assign</h3>
+            <Col xs={9} className="d-flex ml-1">
+              <UserPlus size="35px" className="d-flex align-items-center"/>
+              <h3 className="ml-1 d-flex align-items-center text-nowrap" style >New Auto Assign</h3>
             </Col>
           </Row>
         </Col>
-        <Col md={{ size: 6, offset: 2 }}>
+        <Col md={8} style={{ paddingLeft:"100px" }}>
           <Form onSubmit={handleSubmit(onSubmit)} className="mb-6 pb-5">
             <FormGroup>
               <Label for="source_id">
@@ -261,7 +262,7 @@ function Index(props) {
             </FormGroup>
             <FormGroup>
               <Label for="name">
-                name : <span className="text-danger">*</span>
+                Name : <span className="text-danger">*</span>
               </Label>
               <Input
                 autoFocus
@@ -297,23 +298,27 @@ function Index(props) {
                 getTheHours={getTheHours}
               />
             </FormGroup>
-
-            <Button
-              onClick={onSubmit}
-              type="submit"
-              className="mr-1"
-              color="primary"
+            <ButtonGroup
+            className="col text-center"
             >
-              Submit
-            </Button>
-            <Button
-              onClick={history.goBack}
-              type="reset"
-              color="secondary"
-              outline
-            >
-              Cancel
-            </Button>
+              <Button
+                onClick={onSubmit}
+                type="submit"
+                className="mr-1"
+                color="primary"
+                disabled={disabled}
+              >
+                Submit
+              </Button>
+              <Button
+                onClick={history.goBack}
+                type="reset"
+                color="secondary"
+                outline
+              >
+                Cancel
+              </Button>
+            </ButtonGroup>
           </Form>
         </Col>
       </Col>
