@@ -1,11 +1,15 @@
 /* working hours component */
 .working-hours {
     border-collapse: collapse;
-    width: auto;
+    width: 100%;  
+    
   }
-  
+  .days{
+    margin-left: 0;
+  }
   /* headers */
   .hours {
+    margin-right: 0;
     td {
       text-align: left;
       vertical-align: bottom;

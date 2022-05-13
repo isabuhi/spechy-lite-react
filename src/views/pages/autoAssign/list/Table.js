@@ -229,7 +229,7 @@ const DataTableServerSide = () => {
             
             <div className="chat-fixed-search">
             <div className="d-flex align-items-center w-100">
-              <div className="sidebar-profile-toggle"></div>
+            <div className="sidebar-profile-toggle"></div>
               <InputGroup className="input-group-merge ml-1 w-100 sreach-chat">
                 <InputGroupAddon addonType="prepend">
                   <InputGroupText className="round">
