@@ -206,19 +206,21 @@ function Index(props) {
 
   return (
     <div className="invoice-list-table-header w-100 mr-1 ml-50 mt-2 mb-75">
-      <Col md={12}>
+      <Col md={9}>
         <Col className="mb-2 d-flex " md={12}>
           <Row md={12}>
-            <Col xs={2}>
+            <Col xs={2} style={{paddingTop: "7px"}}>
               <ArrowLeftCircle
                 size={28}
                 onClick={history.goBack}
-                style={{ cursor: "pointer" }}
+                style={{ cursor: "pointer"}}
               />
             </Col>
-            <Col xs={9} className="d-flex ml-1">
-              <UserPlus size="35px" className="d-flex align-items-center"/>
-              <h3 className="ml-1 d-flex align-items-center text-nowrap" >New Auto Assign</h3>
+            <Col xs={9} className="d-flex mr-1">
+              <UserPlus size="40px"/>
+              <h3 className="ml-1 text-nowrap" style={{paddingTop: "9px", paddingRight: "5px"}}>
+                New Auto Assign
+              </h3>
             </Col>
           </Row>
         </Col>
@@ -252,13 +254,14 @@ function Index(props) {
                 autoFocus
                 name="name"
                 id="name"
+                value={formState.name}
                 placeholder="Title Name"
                 className={classnames({ "is-invalid": errors["title"] })}
-                onChange={(e) =>
+                onChange={(e) => {
                   setFormState({
                     ...formState,
-                    [e.target.name]: e.target.value,
-                  })
+                    [e.target.name]: e.target.value.replace(/[^a-zA-Z]/g,""),
+                  })}
                 }
                 innerRef={register({ required: true })}
                 invalid={errors.name && true}
