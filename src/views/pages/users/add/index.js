@@ -212,28 +212,31 @@ function Index() {
 
   return (
     <div className="invoice-list-table-header w-100 mr-1 ml-50 mt-2 mb-75">
-      <Col md={12}>
-        <Col className="mb-2 d-flex  " md={12}>
+      <Col md={9}>
+        <Col className="mb-2 d-flex " md={12}>
           <Row md={12}>
-            <Col xs={2}>
+            <Col xs={2} style={{paddingTop: "7px"}}>
               <ArrowLeftCircle
                 size={28}
                 onClick={history.goBack}
                 style={{ cursor: "pointer" }}
               />
             </Col>
-            <Col xs={8} className="d-block ml-3">
-              <h3 style={{ width: "242px" }}>
-                <span className="mr-2">
-                  <UserPlus />
-                </span>
-                <FormattedMessage id="addnewuser" ></FormattedMessage>
-              </h3>
+            <Col xs={9} className="d-flex mr-1">
+              {/* <h3 style={{ width: "242px" }}> */}
+                {/* <span className="mr-2"> */}
+                  <UserPlus size="37px" style={{paddingTop: "3px",paddingLeft:"5px"}}/>
+                {/* </span> */}
+                {/* <FormattedMessage id="addnewuser" ></FormattedMessage> */}
+                <h3 className="ml-1 text-nowrap" style={{paddingTop: "9px", paddingRight: "5px"}}>
+                Add New User
+                </h3>
+              {/* </h3> */}
             </Col>
           </Row>
         </Col>
-        <Col md={{ size: 6, offset: 1 }} >
-          <Form onSubmit={handleSubmit(onSubmit)} className="mb-6 pb-5 ml-4">
+        <Col md={8} style={{ paddingLeft:"100px"}} >
+          <Form onSubmit={handleSubmit(onSubmit)} className="mb-6 pb-5">
             <FormGroup>
               <FormGroup>
                 <Label for="call">
