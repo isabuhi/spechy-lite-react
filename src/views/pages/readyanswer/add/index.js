@@ -112,7 +112,6 @@ function Index() {
   }, []);
 
   const onSubmit = async () => {
-    console.log(formState);
     if (isObjEmpty(errors)) {
       if (formState.request === 0) {
         const btn = document.getElementById("submit-data");
