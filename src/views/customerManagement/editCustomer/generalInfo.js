@@ -55,9 +55,9 @@ const GeneralInfo = (props) => {
   const [formState, setFormState] = useState({
     name_surname: "",
     city: "",
-    district: "",
+    district: [{}],
     customer_id: 1,
-
+    districtCode:"",
     country: "",
     allCities: [{}],
     AllCountries: [{}],
@@ -143,8 +143,6 @@ const GeneralInfo = (props) => {
                 label: result[j].city_name,
               };
             }
-            console.log("optionsaaaaaa", id.val);
-
             setFormState({
               ...formState,
               allCities: cityItemss,
@@ -157,15 +155,12 @@ const GeneralInfo = (props) => {
   };
 
   const onChangeCities = async (id) => {
-    console.log("idsssssssssssssssssss");
     // if (ids != null) {
     await axios
       .get(
-        `${BASE_URL}/api/project-management/address-management/country/get-all-districts/1/2`
+        `${BASE_URL}/api/project-management/address-management/country/get-all-districts/${formState.country}/${id.val}`
       )
       .then((response) => {
-        console.log("responsedddd", response);
-
         if (response.status === 200) {
           var result = Object.values(response.data.data);
           var distirctItems = [{}];
@@ -287,6 +282,7 @@ const GeneralInfo = (props) => {
             name_surname: formState.name_surname,
             customer_id: formState.customer_id,
             country: formState.country,
+            district: formState.districtCode,
             city: formState.city,
             phone_number:
               valueOfPhone === null ? [phone_number] : [valueOfPhone],
@@ -401,13 +397,12 @@ const GeneralInfo = (props) => {
                   <FormattedMessage id="Country List"></FormattedMessage>
                 </Label>
                 <Select
-                  isClearable={true}
                   name="countyID"
                   className="react-select"
                   classNamePrefix="select"
                   options={listItems}
-                  defaultValue={formState.countryCode}
-                  placeholder={formState.countryCode}
+                  // defaultValue={formState.country_id}
+                  placeholder={formState.country ? formState.country.country_name : "--"}
                   onChange={(e) => onChangeCountry(e)}
                   innerRef={register({ required: true })}
                   invalid={errors.countryCode && true}
@@ -423,13 +418,13 @@ const GeneralInfo = (props) => {
                   <FormattedMessage id="City List"></FormattedMessage>
                 </Label>
                 <Select
-                  isClearable={true}
                   name="allCities"
                   className="react-select"
                   classNamePrefix="select"
                   options={formState.allCities}
-                  defaultValue={formState.allCities}
+                  // defaultValue={formState.city_id}
                   onChange={(e) => onChangeCities(e)}
+                  placeholder={ formState.city ? formState.city.city_name : "--"}
                   innerRef={register({ required: true })}
                   invalid={errors.cityCode && true}
                 />
@@ -444,13 +439,12 @@ const GeneralInfo = (props) => {
                   <FormattedMessage id="Districts List"></FormattedMessage>
                 </Label>
                 <Select
-                  isClearable={true}
                   name="cityID"
                   className="react-select"
                   classNamePrefix="select"
-                  placeholder={formState.districtCode}
+                  placeholder={formState.district ? formState.district.district_name : "--"}
                   options={formState.district}
-                  defaultValue={formState.districtCode}
+                  // defaultValue={formState.district_id}
                   onChange={(data) =>
                     setFormState({
                       ...formState,
