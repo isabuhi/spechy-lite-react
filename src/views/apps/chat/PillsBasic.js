@@ -86,6 +86,9 @@ const PillBasic = forwardRef((props, ref) => {
     user_name_surname: "",
     start_at: "",
     status: 0,
+    country: "",
+    city: "",
+    district: "",
     allCities: [{}],
     AllCountries: [{}],
   });
@@ -730,8 +733,8 @@ const PillBasic = forwardRef((props, ref) => {
                   name="cityID"
                   className="react-select"
                   classNamePrefix="select"
-                  options={formState.cities}
-                  defaultValue={formState.districtCode}
+                  options={formState.allCities}
+                defaultValue={formState.allCities}
                   onChange={(e) => onChangeCities(e)}
                 />
               </FormGroup>
@@ -748,12 +751,12 @@ const PillBasic = forwardRef((props, ref) => {
                   name="cityID"
                   className="react-select"
                   classNamePrefix="select"
-                  options={formState.distirct}
-                  defaultValue={formState.districtCode}
+                  options={formState.district}
+                  defaultValue={formState.district}
                   onChange={(data) =>
                     setFormState({
                       ...formState,
-                      districtCode: data.id,
+                      district: data.id,
                     })
                   }
                 />

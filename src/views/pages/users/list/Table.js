@@ -228,7 +228,7 @@ const DataTableServerSide = () => {
             className="d-flex align-items-center"
             sm="6"
           >
-            <Label className="mr-1" for="search-input" style={{fontSize:"16px"}}>
+            <Label className="mr-1" for="search-input" style={{fontSize:"18px"}}>
               <FormattedMessage id="Search"></FormattedMessage>
             </Label>
             <Input
@@ -243,7 +243,7 @@ const DataTableServerSide = () => {
           <Col sm="6">
           
             <div className="d-flex align-items-center justify-content-sm-end mt-sm-0 mt-1" >
-              <Label for="sort-select" style={{fontSize:"16px"}}>
+              <Label for="sort-select" style={{fontSize:"18px"}}>
                 <FormattedMessage id="Show" ></FormattedMessage>
               </Label>
               <Input

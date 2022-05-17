@@ -277,7 +277,7 @@
     &:not(.blank-page) {
       .app-content {
         // padding-top: 9.75rem;
-        padding: calc(#{$content-padding} + #{$navbar-height}* 2 + #{$floating-nav-margin}) #{$content-padding} 0 #{$content-padding}; // * 2  as we have 2 navbar (menu + navbar)  in horizontal layout.
+        padding: calc(#{$content-padding} + #{$navbar-height} * 2 + #{$floating-nav-margin}) #{$content-padding} 0 #{$content-padding}; // * 2  as we have 2 navbar (menu + navbar)  in horizontal layout.
       }
     }
     .horizontal-menu-wrapper {

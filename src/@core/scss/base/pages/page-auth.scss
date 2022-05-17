@@ -51,7 +51,6 @@ $auth-1-inner-max-width: 400px !default;
   &.auth-v2 {
     align-items: flex-start;
     .auth-inner {
-      height: 100vh;
       overflow-y: auto; // For v2 scroll for long auth form
       height: calc(var(--vh, 1vh) * 100);
     }
