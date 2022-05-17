@@ -49,7 +49,7 @@ const index = (props) => {
   const [formState, setFormState] = useState({
     name_surname: "",
     city: "",
-    district: "",
+    AllDistrict: "",
     customer_id: "",
     onTime: 0,
     country: "",
@@ -157,7 +157,7 @@ const index = (props) => {
             name_surname: formState.name_surname,
             phone_number: phone_number,
             city: formState.city,
-            district: formState.district_name,
+            district: formState.district.val,
             email_address: email_address,
 
             country: formState.country,
@@ -233,13 +233,13 @@ const index = (props) => {
   };
 
   const onChangeCities = async (id) => {
-    console.log("whhhhhhhhhh", id.val);
     if (id != null) {
       await axios
         .get(
           `${BASE_URL}/api/project-management/address-management/country/get-all-districts/${formState.country}/${id.val}`
         )
         .then((response) => {
+          console.log("whhhhhhhhhh", response);
           if (response.status === 200) {
             var result = Object.values(response.data.data);
             var distirctItems = [{}];
@@ -251,7 +251,7 @@ const index = (props) => {
             }
             setFormState({
               ...formState,
-              district: distirctItems,
+              AllDistrict: distirctItems,
               city: id.val,
             });
           }
@@ -509,7 +509,7 @@ const index = (props) => {
                 name="cityID"
                 className="react-select"
                 classNamePrefix="select"
-                options={formState.district}
+                options={formState.AllDistrict}
                 defaultValue={formState.district}
                 onChange={(data) =>
                   setFormState({

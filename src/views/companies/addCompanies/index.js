@@ -6,21 +6,17 @@ import {
   Button,
   FormGroup,
   Label,
-  FormText,
   Form,
   Input,
   Col,
   FormFeedback,
   Row,
-  CustomInput,
 } from "reactstrap";
-import InputPasswordToggle from "@components/input-password-toggle";
 import { useDispatch, useSelector } from "react-redux";
 
 import Select from "react-select";
 import {
   isObjEmpty,
-  getHomeRouteForLoggedInUser,
 } from "../../../../src/utility/Utils";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -41,7 +37,6 @@ import "react-phone-input-2/lib/style.css";
 import { FormattedMessage } from "react-intl";
 
 const index = (props) => {
-  const [passwordConfirm, setPasswordConfirm] = useState("");
 
   const [formState, setFormState] = useState({
     name: "",
@@ -63,9 +58,6 @@ const index = (props) => {
 
   const [phone_number, setPhoneNumber] = useState([{}]);
   const [email_address, setEmailAddress] = useState([{}]);
-  const [errorRes, setErrorRes] = useState([]);
-  const [once, setOnce] = useState(0);
-
   const dispatch = useDispatch();
   const store = useSelector((state) => state.companies);
   const history = useHistory();
@@ -155,7 +147,7 @@ const index = (props) => {
             name: formState.name,
             phone_number: phone_number,
             city: formState.city,
-            district: formState.district_name,
+            district: formState.district.val,
             email_address: email_address,
             member: formState.member,
             country: formState.country,
