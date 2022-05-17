@@ -3,39 +3,41 @@
 
 /* Set dropdown font-families */
 .ql-toolbar .ql-font span[data-label='Sailec Light']::before {
-  font-family: 'Sailec Light';
+  font-family: 'Sailec Light', sans-serif;
 }
 .ql-toolbar .ql-font span[data-label='Sofia Pro']::before {
-  font-family: 'Sofia';
+  font-family: 'Sofia', sans-serif;
 }
 .ql-toolbar .ql-font span[data-label='Slabo 27px']::before {
-  font-family: 'Slabo 27px';
+  font-family: 'Slabo 27px', sans-serif;
+  font-size: 27px;
 }
 .ql-toolbar .ql-font span[data-label='Roboto Slab']::before {
-  font-family: 'Roboto Slab';
+  font-family: 'Roboto Slab', sans-serif;
 }
 .ql-toolbar .ql-font span[data-label='Inconsolata']::before {
-  font-family: 'Inconsolata';
+  font-family: 'Inconsolata', sans-serif;
 }
 .ql-toolbar .ql-font span[data-label='Ubuntu Mono']::before {
-  font-family: 'Ubuntu Mono';
+  font-family: 'Ubuntu Mono', sans-serif;
 }
 
 /* Set content font-families */
 .ql-font-sofia {
-  font-family: 'Sofia';
+  font-family: 'Sofia', sans-serif;
 }
 .ql-font-slabo {
-  font-family: 'Slabo 27px';
+  font-family: 'Slabo', sans-serif;
+  font-size: 27px;
 }
 .ql-font-roboto {
-  font-family: 'Roboto Slab';
+  font-family: 'Roboto Slab', sans-serif;
 }
 .ql-font-inconsolata {
-  font-family: 'Inconsolata';
+  font-family: 'Inconsolata', sans-serif;
 }
 .ql-font-ubuntu {
-  font-family: 'Ubuntu Mono';
+  font-family: 'Ubuntu Mono', sans-serif;
 }
 
 // Quill Editor
