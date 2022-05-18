@@ -6,22 +6,17 @@ import {
   Button,
   FormGroup,
   Label,
-  FormText,
   Form,
   Input,
   Col,
   FormFeedback,
   Row,
-  CustomInput,
 } from "reactstrap";
-import InputPasswordToggle from "@components/input-password-toggle";
 import { useDispatch, useSelector } from "react-redux";
 
 import Select from "react-select";
 import {
   isObjEmpty,
-  getHomeRouteForLoggedInUser,
-  isObjEmptyf,
 } from "../../../utility/Utils";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -44,18 +39,17 @@ import { FormattedMessage } from "react-intl";
 const customId = "custom-id-yes";
 
 const index = (props) => {
-  const [passwordConfirm, setPasswordConfirm] = useState("");
 
   const [formState, setFormState] = useState({
     name_surname: "",
     city: "",
-    AllDistrict: "",
     customer_id: "",
     onTime: 0,
     country: "",
+    district: "",
+    AllDistrict: [{}],
     allCities: [{}],
     AllCountries: [{}],
-    // customer_id: [],
   });
 
   const defaultValues = {
@@ -239,7 +233,6 @@ const index = (props) => {
           `${BASE_URL}/api/project-management/address-management/country/get-all-districts/${formState.country}/${id.val}`
         )
         .then((response) => {
-          console.log("whhhhhhhhhh", response);
           if (response.status === 200) {
             var result = Object.values(response.data.data);
             var distirctItems = [{}];
@@ -472,7 +465,6 @@ const index = (props) => {
                 className="react-select"
                 classNamePrefix="select"
                 options={listItems}
-                defaultValue={formState.AllCountries}
                 onChange={(e) => onChange(e)}
                 innerRef={register({ required: true })}
                 invalid={errors.AllCountries && true}
@@ -486,12 +478,11 @@ const index = (props) => {
                 <FormattedMessage id="City List"></FormattedMessage>
               </Label>
               <Select
-                isClearable={true}
+                isDisabled={formState.allCities.length > 1 ? false : true}
                 name="allCities"
                 className="react-select"
                 classNamePrefix="select"
                 options={formState.allCities}
-                defaultValue={formState.allCities}
                 onChange={(e) => onChangeCities(e)}
                 innerRef={register({ required: true })}
                 invalid={errors.allCities && true}
@@ -505,12 +496,11 @@ const index = (props) => {
                 <FormattedMessage id="Districts List"></FormattedMessage>
               </Label>
               <Select
-                isClearable={true}
+                isDisabled={formState.AllDistrict.length > 1 ? false : true}
                 name="cityID"
                 className="react-select"
                 classNamePrefix="select"
                 options={formState.AllDistrict}
-                defaultValue={formState.district}
                 onChange={(data) =>
                   setFormState({
                     ...formState,
