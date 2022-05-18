@@ -1,8 +1,7 @@
 import React, { Fragment } from "react";
 import { useState, useEffect, useContext } from "react";
-import { Lock, Edit, Trash2, Coffee, AlertCircle } from "react-feather";
+import { Coffee, AlertCircle } from "react-feather";
 import {
-  Media,
   Row,
   Col,
   Button,
@@ -10,27 +9,15 @@ import {
   Input,
   Label,
   FormGroup,
-  Table,
-  CustomInput,
   FormFeedback,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
 } from "reactstrap";
 import Avatar from "../../../../src/@core/components/avatar";
 import { useDispatch, useSelector } from "react-redux";
-import { useForm, Controller } from "react-hook-form";
-import Flatpickr from "react-flatpickr";
+import { useForm } from "react-hook-form";
 import "@styles/react/libs/flatpickr/flatpickr.scss";
-import classnames from "classnames";
 import { useHistory, useParams } from "react-router-dom";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { isObjEmpty } from "../../../../src/utility/Utils";
 // import InputPasswordToggle from "../../../../@core/components/input-password-toggle";
 import Select from "react-select";
-import { selectThemeColors } from "@utils";
 import axios from "axios";
 import { BASE_URL } from "../../../../src/@core/auth/jwt/jwtService";
 import { Slide, toast } from "react-toastify";
@@ -46,8 +33,6 @@ const GeneralInfo = (props) => {
 
   const history = useHistory();
   const dispatch = useDispatch();
-  const [imgForRequest, setImageForRequest] = useState(null);
-  const [passwordConfirm, setPasswordConfirm] = useState("");
   const [deleteModal, setDeleteModal] = useState(false);
   const [getCompanyName, setCompanyName] = useState(null);
   const { id } = useParams();
@@ -55,12 +40,12 @@ const GeneralInfo = (props) => {
   const [formState, setFormState] = useState({
     name_surname: "",
     city: "",
-    district: [{}],
     customer_id: 1,
-    districtCode:"",
+    district:"",
     country: "",
     allCities: [{}],
     AllCountries: [{}],
+    AllDistrict: [{}],
   });
 
   const [phone_number, setPhoneNumber] = useState("");
@@ -89,8 +74,6 @@ const GeneralInfo = (props) => {
       .get(`${BASE_URL}/api/customer-management/customer/select/${id}`)
       .then((response) => {
         if (response.status === 200) {
-          console.log("response", response);
-
           setFormState(response.data.data.profile);
           setCompanyName(response.data.data.profile.name_surname);
 
@@ -172,7 +155,7 @@ const GeneralInfo = (props) => {
           }
           setFormState({
             ...formState,
-            district: distirctItems,
+            AllDistrict: distirctItems,
             city: id.val,
           });
         }
@@ -267,10 +250,8 @@ const GeneralInfo = (props) => {
   };
 
   const onChangePhoneHandler = (e) => {
-    console.log("phonenen", e);
     setPhoneNumber(e);
   };
-  console.log("pickedPhone", phone_number);
 
   const onSubmit = async () => {
     if (1) {
@@ -281,9 +262,9 @@ const GeneralInfo = (props) => {
           {
             name_surname: formState.name_surname,
             customer_id: formState.customer_id,
-            country: formState.country,
-            district: formState.districtCode,
-            city: formState.city,
+            country: typeof formState.country === "object" ? formState.country.country_id : formState.country,
+            district: formState.district=== "object" ? formState.district.district_id : formState.district.val,
+            city: typeof formState.city === "object" ? formState.city.city_id : formState.city,
             phone_number:
               valueOfPhone === null ? [phone_number] : [valueOfPhone],
             email_address: email_address,
@@ -401,7 +382,6 @@ const GeneralInfo = (props) => {
                   className="react-select"
                   classNamePrefix="select"
                   options={listItems}
-                  // defaultValue={formState.country_id}
                   placeholder={formState.country ? formState.country.country_name : "--"}
                   onChange={(e) => onChangeCountry(e)}
                   innerRef={register({ required: true })}
@@ -422,7 +402,7 @@ const GeneralInfo = (props) => {
                   className="react-select"
                   classNamePrefix="select"
                   options={formState.allCities}
-                  // defaultValue={formState.city_id}
+                  isDisabled={!formState.allCities ? true : false}
                   onChange={(e) => onChangeCities(e)}
                   placeholder={ formState.city ? formState.city.city_name : "--"}
                   innerRef={register({ required: true })}
@@ -443,12 +423,12 @@ const GeneralInfo = (props) => {
                   className="react-select"
                   classNamePrefix="select"
                   placeholder={formState.district ? formState.district.district_name : "--"}
-                  options={formState.district}
-                  // defaultValue={formState.district_id}
+                  options={formState.AllDistrict}
+                  isDisabled={!formState.AllDistrict ? true : false}
                   onChange={(data) =>
                     setFormState({
                       ...formState,
-                      districtCode: data.id,
+                      district: data,
                     })
                   }
                   innerRef={register({ required: true })}
