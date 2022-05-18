@@ -66,6 +66,7 @@ const Router = (props) => {
           LayoutPaths.push(route.path);
         }
       });
+      return { LayoutRoutes, LayoutPaths};
     }
 
     return { LayoutRoutes, LayoutPaths };
