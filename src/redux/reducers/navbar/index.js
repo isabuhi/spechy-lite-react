@@ -17,9 +17,10 @@ const navbarReducer = (state = initialState, action) => {
       // ** find & update object
       state.suggestions.find(item => {
         if (item.id === action.id) {
-          item.isBookmarked = !item.isBookmarked
+          return(
+          item.isBookmarked = !item.isBookmarked, 
           objectToUpdate = item
-        }
+          )}
       })
 
       // ** Get index to add or remove bookmark from array
