@@ -133,7 +133,7 @@ const index = (props) => {
   }
 
   const onSubmit = async () => {
-    if (isObjEmpty(errors) === false) {
+    if (isObjEmpty(errors)) {
       // if (formState.onTime === 0) {
       //   setFormState({
       //     ...formState,
