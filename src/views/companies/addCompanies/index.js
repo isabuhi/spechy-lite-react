@@ -6,21 +6,17 @@ import {
   Button,
   FormGroup,
   Label,
-  FormText,
   Form,
   Input,
   Col,
   FormFeedback,
   Row,
-  CustomInput,
 } from "reactstrap";
-import InputPasswordToggle from "@components/input-password-toggle";
 import { useDispatch, useSelector } from "react-redux";
 
 import Select from "react-select";
 import {
   isObjEmpty,
-  getHomeRouteForLoggedInUser,
 } from "../../../../src/utility/Utils";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -32,7 +28,7 @@ import {
   FolderPlus,
 } from "react-feather";
 import axios from "axios";
-import { getFilterItems, addComapany } from "../store/Actions";
+import { getFilterItems } from "../store/Actions";
 import { BASE_URL } from "../../../../src/@core/auth/jwt/jwtService";
 import Avatar from "../../../../src/@core/components/avatar";
 import { Slide, toast } from "react-toastify";
@@ -41,7 +37,6 @@ import "react-phone-input-2/lib/style.css";
 import { FormattedMessage } from "react-intl";
 
 const index = (props) => {
-  const [passwordConfirm, setPasswordConfirm] = useState("");
 
   const [formState, setFormState] = useState({
     name: "",
@@ -52,6 +47,7 @@ const index = (props) => {
     country: "",
     allCities: [{}],
     AllCountries: [{}],
+    AllDistrict: [{}],
     // customer_id: [],
   });
 
@@ -63,9 +59,6 @@ const index = (props) => {
 
   const [phone_number, setPhoneNumber] = useState([{}]);
   const [email_address, setEmailAddress] = useState([{}]);
-  const [errorRes, setErrorRes] = useState([]);
-  const [once, setOnce] = useState(0);
-
   const dispatch = useDispatch();
   const store = useSelector((state) => state.companies);
   const history = useHistory();
@@ -124,7 +117,6 @@ const index = (props) => {
   }, []);
 
   const options = store.filterItems ? store.filterItems : null;
-  console.log("theoptions", store.filterItems);
   if (options != null) {
     var listItems = [{}];
 
@@ -155,7 +147,7 @@ const index = (props) => {
             name: formState.name,
             phone_number: phone_number,
             city: formState.city,
-            district: formState.district_name,
+            district: formState.district.val,
             email_address: email_address,
             member: formState.member,
             country: formState.country,
@@ -248,7 +240,7 @@ const index = (props) => {
             }
             setFormState({
               ...formState,
-              district: distirctItems,
+              AllDistrict: distirctItems,
               city: id.val,
             });
           }
@@ -265,10 +257,8 @@ const index = (props) => {
   };
 
   const handleEmailChange = (e, i) => {
-    console.log("OBJECT", e.target);
     const value = e.target.value;
     const emailList = [...email_address];
-
     emailList[i] = value;
 
     setEmailAddress(emailList);
@@ -294,6 +284,8 @@ const index = (props) => {
   const handleAddEmail = () => {
     setEmailAddress([...email_address, { email_address: "" }]);
   };
+
+  console.log("rrrtt", formState.allCities.length)
 
   return (
     <div className="invoice-list-table-header w-100 mr-1 ml-50 mt-2 mb-75">
@@ -478,12 +470,10 @@ const index = (props) => {
                 <FormattedMessage id="Country List"></FormattedMessage>
               </Label>
               <Select
-                isClearable={true}
                 name="countyID"
                 className="react-select"
                 classNamePrefix="select"
                 options={listItems}
-                defaultValue={formState.AllCountries}
                 onChange={(e) => onChange(e)}
                 innerRef={register({ required: true })}
                 invalid={errors.AllCountries && true}
@@ -497,12 +487,11 @@ const index = (props) => {
                 <FormattedMessage id="City List"></FormattedMessage>
               </Label>
               <Select
-                isClearable={true}
-                name="allCities"
+              isDisabled={formState.allCities.length > 1 ? false : true}
+                name="cityID"
                 className="react-select"
                 classNamePrefix="select"
                 options={formState.allCities}
-                defaultValue={formState.allCities}
                 onChange={(e) => onChangeCities(e)}
                 innerRef={register({ required: true })}
                 invalid={errors.allCities && true}
@@ -516,12 +505,11 @@ const index = (props) => {
                 <FormattedMessage id="Districts List"></FormattedMessage>
               </Label>
               <Select
-                isClearable={true}
-                name="cityID"
+              isDisabled={formState.AllDistrict.length > 1 ? false : true}
+                name="districtID"
                 className="react-select"
                 classNamePrefix="select"
-                options={formState.district}
-                defaultValue={formState.district}
+                options={formState.AllDistrict}
                 onChange={(data) =>
                   setFormState({
                     ...formState,

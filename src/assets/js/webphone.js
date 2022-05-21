@@ -1,7 +1,7 @@
+'use strict';
 import './adapter.js'
 import $ from './jquery.min.js'
 import SIP from './sip.js'
-'use strict';
 
 var cur_call = null;
 var ua;

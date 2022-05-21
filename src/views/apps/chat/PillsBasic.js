@@ -3,7 +3,6 @@ import {
   useEffect,
   useState,
   forwardRef,
-  useRef,
   useImperativeHandle,
 } from "react";
 import classnames from "classnames";
@@ -13,22 +12,13 @@ import {
   Nav,
   NavItem,
   NavLink,
-  Dropdown,
-  DropdownItem,
-  DropdownToggle,
-  DropdownMenu,
-  Row,
-  Col,
   Card,
   Button,
   Modal,
   ModalHeader,
   ModalBody,
-  ModalFooter,
   Collapse,
-  InputGroup,
   Input,
-  InputGroupText,
   Form,
   FormGroup,
   Label,
@@ -46,17 +36,12 @@ import { historyColumns } from "./historyColumns";
 import { ticketsColumns } from "./ticketsColumns";
 import { FormattedMessage } from "react-intl";
 import Select from "react-select";
-import PerfectScrollbar from "react-perfect-scrollbar";
 
 import PhoneInput from "react-phone-input-2";
 import { useDispatch, useSelector } from "react-redux";
 import { getCountries } from "../../customerManagement/store/Actions";
-import { useForm, Controller } from "react-hook-form";
 import { Slide, toast } from "react-toastify";
 import {
-  Lock,
-  Edit,
-  Trash2,
   Coffee,
   AlertCircle,
   Plus,
@@ -716,6 +701,7 @@ const PillBasic = forwardRef((props, ref) => {
                   className="react-select"
                   classNamePrefix="select"
                   options={listItems}
+                  placeholder={formState.country ? formState.country.country_name : "--"}
                   defaultValue={formState.countryCode}
                   onChange={(e) => onChangeCountry(e)}
                 />
@@ -734,6 +720,7 @@ const PillBasic = forwardRef((props, ref) => {
                   className="react-select"
                   classNamePrefix="select"
                   options={formState.allCities}
+                  placeholder={ formState.city ? formState.city.city_name : "--"}
                 defaultValue={formState.allCities}
                   onChange={(e) => onChangeCities(e)}
                 />
@@ -752,6 +739,7 @@ const PillBasic = forwardRef((props, ref) => {
                   className="react-select"
                   classNamePrefix="select"
                   options={formState.district}
+                  placeholder={formState.district ? formState.district.district_name : "--"}
                   defaultValue={formState.district}
                   onChange={(data) =>
                     setFormState({
