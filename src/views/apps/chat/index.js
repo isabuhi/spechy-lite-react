@@ -301,8 +301,6 @@ const AppChat = (props) => {
               type: "T",
               message,
               sender: 1, //op
-              session,
-              from,
             });
           }
         });
