@@ -60,8 +60,19 @@ const chatWidget = (state = initialState, action) => {
         },
       };
 
+      case "CLOSE_MODAL":
+        return {
+          ...state,
+          isDeleteModalOpen: {
+            status: action.data,
+            id: action.id,
+          },
+        };
+
     default:
       return { ...state };
+
+
   }
 };
 export default chatWidget;
