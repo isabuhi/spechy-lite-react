@@ -492,7 +492,7 @@ const PillBasic = forwardRef((props, ref) => {
               active={active === "3"}
               onClick={() => {
                 toggle("3");
-                //getTicketsTableData();
+                getTicketsTableData();
               }}
             >
               Tickets
