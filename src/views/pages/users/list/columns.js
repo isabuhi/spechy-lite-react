@@ -77,10 +77,8 @@ export const Columns = [
     sortable: true,
     minWidth: "150px",
     cell: (row) => {
-      Object.keys(row).length > 0 && row.profile.title === null
-        ? row.profile.title
-        : "";
-    },
+      return (Object.keys(row).length > 0 && row.profile.title === null ? row.profile.title : "")
+    }
   },
   {
     name: <FormattedMessage id="Actions"></FormattedMessage>,

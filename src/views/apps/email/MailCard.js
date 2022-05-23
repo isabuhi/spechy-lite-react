@@ -29,9 +29,9 @@ const MailCard = props => {
   }
 
   // ** Function to handle read & mail click
-  const onMailClick = () => {
-    handleMailClick(mail.id)
-    handleMailReadUpdate([mail.id], true)
+  const onMailClick = (i) => {
+    handleMailClick(i)
+    handleMailReadUpdate([i], true)
   }
 
   return (

@@ -401,7 +401,7 @@ const PillBasic = forwardRef((props, ref) => {
           );
       },
     }),
-    [customer_id, getContactCardDatas]
+    [customer_id]
   );
 
   const onChanceHandler = (e) => {
@@ -469,7 +469,8 @@ const PillBasic = forwardRef((props, ref) => {
             <NavLink
               active={active === "1"}
               onClick={() => {
-                toggle("1"), getHistoryTableData();
+                toggle("1");
+                getHistoryTableData();
               }}
             >
               History
@@ -479,7 +480,8 @@ const PillBasic = forwardRef((props, ref) => {
             <NavLink
               active={active === "2"}
               onClick={() => {
-                toggle("2"), getContactCardDatas();
+                toggle("2");
+                getContactCardDatas();
               }}
             >
               Contact Card
@@ -489,7 +491,8 @@ const PillBasic = forwardRef((props, ref) => {
             <NavLink
               active={active === "3"}
               onClick={() => {
-                toggle("3"), getTicketsTableData();
+                toggle("3");
+                getTicketsTableData();
               }}
             >
               Tickets
@@ -509,7 +512,8 @@ const PillBasic = forwardRef((props, ref) => {
             <NavLink
               active={active === "5"}
               onClick={() => {
-                toggle("5"), getNoteTableData();
+                toggle("5");
+                getNoteTableData();
               }}
             >
               Notes

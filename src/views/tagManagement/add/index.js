@@ -39,8 +39,7 @@ function Index() {
     description: "",
     source_id: "",
     type: 0,
-    request: 1,
-    source_id: "",
+    request: 1
   });
   const [basicModal, setBasicModal] = useState(false);
   const [projects, setProjectList] = useState([]);
@@ -117,7 +116,6 @@ function Index() {
       await axios
         .post(`${BASE_URL}/api/project-management/tag/create`, {
           name: formState.name,
-          description: formState.type,
           description: formState.description,
           type: formState.type,
           source_id: formState.source_id,
