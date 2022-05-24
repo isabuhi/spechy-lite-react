@@ -53,11 +53,9 @@ function Index() {
     outgoing_host: "",
     outgoing_type: "",
     outgoing_port: "",
-    outgoing_protocol: "",
     incoming_host: "",
     incoming_type: "",
     incoming_port: "",
-    incoming_protocol: "",
     signature: "",
     username: null,
     request: 1,
@@ -65,7 +63,6 @@ function Index() {
     type: null,
     incoming_protocol: "ssl",
     outgoing_protocol: "ssl",
-    sender_name: "",
     project_id: 0,
   });
 
