@@ -45,6 +45,7 @@ function Index() {
   const [projects, setProjectList] = useState([]);
   const [lang, setLangs] = useState([]);
   const history = useHistory();
+  const[disabled, setDisabled] = useState(true)
 
   const SignInSchemas = yup.object().shape({
     name: yup
@@ -72,6 +73,17 @@ function Index() {
       });
   }, []);
 
+  useEffect(()=>{
+    if(
+      formState.source_id &&
+      formState.name &&
+      formState.description
+    ){
+      setDisabled(false)
+    }else{
+      setDisabled(true)
+    }
+  },[formState])
   const ToastContent = ({ header, content, type, errorResTo }) => {
     return (
       <Fragment>
@@ -166,22 +178,22 @@ function Index() {
       <Col md={12}>
         <Col className="mb-2 d-flex " md={12}>
           <Row md={12}>
-            <Col xs={2}>
+            <Col xs={2} style={{paddingTop: "5px"}}>
               <ArrowLeftCircle
                 size={28}
                 onClick={history.goBack}
                 style={{ cursor: "pointer" }}
               />
             </Col>
-            <Col xs={8} className="d-flex ml-3">
-              <UserPlus />
-              <h3 className="ml-1">
-                <FormattedMessage id="Add New Tag"></FormattedMessage>
+            <Col xs={9} className="d-flex mr-1">
+              <UserPlus size="30px" style={{marginLeft:"5px", paddingTop: "5px"}}/>
+              <h3 className="ml-1 text-nowrap" style={{paddingTop: "7px", paddingRight: "5px"}}>
+                Add New Tag
               </h3>
             </Col>
           </Row>
         </Col>
-        <Col md={{ size: 6, offset: 2 }}>
+        <Col md={6} style={{ paddingLeft:"100px" }}>
           <Form onSubmit={handleSubmit(onSubmit)} className="mb-6 pb-5">
             <FormGroup>
               <Label for="source_id">
@@ -204,7 +216,7 @@ function Index() {
             </FormGroup>
             <FormGroup>
               <Label for="name">
-                <FormattedMessage id="Tagname"></FormattedMessage> :{" "}
+                <FormattedMessage id="Tag Name"></FormattedMessage> :{" "}
                 <span className="text-danger">*</span>
               </Label>
               <Input
@@ -245,13 +257,14 @@ function Index() {
                 }
               />
             </FormGroup>
-
+            <div className="d-flex justify-content-center" >
             <Button
               // onClick={onSubmit}
               type="submit"
-              className="mr-1"
+              className="btn-block mr-1 mt-0"
               color="primary"
               id="submit-data"
+              disabled={disabled}
             >
               <FormattedMessage id="submit"></FormattedMessage>
             </Button>
@@ -260,9 +273,11 @@ function Index() {
               type="reset"
               color="secondary"
               outline
+              className="btn-block mt-0"
             >
               <FormattedMessage id="Cancel"></FormattedMessage>
             </Button>
+            </div>
           </Form>
         </Col>
       </Col>

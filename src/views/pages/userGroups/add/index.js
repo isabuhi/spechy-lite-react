@@ -44,6 +44,8 @@ function Index() {
   const [selectedProject, setSelectedProject] = useState([]);
   const [selectedChannel, setSelectedChannel] = useState([]);
 
+  const[disabled, setDisabled] = useState(true)
+
   const history = useHistory();
 
   const SignInSchema = yup.object().shape({
@@ -61,6 +63,17 @@ function Index() {
         }
       });
   }, [formState.useEffectKey]);
+
+  useEffect(()=>{
+    if(
+      selectedProject.length &&
+      formState.name
+    ){
+      setDisabled(false)
+    }else{
+      setDisabled(true)
+    }
+  },[formState, selectedProject])
 
   const ToastContent = ({ header, content, type, errorResTo }) => {
     return (
@@ -175,22 +188,22 @@ function Index() {
       <Col md={12}>
         <Col className="mb-2 d-flex " md={12}>
           <Row md={12}>
-            <Col xs={2}>
+            <Col xs={2} style={{paddingTop: "7px"}}>
               <ArrowLeftCircle
                 size={28}
                 onClick={history.goBack}
                 style={{ cursor: "pointer" }}
               />
             </Col>
-            <Col xs={8} className="d-flex ml-3">
-              <UserPlus />
-              <h3 className="ml-1">
-                <FormattedMessage id="New User Groups"></FormattedMessage>
+            <Col xs={9} className="d-flex mr-1">
+              <UserPlus size="40px"/>
+              <h3 className="ml-1 text-nowrap" style={{paddingTop: "9px", paddingRight: "5px"}}>
+                New User Groups
               </h3>
             </Col>
           </Row>
         </Col>
-        <Col md={{ size: 6, offset: 2 }}>
+        <Col md={6} style={{ paddingLeft:"100px" }}>
           <Form onSubmit={handleSubmit(onSubmit)} className="mb-6 pb-5">
             <FormGroup>
               <Label for="name">
@@ -234,12 +247,14 @@ function Index() {
                 {errors.selectedProject.message}
               </p>
             )}
+            <div className="d-flex justify-content-center" >
             <Button
               onClick={onSubmit}
               type="submit"
-              className="mr-1"
+              className="btn-block mr-1 mt-0"
               color="primary"
               id="submit-data"
+              disabled={disabled}
             >
               <FormattedMessage id="submit"></FormattedMessage>
             </Button>
@@ -248,9 +263,11 @@ function Index() {
               type="reset"
               color="secondary"
               outline
+              className="btn-block mt-0"
             >
               <FormattedMessage id="cancel"></FormattedMessage>
             </Button>
+            </div>
           </Form>
         </Col>
       </Col>

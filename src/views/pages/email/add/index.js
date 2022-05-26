@@ -36,6 +36,7 @@ import {
 } from "react-feather";
 import { Editor } from "react-draft-wysiwyg";
 import { EditorState, convertFromRaw, convertToRaw } from "draft-js";
+import { subject } from "@casl/ability";
 
 function AddEmailTemplate(props) {
   const animatedComponents = makeAnimated();
@@ -49,14 +50,17 @@ function AddEmailTemplate(props) {
   const [value, setValue] = useState(EditorState.createEmpty());
   console.log("contenvale", value);
   const [editorContent, setEditorContent] = useState("");
+  const [disabled, setDisabled] = useState(true);
 
   const updateTextDescription = async (state) => {
-    console.log("whythisstate", state);
+    //console.log("whythisstate", state);
     await setValue(state);
     const data = convertToRaw(value.getCurrentContent());
     console.log(
       "dataeditor",
-      data.blocks.map((x) => x.text)
+      data.blocks.map((x) => x.text),
+      "editorContent",
+      console.log(editorContent[0])
     );
     setEditorContent(data.blocks.map((x) => x.text));
   };
@@ -182,14 +186,25 @@ function AddEmailTemplate(props) {
       // }
     }
   };
+  useEffect(()=> {
+    if(
+      formState.templateName &&
+      formState.templateTopic &&
+      editorContent[0]
+      ){
+        setDisabled(false)
+    }else {
+      setDisabled(true)
+    }
+  },[formState, editorContent])
   return (
     <div className="w-100">
       <br />
       <Card>
         <CardHeader>
           <CardTitle tag="h4">
-            <ArrowLeft onClick={history.goBack} cursor="pointer" />
-            <FormattedMessage id="goback"></FormattedMessage>
+            <ArrowLeft  onClick={history.goBack} cursor="pointer" />
+            <FormattedMessage id="Go Back"></FormattedMessage>
           </CardTitle>
         </CardHeader>
         <CardBody>
@@ -198,7 +213,7 @@ function AddEmailTemplate(props) {
               <Col sm="12">
                 <FormGroup>
                   <Label for="templateName">
-                    <FormattedMessage id="templatename"></FormattedMessage>
+                    Template Name : <span className="text-danger">*</span>
                   </Label>
                   <Input
                     autoFocus
@@ -227,7 +242,7 @@ function AddEmailTemplate(props) {
               <Col sm="12">
                 <FormGroup>
                   <Label for="templateTopic">
-                    <FormattedMessage id="topicoftemplate"></FormattedMessage>
+                    Topic of Template : <span className="text-danger">*</span>
                   </Label>
                   <Input
                     autoFocus
@@ -302,7 +317,8 @@ function AddEmailTemplate(props) {
               <Col sm="12">
                 <FormGroup className="d-flex mb-0">
                   <Button.Ripple
-                    className="mr-1"
+                    className="btn-lg mr-1"
+                    disabled={disabled}
                     color="primary"
                     type="submit"
                     onClick={onSubmit}

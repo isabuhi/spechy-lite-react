@@ -7,6 +7,7 @@ import { useForm, Controller } from "react-hook-form";
 import {
   Button,
   FormGroup,
+  ButtonGroup,
   Label,
   Form,
   Input,
@@ -96,6 +97,8 @@ function Index() {
   const [call_type, setCallListType] = useState("");
 
   const history = useHistory();
+
+  const [disabled, setDisabled] = useState(true)
 
   const SignInSchema = yup.object().shape({
     reasonName: yup
@@ -204,7 +207,29 @@ function Index() {
           setUserList(userTemp);
         }
       });
-  }, [formState.useEffectKey]);
+  }, [formState.useEffectKey]); 
+
+  useEffect(()=>{
+    if(
+      selectedProject.length &&
+      formState.reasonName &&
+      formState.sms &&
+      formState.type &&
+      formState.mail 
+    ){
+      if(formState.call == "0"){
+        setDisabled(false)
+      }else{
+        if(formState.showUser){
+          if(selectedUser.length>0) {setDisabled(false)} else setDisabled(true)   
+        }else if(formState.showTeams){
+          if(selectedTeam.length>0){setDisabled(false)}else setDisabled(true)
+        }
+      }
+    }else{
+      setDisabled(true)
+    }
+  },[formState, selectedProject, selectedTeam, selectedUser])
 
   const ToastContent = ({ header, content, type, errorResTo }) => {
     return (
@@ -322,27 +347,25 @@ function Index() {
 
   return (
     <div className="invoice-list-table-header w-100 mr-1 ml-50 mt-2 mb-75">
-      <Col md={12}>
+      <Col md={9}>
         <Col className="mb-2 d-flex " md={12}>
           <Row md={12}>
-            <Col xs={2}>
+            <Col xs={2} style={{paddingTop: "12px"}}>
               <ArrowLeftCircle
                 size={28}
                 onClick={history.goBack}
                 style={{ cursor: "pointer" }}
               />
             </Col>
-            <Col xs={8} className="d-flex ml-3">
-              <UserPlus />
-              <h3 className="ml-1">
-                <FormattedMessage id="New Conversation Reason Code">
-                  {" "}
-                </FormattedMessage>
+            <Col xs={10} className="d-flex ml-6">
+              <UserPlus size={"50px"} style={{marginLeft: "-20px"}}/>
+              <h3 className="ml-1 text-nowrap" style={{paddingTop: "14px", paddingRight: "5px"}}>
+                New Conversation Reason Code
               </h3>
             </Col>
           </Row>
         </Col>
-        <Col md={{ size: 6, offset: 2 }}>
+        <Col md={8} style={{ paddingLeft:"100px" }}>
           <Form onSubmit={handleSubmit(onSubmit)}>
             <FormGroup>
               <Label for="attached">
@@ -477,7 +500,7 @@ function Index() {
                 </div>
               )}
             </FormGroup>
-            {formState.showResults === true ? (
+            {formState.showResults === true && (
               <>
                 <FormGroup>
                   <Label for="List Type">
@@ -508,11 +531,9 @@ function Index() {
                      )} */}
                 </FormGroup>
               </>
-            ) : (
-              ""
-            )}
+            ) }
 
-            {formState.showTeams === true ? (
+            {formState.showTeams === true && (
               <FormGroup>
                 <Label for="teams">
                   User Group
@@ -520,9 +541,7 @@ function Index() {
                 </Label>
                 <DualListTeams projectList={teams} projectIds={teamsIds} />
               </FormGroup>
-            ) : (
-              ""
-            )}
+            ) }
 
             {formState.showUser === true ? (
               <FormGroup>
@@ -535,13 +554,14 @@ function Index() {
             ) : (
               ""
             )}
-
+            <div class="d-flex justify-content-center" >
             <Button
               onClick={onSubmit}
-              className="mr-1"
+              className="btn-block mr-1 mt-0"
               color="primary"
               type="submit"
               id="submit-data"
+              disabled={disabled}
             >
               <FormattedMessage id="create"> </FormattedMessage>
             </Button>
@@ -550,9 +570,11 @@ function Index() {
               type="reset"
               color="secondary"
               outline
+              className="btn-block mt-0"
             >
               <FormattedMessage id="Cancel"> </FormattedMessage>
             </Button>
+            </div>
           </Form>
         </Col>
       </Col>

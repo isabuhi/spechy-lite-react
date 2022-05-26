@@ -32,6 +32,7 @@ function Index() {
     projectName: "",
     request: 1,
   });
+  const [disabled, setDisabled] = useState()
 
   const history = useHistory();
 
@@ -108,6 +109,13 @@ function Index() {
       }
     }
   };
+  useEffect(()=>{
+    if(formState.projectName) {
+      setDisabled(false)
+    }else{
+      setDisabled(true)
+    }
+  },[formState])
 
   return (
     <div className="invoice-list-table-header w-100 mr-1 ml-50 mt-2 mb-75">
@@ -127,7 +135,7 @@ function Index() {
             </Col>
           </Row>
         </Col>
-        <Col md={{ size: 6, offset: 2 }}>
+        <Col md={6} style={{ paddingLeft:"100px" }}>
           <Form onSubmit={handleSubmit(onSubmit)} className="mb-6 pb-5">
             <FormGroup>
               <Label for="projectName">
@@ -152,7 +160,13 @@ function Index() {
                 <FormFeedback>{errors.projectName.message}</FormFeedback>
               )}
             </FormGroup>
-            <Button type="submit" className="mr-1" color="primary">
+            <div className="d-flex justify-content-center align-items-center">
+            <Button 
+              type="submit"
+              className="btn-block mr-1 mt-0"
+              color="primary"
+              disabled={disabled}
+              >
               <FormattedMessage id="submit"></FormattedMessage>
             </Button>
             <Button
@@ -160,9 +174,11 @@ function Index() {
               type="reset"
               color="secondary"
               outline
+              className="btn-block mt-0"
             >
               <FormattedMessage id="Cancel"></FormattedMessage>
             </Button>
+            </div>
           </Form>
         </Col>
       </Col>

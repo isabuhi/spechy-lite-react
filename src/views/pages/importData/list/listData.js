@@ -71,7 +71,7 @@ const ListData = (props) => {
 
   return (
     <Container>
-      <Label for="type">
+      <Label for="type" className="mt-1">
         <FormattedMessage id="Excell Fields"></FormattedMessage> :{" "}
         <span className="text-danger">*</span>
       </Label>

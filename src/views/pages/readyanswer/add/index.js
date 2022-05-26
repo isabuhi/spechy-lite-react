@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 
 import {
   Button,
+  ButtonGroup,
   FormGroup,
   Label,
   Form,
@@ -44,6 +45,8 @@ function Index() {
   const [projects, setProjectList] = useState([]);
   const [lang, setLangs] = useState([]);
   const history = useHistory();
+  const [disabled, setDisabled] = useState(true)
+  const [disabledModal, setDisabledModal] = useState(true)
 
   const ToastContent = ({ header, content, type, errorResTo }) => {
     return (
@@ -109,6 +112,19 @@ function Index() {
         }
       });
   }, []);
+
+  useEffect(()=>{
+    if(
+      formState.title &&
+      formState.type       
+      ){
+        setDisabled(false)
+    }else {
+      setDisabled(true)
+    }
+  },[formState])
+
+
 
   const onSubmit = async () => {
     if (isObjEmpty(errors)) {
@@ -184,7 +200,7 @@ function Index() {
       ...formState,
       answer: some,
     });
-    console.log(some);
+    console.log(formState.answer);
   };
 
   return (
@@ -192,22 +208,22 @@ function Index() {
       <Col md={12}>
         <Col className="mb-2 d-flex " md={12}>
           <Row md={12}>
-            <Col xs={2}>
+            <Col xs={2} style={{paddingTop: "7px"}}>
               <ArrowLeftCircle
                 size={28}
                 onClick={history.goBack}
                 style={{ cursor: "pointer" }}
               />
             </Col>
-            <Col xs={8} className="d-flex ml-3">
-              <UserPlus />
-              <h3 className="ml-1">
-                <FormattedMessage id="New Ready Answer"> </FormattedMessage>
+            <Col xs={9} className="d-flex mr-1">
+              <UserPlus size="45px"/>
+              <h3 className="ml-1 text-nowrap" style={{paddingTop: "10px", paddingRight: "5px"}}>
+                New Ready  Answer
               </h3>
             </Col>
           </Row>
         </Col>
-        <Col md={{ size: 6, offset: 2 }}>
+        <Col md={6} style={{ paddingLeft:"100px" }}>
           <Form onSubmit={handleSubmit(onSubmit)} className="mb-6 pb-5">
             <FormGroup>
               <Label for="type">
@@ -223,7 +239,7 @@ function Index() {
                 onChange={(e) =>
                   setFormState({
                     ...formState,
-                    type: e === null ? "" : e.val,
+                    type : e.val,
                   })
                 }
                 innerRef={register({ required: true })}
@@ -263,6 +279,7 @@ function Index() {
                 <FormattedMessage id="Set Answers"> </FormattedMessage>
               </Button.Ripple>
               <Modal
+                centered
                 isOpen={basicModal}
                 toggle={() => setBasicModal(!basicModal)}
               >
@@ -295,6 +312,7 @@ function Index() {
                 <ModalFooter>
                   <Button
                     color="primary"
+                    // disabled={disabledModal}
                     onClick={() => setBasicModal(!basicModal)}
                   >
                     <FormattedMessage id="Accept & Set"> </FormattedMessage>
@@ -302,11 +320,13 @@ function Index() {
                 </ModalFooter>
               </Modal>
             </FormGroup>
+            <div class="d-flex justify-content-center" >
             <Button
               type="submit"
-              className="mr-1"
+              className="btn-block mr-1 mt-0"
               color="primary"
               id="submit-data"
+              disabled={disabled}
             >
               <FormattedMessage id="submit"> </FormattedMessage>
             </Button>
@@ -315,9 +335,11 @@ function Index() {
               type="reset"
               color="secondary"
               outline
+              className="btn-block mt-0"
             >
               <FormattedMessage id="Cancel"> </FormattedMessage>
             </Button>
+            </div>
           </Form>
         </Col>
       </Col>

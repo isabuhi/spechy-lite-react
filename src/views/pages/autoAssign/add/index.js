@@ -285,13 +285,11 @@ function Index(props) {
                 getTheHours={getTheHours}
               />
             </FormGroup>
-            <ButtonGroup
-            className="col text-center"
-            >
+            <div class="d-flex justify-content-center" >
               <Button
                 onClick={onSubmit}
                 type="submit"
-                className="mr-1"
+                className="btn-block mr-1 mt-0"
                 color="primary"
                 disabled={disabled}
               >
@@ -302,10 +300,11 @@ function Index(props) {
                 type="reset"
                 color="secondary"
                 outline
+                className="btn-block mt-0"
               >
                 Cancel
               </Button>
-            </ButtonGroup>
+              </div>
           </Form>
         </Col>
       </Col>

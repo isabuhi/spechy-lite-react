@@ -10,13 +10,16 @@ import { useSelector, useDispatch } from "react-redux";
 
 // ** Third Party Components
 import ReactPaginate from "react-paginate";
-import { ChevronDown, Plus } from "react-feather";
+import { ChevronDown, Plus, Search } from "react-feather";
 import DataTable from "react-data-table-component";
 import {
   Card,
   CardHeader,
   CardTitle,
   Input,
+  InputGroup,
+  InputGroupAddon,
+  InputGroupText,
   Label,
   Row,
   Col,
@@ -226,11 +229,33 @@ const DataTableServerSide = () => {
           </Button>
         </CardHeader>
         <Row className="mx-0 mt-1 mb-50">
+          <Col
+            className="d-flex align-items-center justify-content-sm-start mt-sm-0 mt-1"
+            sm="6"
+          >
+            
+            <div className="chat-fixed-search">
+            <div className="d-flex align-items-center w-100">
+            <div className="sidebar-profile-toggle"></div>
+              <InputGroup className="input-group-merge ml-1 w-100 sreach-chat">
+                <InputGroupAddon addonType="prepend">
+                  <InputGroupText className="round">
+                    <Search className="text-muted" size={14} />
+                  </InputGroupText>
+                </InputGroupAddon>
+                <Input
+                  value={searchValue}
+                  className="round"
+                  placeholder="Search"
+                  onChange={handleFilter}
+                />
+              </InputGroup>
+            </div>
+          </div>
+          </Col>
           <Col sm="6">
-            <div className="d-flex align-items-center">
-              <Label for="sort-select">
-                <FormattedMessage id="Show"></FormattedMessage>
-              </Label>
+            <div className="d-flex align-items-center justify-content-sm-end">
+              <Label className='mr-1' for="sort-select" size='lg'>Show entries</Label>
               <Input
                 className="dataTable-select"
                 type="select"
@@ -245,26 +270,7 @@ const DataTableServerSide = () => {
                 <option value={75}>75</option>
                 <option value={100}>100</option>
               </Input>
-              <Label for="sort-select">
-                <FormattedMessage id="Entries"></FormattedMessage>
-              </Label>
             </div>
-          </Col>
-          <Col
-            className="d-flex align-items-center justify-content-sm-end mt-sm-0 mt-1"
-            sm="6"
-          >
-            <Label className="mr-1" for="search-input">
-              <FormattedMessage id="Search"></FormattedMessage>
-            </Label>
-            <Input
-              className="dataTable-filter"
-              type="text"
-              bsSize="sm"
-              id="search-input"
-              value={searchValue}
-              onChange={handleFilter}
-            />
           </Col>
         </Row>
         <DataTable
