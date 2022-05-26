@@ -45,6 +45,7 @@ function Index() {
   });
   const [newMenu, setNewMenu] = useState();
   const [menu, setMenu] = useState([]);
+  const [disabled, setDisabled] = useState(true)
 
   const history = useHistory();
 
@@ -87,6 +88,17 @@ function Index() {
         }
       });
   }, [formState.useEffectKey]);
+
+  useEffect(()=>{
+    if(
+      formState.name&&
+      formState.description
+      ){
+        setDisabled(false)
+      }else{
+        setDisabled(true)
+      }
+  },[formState])
 
   const ToastContent = ({ header, content, type }) => {
     return (
@@ -242,7 +254,7 @@ function Index() {
                 autoFocus
                 name="description"
                 id="description"
-                placeholder="Description about the role"
+                placeholder="Description About the Role"
                 className={classnames({ "is-invalid": errors["description"] })}
                 onChange={(e) =>
                   setFormState({
@@ -320,7 +332,13 @@ function Index() {
                 })}
               </tbody>
             </Table>
-            <Button type="submit" className="mr-1" color="primary">
+            <div className="d-flex justify-content-center mt-3" >
+            <Button 
+              type="submit"
+              className="btn-block mr-1 mt-0"
+              color="primary"
+              disabled={disabled}
+              >
               <FormattedMessage id="submit"></FormattedMessage>
             </Button>
             <Button
@@ -328,9 +346,11 @@ function Index() {
               type="reset"
               color="secondary"
               outline
+              className="btn-block mt-0"
             >
               <FormattedMessage id="Cancel"></FormattedMessage>
             </Button>
+            </div>
           </Form>
         </Row>
       </Col>

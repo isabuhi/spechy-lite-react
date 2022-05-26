@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 
 import {
   Button,
+  ButtonGroup,
   FormGroup,
   Label,
   Form,
@@ -60,6 +61,7 @@ function Index() {
   const [selectedChannel, setSelectedChannel] = useState([]);
   const [smsList, setSmsList] = useState([]);
   const [mailList, setMailList] = useState([]);
+  const [disabled, setDisabled] = useState(true)
 
   const history = useHistory();
 
@@ -151,6 +153,21 @@ function Index() {
         }
       });
   }, [formState.useEffectKey]);
+
+  useEffect(()=>{
+    if(
+      selectedProject.length &&
+      formState.reasonName &&
+      formState.call &&
+      formState.type &&
+      formState.sms &&
+      formState.mail
+      ){
+        setDisabled(false)
+      }else{
+        setDisabled(true)
+      }
+  },[formState, selectedProject])
 
   const ToastContent = ({ header, content, type, errorResTo }) => {
     return (
@@ -258,25 +275,25 @@ function Index() {
 
   return (
     <div className="invoice-list-table-header w-100 mr-1 ml-50 mt-2 mb-75">
-      <Col md={12}>
+      <Col md={9}>
         <Col className="mb-2 d-flex " md={12}>
           <Row md={12}>
-            <Col xs={2}>
+            <Col xs={2} style={{paddingTop: "12px"}}>
               <ArrowLeftCircle
                 size={28}
                 onClick={history.goBack}
                 style={{ cursor: "pointer" }}
               />
             </Col>
-            <Col xs={8} className="d-flex ml-3">
-              <UserPlus />
-              <h3 className="ml-1">
-                <FormattedMessage id="addTicketReasonCode"></FormattedMessage>
+            <Col xs={9} className="d-flex mr-1">
+              <UserPlus size="60px" style={{paddingBottom: "10px"}}/>
+              <h3 className="ml-1 text-nowrap" style={{paddingTop: "14px", paddingRight: "5px"}}>
+                Add Ticket Reason Code
               </h3>
             </Col>
           </Row>
         </Col>
-        <Col md={{ size: 6, offset: 2 }}>
+        <Col md={8} style={{ paddingLeft:"100px" }}>
           <Form onSubmit={handleSubmit(onSubmit)} className="mb-6 pb-5">
             <FormGroup>
               <Label for="attached">
@@ -401,11 +418,13 @@ function Index() {
                 <FormFeedback>{errors.types.mail}</FormFeedback>
               )}
             </FormGroup>
+            <div class="d-flex justify-content-center" >
             <Button
               type="submit"
-              className="mr-1"
+              className="btn-block mr-1 mt-0"
               color="primary"
               id="submit-data"
+              disabled={disabled}
             >
               <FormattedMessage id="submit"></FormattedMessage>
             </Button>
@@ -414,9 +433,11 @@ function Index() {
               type="reset"
               color="secondary"
               outline
+              className="btn-block mt-0"
             >
               <FormattedMessage id="Cancel"></FormattedMessage>
             </Button>
+            </div>
           </Form>
         </Col>
       </Col>

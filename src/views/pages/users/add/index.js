@@ -251,7 +251,7 @@ function Index() {
                   })}
                   classNamePrefix="select"
                   options={projects}
-                  isClearable={false}
+                  //isClearable={false}
                   name="call"
                   onChange={(e) =>
                     setFormState({
@@ -343,7 +343,7 @@ function Index() {
                 <span className="text-danger">*</span>
               </Label>
               <Select
-                isClearable={true}
+                //isClearable={true}
                 name="role_id"
                 className="react-select"
                 classNamePrefix="select"

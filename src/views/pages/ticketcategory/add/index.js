@@ -83,6 +83,7 @@ function Index() {
   const [count, setCount] = useState(1);
   const [delay, setDelay] = useState(500);
   const history = useHistory();
+  const[disabled, setDisabled] = useState(true)
 
   const SignInSchema = yup.object().shape({
     title: yup.string().required("Title is a required field.").min(5),
@@ -115,6 +116,17 @@ function Index() {
         }
       });
   }, [formState.useEffectKey]);
+
+  useEffect(()=>{
+    if(
+      formState.title &&
+      formState.access
+    ){
+      setDisabled(false)
+    }else{
+      setDisabled(true)
+    }
+  },[formState])
 
   const ToastContent = ({ header, content, type, errorResTo }) => {
     return (
@@ -223,25 +235,25 @@ function Index() {
 
   return (
     <div className="invoice-list-table-header w-100 mr-1 ml-50 mt-2 mb-75">
-      <Col md={12}>
+      <Col md={9}>
         <Col className="mb-2 d-flex " md={12}>
           <Row md={12}>
-            <Col xs={2}>
+            <Col xs={2} style={{paddingTop: "7px"}}>
               <ArrowLeftCircle
                 size={28}
                 onClick={history.goBack}
                 style={{ cursor: "pointer" }}
               />
             </Col>
-            <Col xs={8} className="d-flex ml-3">
-              <UserPlus />
-              <h3 className="ml-1">
-                <FormattedMessage id="New Ticket Category"> </FormattedMessage>
+            <Col xs={9} className="d-flex mr-1">
+              <UserPlus size="50px" style={{paddingBottom : "5px"}}/>
+              <h3 className="ml-1 text-nowrap" style={{paddingTop: "11px", paddingRight: "5px"}}>
+                New Ticket Category
               </h3>
             </Col>
           </Row>
         </Col>
-        <Col md={{ size: 6, offset: 2 }}>
+        <Col md={8} style={{ paddingLeft:"100px" }}>
           <Form onSubmit={handleSubmit(onSubmit)} className="mb-6 pb-5">
             <FormGroup>
               <Label for="title">
@@ -294,7 +306,7 @@ function Index() {
             <FormGroup>
               <Label for="access">
                 <FormattedMessage id="Access"></FormattedMessage> :{" "}
-                <span className="text-danger"></span>
+                <span className="text-danger">*</span>
               </Label>
               <CustomInput
                 type="radio"
@@ -317,6 +329,7 @@ function Index() {
               )} */}
             </FormGroup>
             <FormGroup>
+              
               <Button
                 color="primary"
                 outline
@@ -325,6 +338,7 @@ function Index() {
                 Add Tag Input
               </Button>
               <Modal
+                centered
                 isOpen={basicModal}
                 toggle={() => setBasicModal(!basicModal)}
               >
@@ -363,13 +377,14 @@ function Index() {
                       font-family : inherit;
                       font-style: normal;
                       background-clip: padding-box;
+                      
                     }
                   `}
                       wrapperStyle={`
                     background: none;
                     box-shadow: none;
                     position : unset;
-                    margin-left:200px;
+                    margin-left:230px;
                     margin-top:40px;
                     width : 104%
                   `}
@@ -387,11 +402,13 @@ function Index() {
                 </ModalFooter>
               </Modal>
             </FormGroup>
+            <div class="d-flex justify-content-center" >
             <Button
               type="submit"
-              className="mr-1"
+              className="btn-block mr-1 mt-0"
               color="primary"
               id="submit-data"
+              disabled={disabled}
             >
               <FormattedMessage id="submit"></FormattedMessage>
             </Button>
@@ -399,10 +416,12 @@ function Index() {
               onClick={history.goBack}
               type="reset"
               color="secondary"
+              className="btn-block mt-0"
               outline
             >
               <FormattedMessage id="Cancel"></FormattedMessage>
             </Button>
+            </div>
           </Form>
         </Col>
       </Col>

@@ -76,6 +76,7 @@ const DataTableServerSide = () => {
   const [headerData, setHeaderData] = useState([]);
   const [previewData, setPreviewData] = useState([]);
   const [dataTypes, setDataTypes] = useState([]);
+  const [disabled, setDisabled] = useState(true)
 
   const [uploadResponse, setUploadResponse] = useState();
 
@@ -151,36 +152,68 @@ const DataTableServerSide = () => {
     setUploadResponse();
   }, []);
 
+  useEffect(()=>{
+    if (
+      formState.name &&
+      file
+    ) {
+      setDisabled(false)
+    } else {
+      setDisabled(true)
+    }
+  }, [])
+
   return (
     <Fragment>
       <Card>
         <CardHeader className="border-bottom">
-          <CardTitle tag="h4">Import Data - upload File</CardTitle>
+          <CardTitle tag="h4">Import Data - Upload File</CardTitle>
         </CardHeader>
 
         <Row className="mx-0 mt-1 mb-50">
           <Col sm="6" className="form-inline">
             <Label className="mr-2" for="search-input">
-              <FormattedMessage id="Pachage Name"></FormattedMessage>
+              <FormattedMessage id="Package Name"></FormattedMessage>
             </Label>
             <Input
               className="dataTable-filter"
               type="text"
               id="search-input"
-              value={searchValue}
-              // onChange={handleFilter}
+              value={formState.name}
+              onChange={(e)=>{
+                setFormState({
+                  ...formState,
+                  [e.target.name]: e.target.value
+                })
+              }}
             />
           </Col>
-          <Col sm="6">
-            <Form onSubmit={onSubmit}>
+        </Row>
+        <Row>
+          <Col sm="4">
+            <Form className="d-flex">
+              <FormGroup>
+                <SelectData 
+                heading={headerData}
+                body={previewData}
+                dataTypes={dataTypes}
+              />
+            </FormGroup>
+          </Form>
+          </Col>
+        </Row>
+        <Row>
+        <Col sm="4">
+            <Form className="d-flex pl-1 mt-1" onSubmit={onSubmit}>
               <FormGroup>
                 <Input
+                  style={{}}
                   name="file"
                   type="file"
                   onChange={(e) => setUploadFile(e.target.files)}
                 />
               </FormGroup>
-              <Button type="submit" className="mr-1" color="primary">
+              <Button type="submit" disabled={disabled} style={{paddingLeft: "14px", paddingBottom: "10px"}} color="primary">
                 <FormattedMessage id="Upload"></FormattedMessage>
               </Button>
             </Form>
@@ -188,13 +221,6 @@ const DataTableServerSide = () => {
         </Row>
         <div>
           <BodyTable
-            heading={headerData}
-            body={previewData}
-            dataTypes={dataTypes}
-          />
-        </div>
-        <div>
-          <SelectData
             heading={headerData}
             body={previewData}
             dataTypes={dataTypes}

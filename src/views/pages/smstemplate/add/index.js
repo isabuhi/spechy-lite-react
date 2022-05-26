@@ -43,6 +43,7 @@ function AddTemplate(props) {
     role_id: null,
   });
   const [role, setRoleList] = useState([]);
+  const [disabled, setDisabled] = useState(true)
 
   const ToastContent = ({ header, content, type, errorResTo }) => {
     return (
@@ -161,6 +162,18 @@ function AddTemplate(props) {
       }
     }
   };
+  useEffect(()=>{
+    if(
+      formState.templateName &&
+      formState.templateContent &&
+      formState.role_id
+      ){
+        setDisabled(false)
+      }else {
+        setDisabled(true)
+      }
+  },[formState])
+
   return (
     <div className="invoice-list-table-header w-100 mr-1 ml-50 mt-2 mb-75">
       <Card>
@@ -238,9 +251,10 @@ function AddTemplate(props) {
                   <FormGroup>
                     <Label for="role_id">
                       <FormattedMessage id="Select Role"></FormattedMessage>
+                      <span className="text-danger">*</span>
                     </Label>
                     <Select
-                      isClearable={true}
+                      //isClearable={true}
                       name="role_id"
                       className="react-select"
                       classNamePrefix="select"
@@ -265,7 +279,12 @@ function AddTemplate(props) {
               </Col>
               <Col sm="12">
                 <FormGroup className="d-flex mb-0">
-                  <Button.Ripple className="mr-1" color="primary" type="submit">
+                  <Button.Ripple
+                    className="btn-lg mr-1"
+                    color="primary"
+                    type="submit"
+                    disabled={disabled}
+                    >
                     <FormattedMessage id="create"></FormattedMessage>
                   </Button.Ripple>
                 </FormGroup>

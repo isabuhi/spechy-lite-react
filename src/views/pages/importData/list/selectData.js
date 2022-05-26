@@ -81,7 +81,7 @@ const SelectData = (props) => {
 
   const selectStyling = {
     margin: "20px",
-    width: "150px",
+    width: "180px",
     borderRadius: "5px",
   };
 
@@ -89,8 +89,8 @@ const SelectData = (props) => {
     <Row>
       <Col sm="12">
         <Row>
-          <Col md={{ size: 6, offset: 2 }}>
-            <FormGroup>
+          <Col sm='6' className="form-inline">
+            <FormGroup className="ml-1">
               <Label for="type">
                 <FormattedMessage id="SelectDataType"></FormattedMessage> : <span className="text-danger">*</span>
               </Label>
