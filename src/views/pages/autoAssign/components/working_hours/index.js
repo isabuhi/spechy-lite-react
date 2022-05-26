@@ -442,7 +442,7 @@ class WorkingHours extends React.Component {
             <tr>
               <td className="reset-all" colSpan="49">
                 <button
-                  className="btn btn-primary btn-xs working-hours-reset"
+                  className="btn btn-primary btn-md working-hours-reset"
                   onClick={this.resetAll}
                 >
                   Reset All

@@ -3,7 +3,6 @@ import {
   useEffect,
   useState,
   forwardRef,
-  useRef,
   useImperativeHandle,
 } from "react";
 import classnames from "classnames";
@@ -13,22 +12,13 @@ import {
   Nav,
   NavItem,
   NavLink,
-  Dropdown,
-  DropdownItem,
-  DropdownToggle,
-  DropdownMenu,
-  Row,
-  Col,
   Card,
   Button,
   Modal,
   ModalHeader,
   ModalBody,
-  ModalFooter,
   Collapse,
-  InputGroup,
   Input,
-  InputGroupText,
   Form,
   FormGroup,
   Label,
@@ -46,17 +36,12 @@ import { historyColumns } from "./historyColumns";
 import { ticketsColumns } from "./ticketsColumns";
 import { FormattedMessage } from "react-intl";
 import Select from "react-select";
-import PerfectScrollbar from "react-perfect-scrollbar";
 
 import PhoneInput from "react-phone-input-2";
 import { useDispatch, useSelector } from "react-redux";
 import { getCountries } from "../../customerManagement/store/Actions";
-import { useForm, Controller } from "react-hook-form";
 import { Slide, toast } from "react-toastify";
 import {
-  Lock,
-  Edit,
-  Trash2,
   Coffee,
   AlertCircle,
   Plus,
@@ -86,6 +71,9 @@ const PillBasic = forwardRef((props, ref) => {
     user_name_surname: "",
     start_at: "",
     status: 0,
+    country: "",
+    city: "",
+    district: "",
     allCities: [{}],
     AllCountries: [{}],
   });
@@ -413,7 +401,7 @@ const PillBasic = forwardRef((props, ref) => {
           );
       },
     }),
-    [customer_id, getContactCardDatas]
+    [customer_id]
   );
 
   const onChanceHandler = (e) => {
@@ -481,7 +469,8 @@ const PillBasic = forwardRef((props, ref) => {
             <NavLink
               active={active === "1"}
               onClick={() => {
-                toggle("1"), getHistoryTableData();
+                toggle("1");
+                getHistoryTableData();
               }}
             >
               History
@@ -491,7 +480,8 @@ const PillBasic = forwardRef((props, ref) => {
             <NavLink
               active={active === "2"}
               onClick={() => {
-                toggle("2"), getContactCardDatas();
+                toggle("2");
+                getContactCardDatas();
               }}
             >
               Contact Card
@@ -501,7 +491,8 @@ const PillBasic = forwardRef((props, ref) => {
             <NavLink
               active={active === "3"}
               onClick={() => {
-                toggle("3"), getTicketsTableData();
+                toggle("3");
+                getTicketsTableData();
               }}
             >
               Tickets
@@ -521,7 +512,8 @@ const PillBasic = forwardRef((props, ref) => {
             <NavLink
               active={active === "5"}
               onClick={() => {
-                toggle("5"), getNoteTableData();
+                toggle("5");
+                getNoteTableData();
               }}
             >
               Notes
@@ -713,6 +705,7 @@ const PillBasic = forwardRef((props, ref) => {
                   className="react-select"
                   classNamePrefix="select"
                   options={listItems}
+                  placeholder={formState.country ? formState.country.country_name : "--"}
                   defaultValue={formState.countryCode}
                   onChange={(e) => onChangeCountry(e)}
                 />
@@ -730,8 +723,9 @@ const PillBasic = forwardRef((props, ref) => {
                   name="cityID"
                   className="react-select"
                   classNamePrefix="select"
-                  options={formState.cities}
-                  defaultValue={formState.districtCode}
+                  options={formState.allCities}
+                  placeholder={ formState.city ? formState.city.city_name : "--"}
+                defaultValue={formState.allCities}
                   onChange={(e) => onChangeCities(e)}
                 />
               </FormGroup>
@@ -748,12 +742,13 @@ const PillBasic = forwardRef((props, ref) => {
                   name="cityID"
                   className="react-select"
                   classNamePrefix="select"
-                  options={formState.distirct}
-                  defaultValue={formState.districtCode}
+                  options={formState.district}
+                  placeholder={formState.district ? formState.district.district_name : "--"}
+                  defaultValue={formState.district}
                   onChange={(data) =>
                     setFormState({
                       ...formState,
-                      districtCode: data.id,
+                      district: data.id,
                     })
                   }
                 />
@@ -774,12 +769,20 @@ const PillBasic = forwardRef((props, ref) => {
           </TabPane>
           <TabPane tabId="3">
             <Card>
+            <div className="col-12 row" style={{paddingBottom:"10px"}}>
+              <div className="col-4">
+              </div>
+              <div className="col-4">
               <Button.Ripple
                 color="primary"
                 onClick={() => setCenteredModal(!centeredModal)}
               >
-                Add New Ticket
+                Add Ticket
               </Button.Ripple>
+              </div>
+              <div className="col-4">
+              </div>
+              </div>
               <DataTable
                 noHeader
                 responsive
@@ -800,7 +803,7 @@ const PillBasic = forwardRef((props, ref) => {
                 Ticket Name
               </ModalHeader>
               <ModalBody>
-                <AddTicket />
+                <AddTicket customer_id={customer_id} setCenteredModal={setCenteredModal} />
               </ModalBody>
             </Modal>
           </TabPane>
@@ -817,12 +820,21 @@ const PillBasic = forwardRef((props, ref) => {
           </TabPane>
           <TabPane tabId="5">
             <Card>
+            <div className="col-12 row">
+              <div className="col-4">
+              </div>
+              <div className="col-4">
               <Button.Ripple
                 color="primary"
                 onClick={() => setBasicModal(!basicModal)}
+                size="md"
               >
-                Add New Note
+                Add Note
               </Button.Ripple>
+              </div>
+              <div className="col-4">
+              </div>
+              </div>
               <DataTable
                 noHeader
                 responsive

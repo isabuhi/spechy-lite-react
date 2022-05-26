@@ -105,14 +105,12 @@ function Index() {
       .then((response) => {
         if (response.status === 200) {
           var result = Object.values(response.data.data);
-          console.log(response.data.data);
           setLangs(result);
         }
       });
   }, []);
 
   const onSubmit = async () => {
-    console.log(formState);
     if (isObjEmpty(errors)) {
       if (formState.request === 0) {
         const btn = document.getElementById("submit-data");

@@ -13,14 +13,7 @@ import {
   Col,
   FormFeedback,
   Row,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Alert,
-  Card,
-  CardHeader,
-  CardTitle,
+  ButtonGroup,
 } from "reactstrap";
 import DualList from "./dualList";
 import * as yup from "yup";
@@ -38,16 +31,6 @@ import WorkingHours from "../components/working_hours";
 import "../working_hours.scss";
 
 function Index(props) {
-  const call = [
-    {
-      val: 1,
-      label: "Yes",
-    },
-    {
-      val: 0,
-      label: "No",
-    },
-  ];
   const [formState, setFormState] = useState({
     name: "",
     call: null,
@@ -57,19 +40,15 @@ function Index(props) {
     request: 1,
     // users: [],
   });
-  const [basicModal, setBasicModal] = useState(false);
   const [projects, setProjectList] = useState([]);
   const [users, setUsersList] = useState([]);
-  const [selectedProject, setSelectedProject] = useState([]);
   const [selectedUser, setSelectedUser] = useState([]);
   const [workingTimes, setWorkingTimes] = useState([]);
-
-  const [lang, setLangs] = useState([]);
-  const [types, setTypesList] = useState([]);
+  const [disabled, setDisabled] = useState(false);
   const history = useHistory();
 
   const SignInSchema = yup.object().shape({
-    title: yup
+    name: yup
       .string()
       .required("Ready Answer Title is a required field.")
       .min(5),
@@ -109,7 +88,18 @@ function Index(props) {
       });
   }, []);
 
-  const ToastContent = ({ header, content, type, errorResTo }) => {
+  useEffect(() => {
+    if(
+      formState.name &&
+      formState.source_id &&
+      selectedUser.length &&
+      workingTimes
+) {setDisabled(false)} else {
+  setDisabled(true)
+}
+  }, [formState,selectedUser,workingTimes]);
+
+  const ToastContent = ({ header, type, errorResTo }) => {
     return (
       <Fragment>
         <div className="toastify-header">
@@ -149,9 +139,8 @@ function Index(props) {
           .post(`${BASE_URL}/api/project-management/auto-assign/create`, {
             name: formState.name,
             users: selectedUser,
-            type: formState.type,
             source_id: formState.source_id,
-            workingtimes: workingTimes,
+            // workingtimes: workingTimes,
           })
           .then((response) => {
             if (response.status === 200) {
@@ -194,9 +183,6 @@ function Index(props) {
     }
   };
 
-  const projectIds = (id) => {
-    setSelectedProject(id);
-  };
   const usersIds = (id) => {
     setSelectedUser(id);
   };
@@ -215,29 +201,30 @@ function Index(props) {
   var fieldName = "location[working_hours]";
 
   const getTheHours = (data) => {
-    console.log("ddddddd", data);
     setWorkingTimes(data);
   };
 
   return (
     <div className="invoice-list-table-header w-100 mr-1 ml-50 mt-2 mb-75">
-      <Col md={12}>
+      <Col md={9}>
         <Col className="mb-2 d-flex " md={12}>
           <Row md={12}>
-            <Col xs={2}>
+            <Col xs={2} style={{paddingTop: "7px"}}>
               <ArrowLeftCircle
                 size={28}
                 onClick={history.goBack}
-                style={{ cursor: "pointer" }}
+                style={{ cursor: "pointer"}}
               />
             </Col>
-            <Col xs={8} className="d-flex ml-3">
-              <UserPlus />
-              <h3 className="ml-1">New Auto Assign</h3>
+            <Col xs={9} className="d-flex mr-1">
+              <UserPlus size="40px"/>
+              <h3 className="ml-1 text-nowrap" style={{paddingTop: "9px", paddingRight: "5px"}}>
+                New Auto Assign
+              </h3>
             </Col>
           </Row>
         </Col>
-        <Col md={{ size: 6, offset: 2 }}>
+        <Col md={8} style={{ paddingLeft:"100px" }}>
           <Form onSubmit={handleSubmit(onSubmit)} className="mb-6 pb-5">
             <FormGroup>
               <Label for="source_id">
@@ -261,19 +248,20 @@ function Index(props) {
             </FormGroup>
             <FormGroup>
               <Label for="name">
-                name : <span className="text-danger">*</span>
+                Name : <span className="text-danger">*</span>
               </Label>
               <Input
                 autoFocus
                 name="name"
                 id="name"
+                value={formState.name}
                 placeholder="Title Name"
                 className={classnames({ "is-invalid": errors["title"] })}
-                onChange={(e) =>
+                onChange={(e) => {
                   setFormState({
                     ...formState,
-                    [e.target.name]: e.target.value,
-                  })
+                    [e.target.name]: e.target.value.replace(/[^a-zA-Z]/g,""),
+                  })}
                 }
                 innerRef={register({ required: true })}
                 invalid={errors.name && true}
@@ -297,23 +285,27 @@ function Index(props) {
                 getTheHours={getTheHours}
               />
             </FormGroup>
-
-            <Button
-              onClick={onSubmit}
-              type="submit"
-              className="mr-1"
-              color="primary"
+            <ButtonGroup
+            className="col text-center"
             >
-              Submit
-            </Button>
-            <Button
-              onClick={history.goBack}
-              type="reset"
-              color="secondary"
-              outline
-            >
-              Cancel
-            </Button>
+              <Button
+                onClick={onSubmit}
+                type="submit"
+                className="mr-1"
+                color="primary"
+                disabled={disabled}
+              >
+                Submit
+              </Button>
+              <Button
+                onClick={history.goBack}
+                type="reset"
+                color="secondary"
+                outline
+              >
+                Cancel
+              </Button>
+            </ButtonGroup>
           </Form>
         </Col>
       </Col>

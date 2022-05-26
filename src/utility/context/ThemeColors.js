@@ -10,7 +10,7 @@ const ThemeContext = ({ children }) => {
 
   //** ComponentDidMount
   useEffect(() => {
-    if (window !== 'undefined') {
+    if (window !== String(undefined)) {
       //** Get variable value
       const getHex = color => window.getComputedStyle(document.body).getPropertyValue(color).trim()
 

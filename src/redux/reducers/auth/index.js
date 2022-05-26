@@ -15,13 +15,6 @@ const authReducer = (state = initialState, action) => {
         [action.config.storageRefreshTokenKeyName]:
           action.config.storageRefreshTokenKeyName,
       };
-      return {
-        ...state,
-        userData: action.data,
-        [action.config.storageTokenKeyName]: action.config.storageTokenKeyName,
-        [action.config.storageRefreshTokenKeyName]:
-          action.config.storageRefreshTokenKeyName,
-      };
     case "LOGOUT":
       const obj = { ...action };
       delete obj.type;

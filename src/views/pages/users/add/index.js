@@ -47,6 +47,7 @@ function Index() {
   const dispatch = useDispatch();
   const [projects, setProjectList] = useState([]);
   const [role, setRoleList] = useState([]);
+  const [disabled, setDisabled] = useState(true);
 
   const [selectedProject, setSelectedProject] = useState([]);
 
@@ -91,6 +92,19 @@ function Index() {
         }
       });
   }, [formState.useEffectKey]);
+
+  useEffect(() => {
+    if ( formState.name_surname &&
+      formState.role_id &&
+      formState.email_address  &&
+      formState.name &&
+      formState.call &&
+      formState.phone_number.length >= 11) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
+  }, [formState])
 
   const history = useHistory();
 
@@ -169,7 +183,6 @@ function Index() {
           if (error.response.status === 422) {
             let arr = [];
             arr.push(Object.values(error.response.data.data.error));
-
             toast.error(
               <ToastContent
                 type={"error"}
@@ -199,25 +212,30 @@ function Index() {
 
   return (
     <div className="invoice-list-table-header w-100 mr-1 ml-50 mt-2 mb-75">
-      <Col md={12}>
+      <Col md={9}>
         <Col className="mb-2 d-flex " md={12}>
           <Row md={12}>
-            <Col xs={2}>
+            <Col xs={2} style={{paddingTop: "7px"}}>
               <ArrowLeftCircle
                 size={28}
                 onClick={history.goBack}
                 style={{ cursor: "pointer" }}
               />
             </Col>
-            <Col xs={8} className="d-flex ml-3">
-              <UserPlus />
-              <h3 className="ml-1">
-                <FormattedMessage id="addnewuser"></FormattedMessage>
-              </h3>
+            <Col xs={9} className="d-flex mr-1">
+              {/* <h3 style={{ width: "242px" }}> */}
+                {/* <span className="mr-2"> */}
+                  <UserPlus size="37px" style={{paddingTop: "3px",paddingLeft:"5px"}}/>
+                {/* </span> */}
+                {/* <FormattedMessage id="addnewuser" ></FormattedMessage> */}
+                <h3 className="ml-1 text-nowrap" style={{paddingTop: "9px", paddingRight: "5px"}}>
+                Add New User
+                </h3>
+              {/* </h3> */}
             </Col>
           </Row>
         </Col>
-        <Col md={{ size: 6, offset: 2 }}>
+        <Col md={8} style={{ paddingLeft:"100px"}} >
           <Form onSubmit={handleSubmit(onSubmit)} className="mb-6 pb-5">
             <FormGroup>
               <FormGroup>
@@ -238,9 +256,7 @@ function Index() {
                   onChange={(e) =>
                     setFormState({
                       ...formState,
-
                       call: [e.value],
-                      name: [e.label],
                     })
                   }
                   innerRef={register({ required: true })}
@@ -301,34 +317,30 @@ function Index() {
                 <FormFeedback>{errors.name.message}</FormFeedback>
               )}
             </FormGroup>
-
             <FormGroup>
-              <div
-                style={{
-                  display: "inline-block",
-                }}
-              >
-                <PhoneInput
-                  country={"tr"}
-                  containerStyle={{ marginTop: "15px" }}
-                  searchClass="search-class"
-                  searchStyle={{ margin: "0", width: "97%", height: "30px" }}
-                  enableSearchField
-                  disableSearchIcon
-                  onChange={(e) =>
-                    setFormState({
-                      ...formState,
-
-                      phone_number: e,
-                    })
-                  }
-                />
-              </div>
+              <Label for="phone" >
+                <FormattedMessage id="Phone"></FormattedMessage> :{" "}
+                <span className="text-danger">*</span>
+              </Label>
+              <PhoneInput
+                country={"tr"}
+                // containerStyle={{ marginTop: "4px" }}
+                searchClass="search-class"
+                searchStyle={{ margin: "0", width: "97%", height: "30px" }}
+                enableSearchField
+                disableSearchIcon
+                onChange={(e) =>
+                  setFormState({
+                    ...formState,
+                    phone_number: e,
+                  })
+                }
+              />
             </FormGroup>
-
             <FormGroup>
               <Label for="role_id">
-                <FormattedMessage id="Select Role"></FormattedMessage>
+                <FormattedMessage id="Select Role"></FormattedMessage> :{" "}
+                <span className="text-danger">*</span>
               </Label>
               <Select
                 isClearable={true}
@@ -340,7 +352,6 @@ function Index() {
                 onChange={(e) =>
                   setFormState({
                     ...formState,
-
                     role_id: e.value,
                     name: e.label,
                   })
@@ -352,23 +363,26 @@ function Index() {
                 <FormFeedback>{errors.role_id.message}</FormFeedback>
               )}
             </FormGroup>
-
-            <Button
-              onClick={onSubmit}
-              type="submit"
-              className="mr-1"
-              color="primary"
-            >
-              <FormattedMessage id="submit"></FormattedMessage>
-            </Button>
-            <Button
-              onClick={history.goBack}
-              type="reset"
-              color="secondary"
-              outline
-            >
-              <FormattedMessage id="Cancel"></FormattedMessage>
-            </Button>
+            <div class="d-flex justify-content-center" >
+              <Button
+                onClick={onSubmit}
+                type="submit"
+                className="btn-block mr-1 mt-0"
+                color="primary"
+                disabled={disabled}
+              >
+                <FormattedMessage id="submit"></FormattedMessage>
+              </Button>
+              <Button
+                onClick={history.goBack}
+                type="reset"
+                color="secondary"
+                outline
+                className="btn-block mt-0"
+              >
+                <FormattedMessage id="Cancel"></FormattedMessage>
+              </Button>
+            </div>
           </Form>
         </Col>
       </Col>

@@ -1,8 +1,7 @@
 import React, { Fragment } from "react";
 import { useState, useEffect, useContext } from "react";
-import { Lock, Edit, Trash2, Coffee, AlertCircle } from "react-feather";
+import { Coffee, AlertCircle } from "react-feather";
 import {
-  Media,
   Row,
   Col,
   Button,
@@ -10,27 +9,15 @@ import {
   Input,
   Label,
   FormGroup,
-  Table,
-  CustomInput,
   FormFeedback,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
 } from "reactstrap";
 import Avatar from "../../../../src/@core/components/avatar";
 import { useDispatch, useSelector } from "react-redux";
-import { useForm, Controller } from "react-hook-form";
-import Flatpickr from "react-flatpickr";
+import { useForm} from "react-hook-form";
 import "@styles/react/libs/flatpickr/flatpickr.scss";
-import classnames from "classnames";
 import { useHistory, useParams } from "react-router-dom";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { isObjEmpty } from "../../../../src/utility/Utils";
 // import InputPasswordToggle from "../../../../@core/components/input-password-toggle";
 import Select from "react-select";
-import { selectThemeColors } from "@utils";
 import axios from "axios";
 import { BASE_URL } from "../../../../src/@core/auth/jwt/jwtService";
 import { Slide, toast } from "react-toastify";
@@ -46,18 +33,17 @@ const GeneralInfo = (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [imgForRequest, setImageForRequest] = useState(null);
-  const [passwordConfirm, setPasswordConfirm] = useState("");
   const [deleteModal, setDeleteModal] = useState(false);
-  const [getCompanyName, setCompanyName] = useState(null);
   const { id } = useParams();
 
   const [formState, setFormState] = useState({
     company_name: "",
     city: "",
-    district: "",
+    districtCode: "",
     customer_id: 1,
 
     country: "",
+    allDistrict:[{}],
     allCities: [{}],
     AllCountries: [{}],
   });
@@ -164,7 +150,7 @@ const GeneralInfo = (props) => {
             }
             setFormState({
               ...formState,
-              district: distirctItems,
+              allDistrict: distirctItems,
               city: id.val,
             });
           }
@@ -267,17 +253,17 @@ const GeneralInfo = (props) => {
   };
 
   const onSubmit = async () => {
-    console.log("cehckethenumber", phone_number);
+   
     if (1) {
-      // console.log(formState.phone_number[0].phone);
       await axios
         .post(
           `${BASE_URL}/api/customer-management/customer/company/update-company/${id}`,
           {
             name: formState.company_name,
             customer_id: formState.customer_id,
-            country: formState.country,
-            city: formState.city,
+            country: typeof formState.country === "object" ? formState.country.country_id : formState.country,
+            city: typeof formState.city === "object" ? formState.city.city_id : formState.city,
+            district: formState.district=== "object" ? formState.district.district_id : formState.districtCode.val,
             phone_number: [valueOfPhone],
             email_address: email_address,
             member: member,
@@ -392,13 +378,11 @@ const GeneralInfo = (props) => {
                   <FormattedMessage id="Country List"></FormattedMessage>
                 </Label>
                 <Select
-                  isClearable={true}
                   name="countyID"
                   className="react-select"
                   classNamePrefix="select"
                   options={listItems}
-                  defaultValue={formState.countryCode}
-                  placeholder={formState.countryCode}
+                  placeholder={formState.country ? formState.country.country_name : "--"}
                   onChange={(e) => onChangeCountry(e)}
                   innerRef={register({ required: true })}
                   invalid={errors.countryCode && true}
@@ -414,13 +398,12 @@ const GeneralInfo = (props) => {
                   <FormattedMessage id="City List"></FormattedMessage>
                 </Label>
                 <Select
-                  isClearable={true}
+                  isDisabled={!formState.allCities ? true : false}
                   name="cityID"
                   className="react-select"
                   classNamePrefix="select"
-                  options={formState.cities}
-                  defaultValue={formState.districtCode}
-                  placeholder={formState.cityCode}
+                  options={formState.allCities}
+                  placeholder={ formState.city ? formState.city.city_name : "--"}
                   onChange={(e) => onChangeCities(e)}
                   innerRef={register({ required: true })}
                   invalid={errors.cityCode && true}
@@ -436,17 +419,16 @@ const GeneralInfo = (props) => {
                   <FormattedMessage id="Districts List"></FormattedMessage>
                 </Label>
                 <Select
-                  isClearable={true}
-                  name="cityID"
+                  isDisabled={!formState.allDistrict ? true : false}
+                  name="districtID"
                   className="react-select"
                   classNamePrefix="select"
-                  placeholder={formState.districtCode}
-                  options={formState.distirct}
-                  defaultValue={formState.districtCode}
+                  placeholder={formState.district ? formState.district.district_name : "--"}
+                  options={formState.allDistrict}
                   onChange={(data) =>
                     setFormState({
                       ...formState,
-                      districtCode: data.id,
+                      districtCode: data,
                     })
                   }
                   innerRef={register({ required: true })}

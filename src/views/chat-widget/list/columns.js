@@ -76,37 +76,37 @@ export const Columns = [
                 </Link>                  
             </div>
         )
-    },
-    {
-        name: 'Action',
-        minWidth: '50px',
-        cell: row => (
-            <UncontrolledDropdown>
-                <DropdownToggle tag='div' className='btn btn-sm'>
-                    <MoreVertical size={14} className='cursor-pointer'/>
-                </DropdownToggle>
-                <DropdownMenu right>
-                    <DropdownItem
-                        tag={Link}
-                        to={`/chat-widget/js/${row.widget_id}/${row.file_key}`}
-                        className='w-100'
-                    >
-                        <Archive size={14} className='mr-50'/>
-                        <span className='align-middle'>Chat Code JS</span>
-                    </DropdownItem>
-                    <DropdownItem className='w-100' onClick={() => {
-                        store.dispatch({
-                            type: 'CLOSE_MODAL',
-                            data: true,
-                            id: row.widget_id
-                        })
-                    }
-                    }>
-                        <Trash2 size={14} className='mr-50'/>
-                        <span className='align-middle'>Delete</span>
-                    </DropdownItem>
-                </DropdownMenu>
-            </UncontrolledDropdown>
-        )
     }
+    // {
+    //     name: 'Action',
+    //     minWidth: '50px',
+    //     cell: row => (
+    //         <UncontrolledDropdown>
+    //             <DropdownToggle tag='div' className='btn btn-sm'>
+    //                 <MoreVertical size={14} className='cursor-pointer'/>
+    //             </DropdownToggle>
+    //             <DropdownMenu right>
+    //                 <DropdownItem
+    //                     tag={Link}
+    //                     to={`/chat-widget/js/${row.widget_id}/${row.file_key}`}
+    //                     className='w-100'
+    //                 >
+    //                     <Archive size={14} className='mr-50'/>
+    //                     <span className='align-middle'>Chat Code JS</span>
+    //                 </DropdownItem>
+    //                 <DropdownItem className='w-100' onClick={() => {
+    //                     store.dispatch({
+    //                         type: 'CLOSE_MODAL',
+    //                         data: true,
+    //                         id: row.widget_id
+    //                     })
+    //                 }
+    //                 }>
+    //                     <Trash2 size={14} className='mr-50'/>
+    //                     <span className='align-middle'>Delete</span>
+    //                 </DropdownItem>
+    //             </DropdownMenu>
+    //         </UncontrolledDropdown>
+    //     )
+    // }
 ]

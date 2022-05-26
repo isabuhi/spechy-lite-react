@@ -130,9 +130,7 @@
   }
 
   .close {
-    top: $modal-header-padding-y / 2;
-    z-index: 10;
-    transform: none;
+    z-index: 10; 
     position: absolute;
     top: 1.5rem;
     right: $modal-header-padding-x;

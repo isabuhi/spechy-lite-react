@@ -142,7 +142,7 @@ const SidebarLeft = (props) => {
                     item.avatar,
                     item.logId,
                     item.mailboxId
-                  ),
+                  );
                     // openContactOn(e)
                     fuc(e);
                 }}
