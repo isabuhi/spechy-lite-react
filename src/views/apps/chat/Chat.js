@@ -105,6 +105,7 @@ const ChatLog = (props) => {
     roomId,
     startConference,
     jitsiContainer,
+    getHistory,
   } = props;
   // ** State
   const [record, setRecord] = useState(false);
@@ -655,7 +656,9 @@ const ChatLog = (props) => {
                   className="avatar-border user-profile-toggle m-0 mr-1"
                   onClick={() => {
                     return (
-                      handleAvatarClick(selectedUser.contact), setShow(true)
+                      handleAvatarClick(selectedUser.contact),
+                      setShow(true),
+                      getHistory()
                     );
                   }}
                 />
@@ -735,7 +738,6 @@ const ChatLog = (props) => {
                     />
                   </ModalBody>
                 </Modal>
-                {}
 
                 {show === true ? (
                   <XCircle

@@ -952,6 +952,9 @@ const AppChat = (props) => {
     await childCompRef.current.onSubmit();
     e.preventDefault();
   };
+  const getHistory = async (e, data) => {
+    await childCompRef.current.getHistoryTableDatas();
+  };
 
   const close = async (e, data) => {
     await childCompRef.current.onSubmit();
@@ -1050,6 +1053,7 @@ const AppChat = (props) => {
                 selectedReasonCode={selectedReasonCode}
                 roomId={myRoomId}
                 jitsiContainer={jitsiContainer}
+                getHistory={getHistory}
               />
               <Card title="" className="information-chat">
                 <PillsBasic

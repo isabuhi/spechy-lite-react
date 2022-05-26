@@ -65,18 +65,22 @@ export const columns = [
             className="user-name text-truncate mb-0"
           >
             <span className="font-weight-bold">
-              {Object.keys(row)
+              {row.profile === null
+                ? ""
+                : row.profile.name_surname.slice(0, 10) +
+                  (row.profile.name_surname > 10 ? "..." : "")}
+              {/* {Object.keys(row)
                 ? row.profile.name_surname.slice(0, 10) +
                   (row.profile.name_surname > 10 ? "..." : "")
-                : ""}
+                : ""} */}
             </span>
           </Link>
           <small className="text-truncate text-muted mb-0">
-            @{" "}
-            {Object.keys(row)
-              ? row.profile.name_surname.slice(0, 10) +
-                (row.profile.name_surname > 10 ? "..." : "")
-              : ""}
+            @
+            {row.profile === null
+              ? ""
+              : row.profile.name_surname.slice(0, 10) +
+                (row.profile.name_surname > 10 ? "..." : "")}
           </small>
         </div>
       </div>

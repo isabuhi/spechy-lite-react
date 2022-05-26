@@ -41,7 +41,7 @@ const GeneralInfo = (props) => {
     name_surname: "",
     city: "",
     customer_id: 1,
-    district:"",
+    district: "",
     country: "",
     allCities: [{}],
     AllCountries: [{}],
@@ -74,6 +74,7 @@ const GeneralInfo = (props) => {
       .get(`${BASE_URL}/api/customer-management/customer/select/${id}`)
       .then((response) => {
         if (response.status === 200) {
+          console.log("deistrict", response);
           setFormState(response.data.data.profile);
           setCompanyName(response.data.data.profile.name_surname);
 
@@ -262,9 +263,18 @@ const GeneralInfo = (props) => {
           {
             name_surname: formState.name_surname,
             customer_id: formState.customer_id,
-            country: typeof formState.country === "object" ? formState.country.country_id : formState.country,
-            district: formState.district=== "object" ? formState.district.district_id : formState.district.val,
-            city: typeof formState.city === "object" ? formState.city.city_id : formState.city,
+            country:
+              typeof formState.country === "object"
+                ? formState.country.country_id
+                : formState.country,
+            district:
+              formState.district === "object"
+                ? formState.district.district_id
+                : formState.district.val,
+            city:
+              typeof formState.city === "object"
+                ? formState.city.city_id
+                : formState.city,
             phone_number:
               valueOfPhone === null ? [phone_number] : [valueOfPhone],
             email_address: email_address,
@@ -382,7 +392,9 @@ const GeneralInfo = (props) => {
                   className="react-select"
                   classNamePrefix="select"
                   options={listItems}
-                  placeholder={formState.country ? formState.country.country_name : "--"}
+                  placeholder={
+                    formState.country ? formState.country.country_name : "--"
+                  }
                   onChange={(e) => onChangeCountry(e)}
                   innerRef={register({ required: true })}
                   invalid={errors.countryCode && true}
@@ -404,7 +416,7 @@ const GeneralInfo = (props) => {
                   options={formState.allCities}
                   isDisabled={!formState.allCities ? true : false}
                   onChange={(e) => onChangeCities(e)}
-                  placeholder={ formState.city ? formState.city.city_name : "--"}
+                  placeholder={formState.city ? formState.city.city_name : "--"}
                   innerRef={register({ required: true })}
                   invalid={errors.cityCode && true}
                 />
@@ -422,7 +434,9 @@ const GeneralInfo = (props) => {
                   name="cityID"
                   className="react-select"
                   classNamePrefix="select"
-                  placeholder={formState.district ? formState.district.district_name : "--"}
+                  placeholder={
+                    formState.district ? formState.district.district_name : "--"
+                  }
                   options={formState.AllDistrict}
                   isDisabled={!formState.AllDistrict ? true : false}
                   onChange={(data) =>
