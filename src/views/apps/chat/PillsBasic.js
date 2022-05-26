@@ -41,12 +41,7 @@ import PhoneInput from "react-phone-input-2";
 import { useDispatch, useSelector } from "react-redux";
 import { getCountries } from "../../customerManagement/store/Actions";
 import { Slide, toast } from "react-toastify";
-import {
-  Coffee,
-  AlertCircle,
-  Plus,
-  X,
-} from "react-feather";
+import { Coffee, AlertCircle, Plus, X } from "react-feather";
 
 import AddNote from "./addNote";
 import AddTicket from "./addTicket";
@@ -65,7 +60,7 @@ const PillBasic = forwardRef((props, ref) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [formState, setFormState] = useState({
     name: "",
-    name_surname: "",
+    // name_surname: "",
     created_at: "",
     data: [],
     user_name_surname: "",
@@ -401,7 +396,7 @@ const PillBasic = forwardRef((props, ref) => {
           );
       },
     }),
-    [customer_id]
+    [customer_id, getContactCardDatas]
   );
 
   const onChanceHandler = (e) => {
@@ -705,7 +700,9 @@ const PillBasic = forwardRef((props, ref) => {
                   className="react-select"
                   classNamePrefix="select"
                   options={listItems}
-                  placeholder={formState.country ? formState.country.country_name : "--"}
+                  placeholder={
+                    formState.country ? formState.country.country_name : "--"
+                  }
                   defaultValue={formState.countryCode}
                   onChange={(e) => onChangeCountry(e)}
                 />
@@ -724,8 +721,8 @@ const PillBasic = forwardRef((props, ref) => {
                   className="react-select"
                   classNamePrefix="select"
                   options={formState.allCities}
-                  placeholder={ formState.city ? formState.city.city_name : "--"}
-                defaultValue={formState.allCities}
+                  placeholder={formState.city ? formState.city.city_name : "--"}
+                  defaultValue={formState.allCities}
                   onChange={(e) => onChangeCities(e)}
                 />
               </FormGroup>
@@ -743,7 +740,9 @@ const PillBasic = forwardRef((props, ref) => {
                   className="react-select"
                   classNamePrefix="select"
                   options={formState.district}
-                  placeholder={formState.district ? formState.district.district_name : "--"}
+                  placeholder={
+                    formState.district ? formState.district.district_name : "--"
+                  }
                   defaultValue={formState.district}
                   onChange={(data) =>
                     setFormState({
@@ -769,19 +768,17 @@ const PillBasic = forwardRef((props, ref) => {
           </TabPane>
           <TabPane tabId="3">
             <Card>
-            <div className="col-12 row" style={{paddingBottom:"10px"}}>
-              <div className="col-4">
-              </div>
-              <div className="col-4">
-              <Button.Ripple
-                color="primary"
-                onClick={() => setCenteredModal(!centeredModal)}
-              >
-                Add Ticket
-              </Button.Ripple>
-              </div>
-              <div className="col-4">
-              </div>
+              <div className="col-12 row" style={{ paddingBottom: "10px" }}>
+                <div className="col-4"></div>
+                <div className="col-4">
+                  <Button.Ripple
+                    color="primary"
+                    onClick={() => setCenteredModal(!centeredModal)}
+                  >
+                    Add Ticket
+                  </Button.Ripple>
+                </div>
+                <div className="col-4"></div>
               </div>
               <DataTable
                 noHeader
@@ -803,7 +800,10 @@ const PillBasic = forwardRef((props, ref) => {
                 Ticket Name
               </ModalHeader>
               <ModalBody>
-                <AddTicket customer_id={customer_id} setCenteredModal={setCenteredModal} />
+                <AddTicket
+                  customer_id={customer_id}
+                  setCenteredModal={setCenteredModal}
+                />
               </ModalBody>
             </Modal>
           </TabPane>
@@ -820,20 +820,18 @@ const PillBasic = forwardRef((props, ref) => {
           </TabPane>
           <TabPane tabId="5">
             <Card>
-            <div className="col-12 row">
-              <div className="col-4">
-              </div>
-              <div className="col-4">
-              <Button.Ripple
-                color="primary"
-                onClick={() => setBasicModal(!basicModal)}
-                size="md"
-              >
-                Add Note
-              </Button.Ripple>
-              </div>
-              <div className="col-4">
-              </div>
+              <div className="col-12 row">
+                <div className="col-4"></div>
+                <div className="col-4">
+                  <Button.Ripple
+                    color="primary"
+                    onClick={() => setBasicModal(!basicModal)}
+                    size="md"
+                  >
+                    Add Note
+                  </Button.Ripple>
+                </div>
+                <div className="col-4"></div>
               </div>
               <DataTable
                 noHeader

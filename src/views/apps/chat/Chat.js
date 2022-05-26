@@ -654,9 +654,9 @@ const ChatLog = (props) => {
                   status={selectedUser.contact.status}
                   className="avatar-border user-profile-toggle m-0 mr-1"
                   onClick={() => {
-                    return(
+                    return (
                       handleAvatarClick(selectedUser.contact), setShow(true)
-                    )
+                    );
                   }}
                 />
                 <h6 className="mb-0">{fullName.slice(0, 6)}</h6>
