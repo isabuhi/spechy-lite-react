@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 import React, { Fragment, useState, useEffect } from "react";
-=======
->>>>>>> 1605341c0986dea6748dbb2c44df2460aabc0ed7
 import classnames from "classnames";
 import {
   Row,
