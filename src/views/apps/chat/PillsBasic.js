@@ -298,6 +298,7 @@ const PillBasic = forwardRef((props, ref) => {
       )
       .then((response) => {
         if (response.status === 200) {
+          console.log("dis", response);
           const emailTOSet = response.data.data.emails.map((x) => {
             return x.email_address;
           });
@@ -312,6 +313,12 @@ const PillBasic = forwardRef((props, ref) => {
 
           // setAddressDetail(response.data.data.profile.address_detail);
           setCustomerName(response.data.data.profile.name_surname);
+          setFormState({
+            ...formState,
+            country: response.data.data.profile.country.country_name,
+            city: response.data.data.profile.city.city_name,
+            // district: response.data.data.profile.district.district_name,
+          });
         }
       });
   };
@@ -719,9 +726,7 @@ const PillBasic = forwardRef((props, ref) => {
                   className="react-select"
                   classNamePrefix="select"
                   options={listItems}
-                  placeholder={
-                    formState.country ? formState.country.country_name : "--"
-                  }
+                  placeholder={formState.country}
                   defaultValue={formState.countryCode}
                   onChange={(e) => onChangeCountry(e)}
                 />
@@ -740,8 +745,8 @@ const PillBasic = forwardRef((props, ref) => {
                   className="react-select"
                   classNamePrefix="select"
                   options={formState.allCities}
-                  placeholder={formState.city ? formState.city.city_name : "--"}
-                  defaultValue={formState.allCities}
+                  placeholder={formState.city}
+                  // defaultValue={formState.allCities}
                   onChange={(e) => onChangeCities(e)}
                 />
               </FormGroup>
