@@ -315,8 +315,14 @@ const PillBasic = forwardRef((props, ref) => {
           setCustomerName(response.data.data.profile.name_surname);
           setFormState({
             ...formState,
-            country: response.data.data.profile.country.country_name,
-            city: response.data.data.profile.city.city_name,
+            country:
+              response.data.data.profile.country === null
+                ? ""
+                : response.data.data.profile.country.country_name,
+            city:
+              response.data.data.profile.city === null
+                ? ""
+                : response.data.data.profile.city.city_name,
             // district: response.data.data.profile.district.district_name,
           });
         }
@@ -746,7 +752,7 @@ const PillBasic = forwardRef((props, ref) => {
                   classNamePrefix="select"
                   options={formState.allCities}
                   placeholder={formState.city}
-                  // defaultValue={formState.allCities}
+                  defaultValue={formState.allCities}
                   onChange={(e) => onChangeCities(e)}
                 />
               </FormGroup>
