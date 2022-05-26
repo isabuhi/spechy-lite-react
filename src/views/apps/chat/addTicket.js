@@ -126,18 +126,19 @@ function AddTicket(props) {
       });
   }, [formState.useEffectKey]);
 
-
   useEffect(() => {
-    if(
-          formState.title &&
-          formState.priority &&
-          formState.assgin &&
-          formState.status &&
-          startDateChange &&
-          endDateChange &&
-          valueText
-    ) {setDisabled(false)} else {
-      setDisabled(true)
+    if (
+      formState.title &&
+      formState.priority &&
+      formState.assgin &&
+      formState.status &&
+      startDateChange &&
+      endDateChange &&
+      valueText
+    ) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
     }
   }, [formState, startDateChange, endDateChange, valueText]);
 
@@ -207,7 +208,8 @@ function AddTicket(props) {
           subject: formState.title,
           description: valueText.getCurrentContent().getPlainText(),
           priority: formState.priority,
-          source: projectList.length===1 ? projectList[0].value : formState.project,
+          source:
+            projectList.length === 1 ? projectList[0].value : formState.project,
           status: formState.status,
           startAt: startTimeChanged,
           endAt: pickerEndChanged,
@@ -216,7 +218,7 @@ function AddTicket(props) {
         })
         .then((response) => {
           if (response.status === 200) {
-            setCenteredModal(false)
+            setCenteredModal(false);
             toast.success(
               <ToastContent
                 type={"success"}
@@ -226,7 +228,7 @@ function AddTicket(props) {
               { transition: Slide, hideProgressBar: true, autoClose: 3000 }
             );
             //   history.goBack();
-            closeToggle();
+            closeToggle;
           }
         })
         .catch(() =>
@@ -335,8 +337,11 @@ function AddTicket(props) {
             </Col>
           </Row>
         </Col>
-        <Col md={10} style={{ paddingLeft:"100px" }} >
-          <Form onSubmit={handleSubmit(onSubmit)} className="mb-6 pb-5 align-content-center">
+        <Col md={10} style={{ paddingLeft: "100px" }}>
+          <Form
+            onSubmit={handleSubmit(onSubmit)}
+            className="mb-6 pb-5 align-content-center"
+          >
             <FormGroup>
               <Label for="title">
                 Ticket Name : <span className="text-danger">*</span>
@@ -445,10 +450,10 @@ function AddTicket(props) {
                     data-enable-time
                     id="date-time-picker"
                     className="form-control"
-                    onChange={(date) =>{
+                    onChange={(date) => {
                       setPickerStart(date);
-                      setStartDateChange(true)
-                    } }
+                      setStartDateChange(true);
+                    }}
                   />
                   {errors && errors.call && (
                     <FormFeedback>{errors.call.message}</FormFeedback>
@@ -463,10 +468,10 @@ function AddTicket(props) {
                     data-enable-time
                     id="date-time-picker"
                     className="form-control"
-                    onChange={(date) =>{
+                    onChange={(date) => {
                       setPickerEnd(date);
-                      setEndDateChange(true)
-                    } }
+                      setEndDateChange(true);
+                    }}
                   />{" "}
                   {errors && errors.call && (
                     <FormFeedback>{errors.call.message}</FormFeedback>
@@ -487,73 +492,73 @@ function AddTicket(props) {
               )}
             </FormGroup>
             <FormGroup>
-              {projectList.length === 1 ? 
-              <Row md={12}>
-              <Col md={{ size: 6 }}>
-                <Label for="project">
-                  Source : <span className="text-danger">*</span>
-                </Label>
-                <Input
-                disabled="true"
-                name="title"
-                id="title"
-                placeholder={projectList[0].label}
-                className={classnames({ "is-invalid": errors["title"] })}
-                
-                innerRef={register({ required: true })}
-                invalid={errors.title && true}
-              />
-              </Col>
-            </Row> :
-            <Row md={12}>
-            <Col md={{ size: 6 }}>
-              <Label for="project">
-                Source : <span className="text-danger">*</span>
-              </Label>
-              <Select
-                theme={selectThemeColors}
-                className="react-select"
-                classNamePrefix="select"
-                options={projectList}
-                isClearable={false}
-                name="project"
-                onChange={(e) =>
-                  setFormState({
-                    ...formState,
-                    project: e.value,
-                  })
-                }
-              />
-              {errors && errors.project && (
-                <FormFeedback>{errors.project.message}</FormFeedback>
+              {projectList.length === 1 ? (
+                <Row md={12}>
+                  <Col md={{ size: 6 }}>
+                    <Label for="project">
+                      Source : <span className="text-danger">*</span>
+                    </Label>
+                    <Input
+                      disabled="true"
+                      name="title"
+                      id="title"
+                      placeholder={projectList[0].label}
+                      className={classnames({ "is-invalid": errors["title"] })}
+                      innerRef={register({ required: true })}
+                      invalid={errors.title && true}
+                    />
+                  </Col>
+                </Row>
+              ) : (
+                <Row md={12}>
+                  <Col md={{ size: 6 }}>
+                    <Label for="project">
+                      Source : <span className="text-danger">*</span>
+                    </Label>
+                    <Select
+                      theme={selectThemeColors}
+                      className="react-select"
+                      classNamePrefix="select"
+                      options={projectList}
+                      isClearable={false}
+                      name="project"
+                      onChange={(e) =>
+                        setFormState({
+                          ...formState,
+                          project: e.value,
+                        })
+                      }
+                    />
+                    {errors && errors.project && (
+                      <FormFeedback>{errors.project.message}</FormFeedback>
+                    )}
+                  </Col>
+                </Row>
               )}
-            </Col>
-          </Row>}
-              
             </FormGroup>
-            <div className="row col-12 justify-content-center" >
-            <div className="col-4" >
-            <Button
-              onClick={onSubmit}
-              disabled={disabled}
-              type="button"
-              color="primary"
-              style={{width:"100%"}}
-            >
-              Submit
-            </Button>
-            </div>
-            <div className="col-4" >
-            <Button
-              onClick={history.goBack}
-              type="reset"
-              color="secondary"
-              outline
-              style={{width:"100%"}}
-            >
-              Cancel
-            </Button>
-            </div>
+            <div className="row col-12 justify-content-center">
+              <div className="col-4">
+                <Button
+                  onClick={onSubmit}
+                  disabled={disabled}
+                  type="button"
+                  color="primary"
+                  style={{ width: "100%" }}
+                >
+                  Submit
+                </Button>
+              </div>
+              <div className="col-4">
+                <Button
+                  onClick={history.goBack}
+                  type="reset"
+                  color="secondary"
+                  outline
+                  style={{ width: "100%" }}
+                >
+                  Cancel
+                </Button>
+              </div>
             </div>
           </Form>
         </Col>

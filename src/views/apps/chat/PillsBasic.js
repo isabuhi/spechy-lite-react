@@ -319,6 +319,23 @@ const PillBasic = forwardRef((props, ref) => {
   useImperativeHandle(
     ref,
     () => ({
+      async getHistoryTableDatas() {
+        axios
+          .post(
+            `${BASE_URL}/api/customer-management/customer/conversation/history`,
+            {
+              customer_id: customer_id,
+
+              limit: 10,
+              offset: 1,
+            }
+          )
+          .then((res) => {
+            if (res.status === 200) {
+              setFormState(res.data.data.history);
+            }
+          });
+      },
       async getContactCardData() {
         await axios
           .get(
@@ -351,8 +368,9 @@ const PillBasic = forwardRef((props, ref) => {
             customer_id: formState.customer_id,
             country: formState.country,
             city: formState.city,
+            district: formState.district,
             phone_number: valueOfPhone == null ? [""] : [valueOfPhone],
-            email_address: email_address == [] ? email_address : [""],
+            email_address: email_address == null ? [""] : email_address,
           }
         );
         await axios
@@ -363,8 +381,9 @@ const PillBasic = forwardRef((props, ref) => {
               customer_id: formState.customer_id,
               country: formState.country,
               city: formState.city,
-              phone_number: valueOfPhone == [] ? valueOfPhone : [""],
-              email_address: email_address == [] ? email_address : [""],
+              district: formState.district,
+              phone_number: valueOfPhone == null ? [""] : [valueOfPhone],
+              email_address: email_address == null ? [""] : email_address,
               log_id: log_id,
               channel_id: channel_id,
               reason_codes: dataOfReason > 0 ? [dataOfReason] : [],

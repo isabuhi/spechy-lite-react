@@ -44,6 +44,7 @@ const DataTableServerSide = () => {
   // ** Store Vars
   const dispatch = useDispatch();
   const store = useSelector((state) => state.customers);
+  console.log("newstore", store);
   // ** States
   const [modal, setModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
