@@ -347,7 +347,7 @@
   // navbar sticky
   &.navbar-sticky {
     .app-content {
-      padding: calc(#{$content-padding} + #{$navbar-height}* 2) #{$content-padding} 0 #{$content-padding};
+      padding: calc(#{$content-padding} + #{$navbar-height} * 2) #{$content-padding} 0 #{$content-padding};
     }
     .header-navbar {
       background-color: $body-bg;
