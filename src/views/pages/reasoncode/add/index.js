@@ -213,9 +213,7 @@ function Index() {
     if(
       selectedProject.length &&
       formState.reasonName &&
-      formState.sms &&
-      formState.type &&
-      formState.mail 
+      formState.type
     ){
       if(formState.call == "0"){
         setDisabled(false)
@@ -561,7 +559,7 @@ function Index() {
               color="primary"
               type="submit"
               id="submit-data"
-              //disabled={disabled}
+              disabled={disabled}
             >
               <FormattedMessage id="create"> </FormattedMessage>
             </Button>
