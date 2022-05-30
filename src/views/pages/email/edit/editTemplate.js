@@ -161,7 +161,7 @@ const EmailTemplateInfo = (props) => {
           <Row>
             <Form onSubmit={handleSubmit(onSubmit)}>
               <Row>
-                <Col sm="12">
+                <Col sm="8">
                   <FormGroup>
                     <Label for="templateName"><FormattedMessage id="templatename"></FormattedMessage></Label>
                     <Input
@@ -178,7 +178,7 @@ const EmailTemplateInfo = (props) => {
                     )}
                   </FormGroup>
                 </Col>
-                <Col sm="12">
+                <Col sm="8">
                   <FormGroup>
                     <Label for="templateTopic"><FormattedMessage id="topicoftemplate"></FormattedMessage></Label>
                     <Input
@@ -207,7 +207,7 @@ const EmailTemplateInfo = (props) => {
                     )}
                   </FormGroup>
                 </Col>
-                <Col sm="12" className="pb-2">
+                <Col sm="8" className="pb-2">
                   <CardBody className="p-0">
                     <FormGroup>
                       <Label for="templateContent">
@@ -241,9 +241,10 @@ const EmailTemplateInfo = (props) => {
                   </CardBody>
                 </Col>
 
-                <Col sm="12">
+                <Col sm="8">
+                  <div className="d-flex">
                   <Button.Ripple
-                    className="mb-1 mb-sm-0 mr-0 mr-sm-1"
+                    className="btn-block mb-1 mb-sm-0 mr-0 mr-sm-1"
                     type="submit"
                     color="primary"
                   >
@@ -251,12 +252,13 @@ const EmailTemplateInfo = (props) => {
                   </Button.Ripple>
                   <Button.Ripple
                     onClick={() => history.goBack()}
-                    className="mb-1 mb-sm-0 mr-0 mr-sm-1"
+                    className="btn-block mt-0"
                     color="secondary"
                     outline
                   >
                     <FormattedMessage id="Cancel"></FormattedMessage>
                   </Button.Ripple>
+                  </div>
                 </Col>
               </Row>
             </Form>

@@ -213,9 +213,7 @@ function Index() {
     if(
       selectedProject.length &&
       formState.reasonName &&
-      formState.sms &&
-      formState.type &&
-      formState.mail 
+      formState.type
     ){
       if(formState.call == "0"){
         setDisabled(false)

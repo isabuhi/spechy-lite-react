@@ -92,7 +92,8 @@ function Index() {
   useEffect(()=>{
     if(
       formState.name&&
-      formState.description
+      formState.description &&
+      newMenu
       ){
         setDisabled(false)
       }else{

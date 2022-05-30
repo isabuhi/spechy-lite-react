@@ -122,16 +122,16 @@ function Index() {
       <Col md={12}>
         <Col className="mb-2 d-flex " md={12}>
           <Row md={12}>
-            <Col xs={2}>
+            <Col xs={2} style={{paddingTop: "3px"}} >
               <ArrowLeftCircle
                 size={28}
                 onClick={history.goBack}
                 style={{ cursor: "pointer" }}
               />
             </Col>
-            <Col xs={8} className="d-flex ml-3">
-              <UserPlus />
-              <h3 className="ml-1"><FormattedMessage id="New Project"></FormattedMessage></h3>
+            <Col xs={8} className="d-flex ml-2" style={{marginRight: "6px"}} >
+              <UserPlus size={"40px"} style={{paddingBottom: "8px"}}/>
+              <h3 className="ml-1 text-nowrap" style={{paddingTop:"5px"}} ><FormattedMessage id="New Project"></FormattedMessage></h3>
             </Col>
           </Row>
         </Col>

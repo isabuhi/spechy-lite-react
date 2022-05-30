@@ -328,14 +328,13 @@ function Index() {
                 <FormFeedback>{errors.access.message}</FormFeedback>
               )} */}
             </FormGroup>
-            <FormGroup>
-              
+            <FormGroup> 
               <Button
                 color="primary"
                 outline
                 onClick={() => setBasicModal(!basicModal)}
               >
-                Add Tag Input
+                Add Tag Input <span className="text-danger">*</span>
               </Button>
               <Modal
                 centered
@@ -349,7 +348,7 @@ function Index() {
                   <FormGroup>
                     <Label for="type">
                       <FormattedMessage id="Access"></FormattedMessage> :{" "}
-                      <span className="text-danger"></span>
+                      <span className="text-danger">*</span>
                     </Label>
                     <TagInput
                       tags={formState.tags}
