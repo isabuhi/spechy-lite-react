@@ -74,7 +74,7 @@ export const Columns = [
     sortable: true,
     minWidth: "250px",
     cell: (row) => {
-      Object.keys(row).length === 0 ? "" : row.source.name;
+      row.source === null ? "" : row.source.name;
     },
   },
 

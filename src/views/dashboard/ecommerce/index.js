@@ -120,7 +120,11 @@ function EcommerceDashboard(props) {
   useEffect(() => {
     let templatesIds = [];
 
-    templates.length > 0 ? templates.map((i) => {templatesIds.push(i.val);}) : "";
+    templates.length > 0
+      ? templates.map((i) => {
+          templatesIds.push(i.val);
+        })
+      : "";
 
     setCurrentId(templatesIds);
   }, [templates]);

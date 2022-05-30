@@ -733,7 +733,7 @@ const PillBasic = forwardRef((props, ref) => {
                   classNamePrefix="select"
                   options={listItems}
                   placeholder={formState.country}
-                  defaultValue={formState.countryCode}
+                  defaultValue={formState.country}
                   onChange={(e) => onChangeCountry(e)}
                 />
               </FormGroup>
