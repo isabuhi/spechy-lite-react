@@ -216,7 +216,7 @@ const DataTableServerSide = () => {
       <Card>
         <CardHeader className="border-bottom">
           <CardTitle tag="h4">
-            <FormattedMessage id="Role Management List"></FormattedMessage>
+            <FormattedMessage id="Role Managements"></FormattedMessage>
           </CardTitle>
           <Button className="ml-2" color="primary" onClick={handleAddClick}>
             <Plus size={15} />

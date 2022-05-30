@@ -219,7 +219,7 @@ const DataTableServerSide = () => {
       </Modal>
       <Card>
         <CardHeader className="border-bottom">
-          <CardTitle tag="h4">Tikcet Category List</CardTitle>
+          <CardTitle tag="h4">Ticket Categories</CardTitle>
           <Button className="ml-2" color="primary" onClick={handleAddClick}>
             <Plus size={15} />
             <span className="align-middle ml-50">

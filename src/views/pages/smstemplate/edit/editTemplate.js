@@ -163,10 +163,10 @@ const SMSTemplateInfo = (props) => {
       <Card>
         <CardBody>
           <Row>
-            <Col sm="12">
+            <Col sm="8">
               <Form onSubmit={handleSubmit(onSubmit)}>
                 <Row>
-                  <Col md={{ size: 6, offset: 2 }}>
+                  <Col sm="8">
                     <FormGroup>
                       <Label for="templateName"><FormattedMessage id="Template Name"></FormattedMessage></Label>
                       <Input
@@ -184,6 +184,8 @@ const SMSTemplateInfo = (props) => {
                         </FormFeedback>
                       )}
                     </FormGroup>
+                  </Col>
+                  <Col sm="8">
                     <FormGroup>
                       <Label for="templateContent"><FormattedMessage id="Template Content"></FormattedMessage></Label>
                       <Input
@@ -203,9 +205,10 @@ const SMSTemplateInfo = (props) => {
                     </FormGroup>
                   </Col>
 
-                  <Col md={{ size: 6, offset: 2 }}>
+                  <Col sm="8">
+                    <div className="d-flex">
                     <Button.Ripple
-                      className="mb-1 mb-sm-0 mr-0 mr-sm-1"
+                      className="btn-block mb-1 mb-sm-0 mr-0 mr-sm-1"
                       type="submit"
                       color="primary"
                     >
@@ -213,12 +216,13 @@ const SMSTemplateInfo = (props) => {
                     </Button.Ripple>
                     <Button.Ripple
                       onClick={() => history.goBack()}
-                      className="mb-1 mb-sm-0 mr-0 mr-sm-1"
+                      className="btn-block mt-0"
                       color="secondary"
                       outline
                     >
                       <FormattedMessage id="Cancel"></FormattedMessage>
                     </Button.Ripple>
+                    </div>
                   </Col>
                 </Row>
               </Form>

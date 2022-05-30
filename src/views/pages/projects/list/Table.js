@@ -219,12 +219,12 @@ const DataTableServerSide = () => {
       <Card>
         <CardHeader className="border-bottom">
           <CardTitle tag="h4">
-            <FormattedMessage id="Projects List"></FormattedMessage>
+            <FormattedMessage id="Sources"></FormattedMessage>
           </CardTitle>
           <Button className="ml-2" color="primary" onClick={handleAddClick}>
             <Plus size={15} />
             <span className="align-middle ml-50">
-              <FormattedMessage id="Projects List"></FormattedMessage>
+              <FormattedMessage id="Add Source"></FormattedMessage>
             </span>
           </Button>
         </CardHeader>

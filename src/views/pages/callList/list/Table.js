@@ -212,7 +212,7 @@ const DataTableServerSide = () => {
       </Modal>
       <Card>
         <CardHeader className="border-bottom">
-          <CardTitle tag="h4">Call List</CardTitle>
+          <CardTitle tag="h4">Calls</CardTitle>
         </CardHeader>
         <Row className="mx-0 mt-1 mb-50">
           <Col

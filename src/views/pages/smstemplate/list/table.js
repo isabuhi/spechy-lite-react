@@ -219,7 +219,7 @@ const DataTableServerSide = () => {
       <Card>
         <CardHeader className="border-bottom">
           <CardTitle tag="h4">
-            <FormattedMessage id="smstemplatelist"> </FormattedMessage>
+            <FormattedMessage id="SMS Template List"> </FormattedMessage>
           </CardTitle>
           <Button className="ml-2" color="primary" onClick={handleAddClick}>
             <Plus size={15} />
