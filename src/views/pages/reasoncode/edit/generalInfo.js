@@ -345,8 +345,9 @@ const GeneralInfo = (props) => {
             </Col>
 
             <Col md={{ size: 6, offset: 2 }}>
+              <div className="d-flex">
               <Button.Ripple
-                className="mb-1 mb-sm-0 mr-0 mr-sm-1"
+                className="btn-block mb-1 mb-sm-0 mr-0 mr-sm-1"
                 type="submit"
                 color="primary"
               >
@@ -354,12 +355,13 @@ const GeneralInfo = (props) => {
               </Button.Ripple>
               <Button.Ripple
                 onClick={() => history.goBack()}
-                className="mb-1 mb-sm-0 mr-0 mr-sm-1"
+                className="btn-block mt-0"
                 color="secondary"
                 outline
               >
                 <FormattedMessage id="Cancel"> </FormattedMessage>
               </Button.Ripple>
+              </div>
             </Col>
           </Row>
         </Form>

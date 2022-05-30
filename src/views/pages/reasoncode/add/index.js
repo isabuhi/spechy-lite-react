@@ -561,7 +561,7 @@ function Index() {
               color="primary"
               type="submit"
               id="submit-data"
-              disabled={disabled}
+              //disabled={disabled}
             >
               <FormattedMessage id="create"> </FormattedMessage>
             </Button>
