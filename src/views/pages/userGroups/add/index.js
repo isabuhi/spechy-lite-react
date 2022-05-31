@@ -44,7 +44,7 @@ function Index() {
   const [selectedProject, setSelectedProject] = useState([]);
   const [selectedChannel, setSelectedChannel] = useState([]);
 
-  const[disabled, setDisabled] = useState(true)
+  const [disabled, setDisabled] = useState(true);
 
   const history = useHistory();
 
@@ -64,16 +64,13 @@ function Index() {
       });
   }, [formState.useEffectKey]);
 
-  useEffect(()=>{
-    if(
-      selectedProject.length &&
-      formState.name
-    ){
-      setDisabled(false)
-    }else{
-      setDisabled(true)
+  useEffect(() => {
+    if (selectedProject.length && formState.name) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
     }
-  },[formState, selectedProject])
+  }, [formState, selectedProject]);
 
   const ToastContent = ({ header, content, type, errorResTo }) => {
     return (
@@ -105,7 +102,7 @@ function Index() {
   });
 
   const onSubmit = async (e) => {
-    if (isObjEmpty(errors) === false) {
+    if (isObjEmpty(errors)) {
       const btn = document.getElementById("submit-data");
       btn.setAttribute("disabled", true);
       btn.innerText = "Checking..";
@@ -188,7 +185,7 @@ function Index() {
       <Col md={12}>
         <Col className="mb-2 d-flex " md={12}>
           <Row md={12}>
-            <Col xs={2} style={{paddingTop: "7px"}}>
+            <Col xs={2} style={{ paddingTop: "7px" }}>
               <ArrowLeftCircle
                 size={28}
                 onClick={history.goBack}
@@ -196,14 +193,17 @@ function Index() {
               />
             </Col>
             <Col xs={9} className="d-flex mr-1">
-              <UserPlus size="40px"/>
-              <h3 className="ml-1 text-nowrap" style={{paddingTop: "9px", paddingRight: "5px"}}>
+              <UserPlus size="40px" />
+              <h3
+                className="ml-1 text-nowrap"
+                style={{ paddingTop: "9px", paddingRight: "5px" }}
+              >
                 New User Groups
               </h3>
             </Col>
           </Row>
         </Col>
-        <Col md={6} style={{ paddingLeft:"100px" }}>
+        <Col md={6} style={{ paddingLeft: "100px" }}>
           <Form onSubmit={handleSubmit(onSubmit)} className="mb-6 pb-5">
             <FormGroup>
               <Label for="name">
@@ -247,26 +247,26 @@ function Index() {
                 {errors.selectedProject.message}
               </p>
             )}
-            <div className="d-flex justify-content-center" >
-            <Button
-              onClick={onSubmit}
-              type="submit"
-              className="btn-block mr-1 mt-0"
-              color="primary"
-              id="submit-data"
-              disabled={disabled}
-            >
-              <FormattedMessage id="submit"></FormattedMessage>
-            </Button>
-            <Button
-              onClick={history.goBack}
-              type="reset"
-              color="secondary"
-              outline
-              className="btn-block mt-0"
-            >
-              <FormattedMessage id="cancel"></FormattedMessage>
-            </Button>
+            <div className="d-flex justify-content-center">
+              <Button
+                onClick={onSubmit}
+                type="submit"
+                className="btn-block mr-1 mt-0"
+                color="primary"
+                id="submit-data"
+                disabled={disabled}
+              >
+                <FormattedMessage id="submit"></FormattedMessage>
+              </Button>
+              <Button
+                onClick={history.goBack}
+                type="reset"
+                color="secondary"
+                outline
+                className="btn-block mt-0"
+              >
+                <FormattedMessage id="cancel"></FormattedMessage>
+              </Button>
             </div>
           </Form>
         </Col>

@@ -116,7 +116,7 @@ function AddEmailTemplate(props) {
     resolver: yupResolver(SignInSchema),
   });
   const onSubmit = async () => {
-    if (isObjEmpty(errors) === false) {
+    if (isObjEmpty(errors)) {
       const btn = document.getElementById("submit-data");
       btn.setAttribute("disabled", true);
       btn.innerText = "Checking..";
@@ -186,24 +186,20 @@ function AddEmailTemplate(props) {
       // }
     }
   };
-  useEffect(()=> {
-    if(
-      formState.templateName &&
-      formState.templateTopic &&
-      editorContent[0]
-      ){
-        setDisabled(false)
-    }else {
-      setDisabled(true)
+  useEffect(() => {
+    if (formState.templateName && formState.templateTopic && editorContent[0]) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
     }
-  },[formState, editorContent])
+  }, [formState, editorContent]);
   return (
     <div className="w-100">
       <br />
       <Card>
         <CardHeader>
           <CardTitle tag="h4">
-            <ArrowLeft  onClick={history.goBack} cursor="pointer" />
+            <ArrowLeft onClick={history.goBack} cursor="pointer" />
             <FormattedMessage id="Go Back"></FormattedMessage>
           </CardTitle>
         </CardHeader>

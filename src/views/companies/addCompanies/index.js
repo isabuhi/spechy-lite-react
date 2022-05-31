@@ -15,9 +15,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 import Select from "react-select";
-import {
-  isObjEmpty,
-} from "../../../../src/utility/Utils";
+import { isObjEmpty } from "../../../../src/utility/Utils";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useHistory } from "react-router-dom";
@@ -37,7 +35,6 @@ import "react-phone-input-2/lib/style.css";
 import { FormattedMessage } from "react-intl";
 
 const index = (props) => {
-
   const [formState, setFormState] = useState({
     name: "",
     city: "",
@@ -129,7 +126,7 @@ const index = (props) => {
   }
 
   const onSubmit = async () => {
-    if (isObjEmpty(errors) === false) {
+    if (isObjEmpty(errors)) {
       const btn = document.getElementById("submit-data");
       btn.setAttribute("disabled", true);
       btn.innerText = "Checking..";
@@ -285,7 +282,7 @@ const index = (props) => {
     setEmailAddress([...email_address, { email_address: "" }]);
   };
 
-  console.log("rrrtt", formState.allCities.length)
+  console.log("rrrtt", formState.allCities.length);
 
   return (
     <div className="invoice-list-table-header w-100 mr-1 ml-50 mt-2 mb-75">
@@ -487,7 +484,7 @@ const index = (props) => {
                 <FormattedMessage id="City List"></FormattedMessage>
               </Label>
               <Select
-              isDisabled={formState.allCities.length > 1 ? false : true}
+                isDisabled={formState.allCities.length > 1 ? false : true}
                 name="cityID"
                 className="react-select"
                 classNamePrefix="select"
@@ -505,7 +502,7 @@ const index = (props) => {
                 <FormattedMessage id="Districts List"></FormattedMessage>
               </Label>
               <Select
-              isDisabled={formState.AllDistrict.length > 1 ? false : true}
+                isDisabled={formState.AllDistrict.length > 1 ? false : true}
                 name="districtID"
                 className="react-select"
                 classNamePrefix="select"
