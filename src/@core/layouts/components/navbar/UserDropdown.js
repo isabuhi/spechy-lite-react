@@ -60,8 +60,6 @@ const UserDropdown = () => {
   //** Vars
   const userAvatar = (userData && userData.avatar) || defaultAvatar;
   const decodedToken = jwt_decode(useJwt.getToken());
-  console.log("userData", decodedToken);
-  //console.log(decodedToken.ns)
 
   return (
     <UncontrolledDropdown tag="li" className="dropdown-user nav-item">

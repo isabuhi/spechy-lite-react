@@ -84,6 +84,7 @@ const PillBasic = forwardRef((props, ref) => {
     start_at: "",
     status: 0,
   });
+  const [defaultCity, setDefaultCity] = useState("");
 
   const [name_surname, setCustomerName] = useState("");
   const [phone_number, setPhoneNumber] = useState([{}]);
@@ -319,12 +320,14 @@ const PillBasic = forwardRef((props, ref) => {
               response.data.data.profile.country === null
                 ? ""
                 : response.data.data.profile.country.country_name,
-            city:
-              response.data.data.profile.city === null
-                ? ""
-                : response.data.data.profile.city.city_name,
+
             // district: response.data.data.profile.district.district_name,
           });
+          setDefaultCity(
+            response.data.data.profile.city === null
+              ? ""
+              : response.data.data.profile.city.city_name
+          );
         }
       });
   };
@@ -607,23 +610,9 @@ const PillBasic = forwardRef((props, ref) => {
                     >
                       {email_address.length - 1 === i && (
                         <X onClick={() => handleRemoveEmail(i)}></X>
-                        // <Button.Ripple
-                        //   color="danger"
-                        //   onClick={() => handleRemoveEmail(i)}
-                        //   style={{ margin: "1px" }}
-                        // >
-                        //   X
-                        // </Button.Ripple>
                       )}
                       {email_address.length !== 1 && (
                         <Plus onClick={handleAddEmail}></Plus>
-                        // <Button.Ripple
-                        //   color="primary"
-                        //   onClick={handleAddEmail}
-                        //   style={{ margin: "1px", maxHeight: "34px" }}
-                        // >
-                        //   +
-                        // </Button.Ripple>
                       )}
                     </div>
                   </div>
@@ -664,59 +653,85 @@ const PillBasic = forwardRef((props, ref) => {
                 )}
                 {}
               </FormGroup>
-
               <FormGroup>
-                {phone_number.map((x, i) => {
-                  return (
-                    <div className="box">
+                {phone_number.length === 0 ? (
+                  <div className="box" style={{ marginBottom: "10px" }}>
+                    <PhoneInput
+                      value={valueOfPhone}
+                      country={"tr"}
+                      name="phone_number"
+                      containerStyle={{ marginTop: "15px" }}
+                      searchClass="search-class"
+                      searchStyle={{
+                        margin: "0",
+                        width: "97%",
+                        height: "30px",
+                      }}
+                      enableSearchField
+                      disableSearchIcon
+                      onChange={(e) => handlePhoneChange(e, i)}
+                    />
+
+                    <div
+                      className="btn-box"
+                      style={{
+                        marginLeft: "10px",
+                        width: "50px",
+                        display: "inline-block",
+                        outline: "none",
+                      }}
+                    >
+                      {phone_number.length - 1 === i && (
+                        <X onClick={() => handleRemovePhone(i)}></X>
+                      )}
+                      {phone_number.length !== 1 && (
+                        <Plus onClick={handleAddPhone}></Plus>
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                  phone_number.map((x, i) => {
+                    return (
                       <div
+                        className="box"
                         style={{
-                          display: "inline-block",
+                          marginBottom: "10px",
+                          display: "-webkit-inline-flex",
                         }}
                       >
                         <PhoneInput
                           value={valueOfPhone}
                           country={"tr"}
                           name="phone_number"
-                          containerStyle={{ marginTop: "15px" }}
-                          searchClass="search-class"
-                          searchStyle={{
-                            margin: "0",
-                            width: "97%",
-                            height: "30px",
+                          containerStyle={{
+                            maxWidth: "300px",
                           }}
+                          searchClass="search-class"
                           enableSearchField
                           disableSearchIcon
                           onChange={(e) => handlePhoneChange(e, i)}
                         />
-                      </div>
-                      <div
-                        style={{
-                          display: "inline-block",
-                        }}
-                      ></div>
 
-                      <div style={{ paddingTop: "10px" }}>
-                        {phone_number.length !== 1 && (
-                          <Button.Ripple
-                            color="primary"
-                            onClick={() => handleRemovePhone(i)}
-                          >
-                            <FormattedMessage id="Remove"></FormattedMessage>
-                          </Button.Ripple>
-                        )}
-                        {phone_number.length - 1 === i && (
-                          <Button.Ripple
-                            color="primary"
-                            onClick={handleAddPhone}
-                          >
-                            <FormattedMessage id="Add"></FormattedMessage>
-                          </Button.Ripple>
-                        )}
+                        <div
+                          className="btn-box"
+                          style={{
+                            marginLeft: "10px",
+                            width: "50px",
+                            display: "inline-block",
+                          }}
+                        >
+                          {phone_number.length !== 1 && (
+                            <X onClick={() => handleRemovePhone(i)}></X>
+                          )}
+                          {phone_number.length - 1 === i && (
+                            <Plus onClick={handleAddPhone}></Plus>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })
+                )}
+                {}
               </FormGroup>
 
               <FormGroup
@@ -747,12 +762,12 @@ const PillBasic = forwardRef((props, ref) => {
                   <FormattedMessage id="City List"></FormattedMessage>
                 </Label>
                 <Select
-                  name="cityID"
+                  name="countyID"
                   className="react-select"
                   classNamePrefix="select"
                   options={formState.allCities}
-                  placeholder={formState.city}
-                  defaultValue={formState.allCities}
+                  placeholder={defaultCity}
+                  defaultValue={formState.city}
                   onChange={(e) => onChangeCities(e)}
                 />
               </FormGroup>
