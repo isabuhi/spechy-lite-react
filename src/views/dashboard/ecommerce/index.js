@@ -87,12 +87,13 @@ function EcommerceDashboard(props) {
               label: result[j].name,
             };
           }
-          console.log("result", result);
+          const savedDash =
+            localStorage.getItem("my-Dash") > 0
+              ? localStorage.getItem("my-Dash")
+              : result[0].template_id;
           if (result[0].template_id !== "undefined") {
             axios
-              .get(
-                `${BASE_URL}/api/dashboard/1/select/${result[0].template_id}`
-              )
+              .get(`${BASE_URL}/api/dashboard/1/select/${savedDash}`)
               .then((response) => {
                 console.log("somthisssngelse", response.data.data);
                 if (response.status === 200) {
@@ -176,7 +177,7 @@ function EcommerceDashboard(props) {
           setDashData(dashItems);
         }
       });
-
+    localStorage.setItem("my-Dash", e.val);
     setShowDash(true);
   };
 
