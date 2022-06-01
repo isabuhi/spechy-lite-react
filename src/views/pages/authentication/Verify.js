@@ -38,7 +38,9 @@ import useDigitInput from "react-digit-input";
 import { val } from "dom7";
 
 function Register(props) {
-  const email = localStorage.getItem("temp_email");
+  const emailssss = localStorage.getItem("temp_email");
+  console.log("emailssss", emailssss);
+
   const [skin, setSkin] = useSkin();
   const history = useHistory();
   const phoneRegExp =
@@ -84,6 +86,7 @@ function Register(props) {
     phone: "",
     request: 0,
   });
+
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [valErrors, setValErrors] = useState({});
   const [terms, setTerms] = useState(false);
@@ -113,12 +116,11 @@ function Register(props) {
   //console.log("checkthesubmit1", isObjEmpty(errors))
   //console.log("phone", formState.phone)
   const onSubmit = () => {
-    console.log("object", email);
     if (isNumber(value) === true && value > 99999 && value < 10000000) {
       Axios.post(
         `https://app.spechy.com:8000/api/auth/verify/email/${value}`,
         {
-          email: email,
+          email: emailssss,
         },
         {
           headers: { "Content-Type": "application/json" },

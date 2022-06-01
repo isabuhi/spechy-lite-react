@@ -1,5 +1,5 @@
 import { useSkin } from "@hooks/useSkin";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, location, useLocation } from "react-router-dom";
 import {
   Facebook,
   Twitter,
@@ -58,10 +58,12 @@ const Login = () => {
     password: "",
     request: 0,
   });
+  console.log("email", formState.email);
   const [isLoggedin, setIsLoggedin] = useState(false);
   const store = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const history = useHistory();
+
   const [faceData, setFaceData] = useState({});
   const [accessTokens, setAccessToken] = useState();
 
@@ -105,7 +107,6 @@ const Login = () => {
             ...formState,
           })
           .then((res) => {
-            //console.log("stateres", res)
             //console.log("jwt", useJwt);
             if (res.status === 200) {
               useJwt.setToken(res.data.data.access_token); // Set access_token
@@ -136,7 +137,21 @@ const Login = () => {
             }
           })
           .catch((err) => {
-            //console.error(err)
+            if (err.response.status === 403) {
+              localStorage.setItem("temp_email", formState.email);
+
+              history.push("/verify");
+            } else {
+              toast.error(
+                <ToastContent
+                  type={"error"}
+                  content={"Something went wrong. Please try again!"}
+                  header={"Error !!"}
+                />,
+                { transition: Slide, hideProgressBar: true, autoClose: 3000 }
+              );
+            }
+
             useJwt.removeAuthInfos();
             setFormState({
               ...formState,
@@ -144,7 +159,7 @@ const Login = () => {
             });
           });
       } else {
-        console.log("do not click many time bro!");
+        console.log("Please Wait!");
       }
     }
   };

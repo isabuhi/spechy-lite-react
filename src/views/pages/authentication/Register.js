@@ -58,7 +58,7 @@ function Register(props) {
       .required("Phone Number is a required field.")
       .matches(phoneRegExp, "Phone number is not valid"),
     namesurname: yup.string().required("Full name is a required field.").min(5),
-    passwordConfirm: yup
+    password_confirmation: yup
       .string()
       .required("Password confirm is a required field.")
       .oneOf([yup.ref("password"), null], "Passwords must be matched."),
@@ -91,11 +91,12 @@ function Register(props) {
   const [formState, setFormState] = useState({
     email: "",
     password: "",
+    password_confirmation: "",
     namesurname: "",
     phone: "",
     request: 0,
   });
-  const [passwordConfirm, setPasswordConfirm] = useState("");
+  // const [passwordConfirm, setPasswordConfirm] = useState("");
   const [valErrors, setValErrors] = useState({});
   const [terms, setTerms] = useState(false);
 
@@ -321,16 +322,21 @@ function Register(props) {
                 </Label>
                 <InputPasswordToggle
                   id="register-password-confirm"
-                  name="passwordConfirm"
+                  name="password_confirmation"
                   className="input-group-merge"
-                  defaultValue={passwordConfirm}
-                  onChange={(e) => setPasswordConfirm(e.target.value)}
+                  defaultValue={formState.password_confirmation}
+                  onChange={(e) =>
+                    setFormState({
+                      ...formState,
+                      [e.target.name]: e.target.value,
+                    })
+                  }
                   innerRef={register({ required: true })}
-                  invalid={errors.passwordConfirm && true}
+                  invalid={errors.password_confirmation && true}
                 />
-                {errors && errors.passwordConfirm && (
+                {errors && errors.password_confirmation && (
                   <FormFeedback style={{ display: "block" }}>
-                    {errors.passwordConfirm.message}
+                    {errors.password_confirmation.message}
                   </FormFeedback>
                 )}
               </FormGroup>
