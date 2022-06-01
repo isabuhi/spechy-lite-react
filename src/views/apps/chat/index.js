@@ -128,6 +128,7 @@ const AppChat = (props) => {
       console.log("closed22");
 
       socket.once("panel_set_active_conversation", (data) => {
+        console.log("first respond", data);
         let message = [];
         if (data.channelId !== 8) {
           if (data.channelId === 6) {
@@ -865,7 +866,10 @@ const AppChat = (props) => {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     //--------------
-    socket.on("liveChat_get_message", (data) => {});
+    socket.on("liveChat_get_message", (data) => {
+      // console.log("here the end", data);
+    });
+
     //-----------
     socket.on("panel_remove_only_conversation", (data) => {
       socket.emit("panel_get_active_conversations");
