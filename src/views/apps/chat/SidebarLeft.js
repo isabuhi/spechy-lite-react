@@ -143,8 +143,8 @@ const SidebarLeft = (props) => {
                     item.logId,
                     item.mailboxId
                   );
-                    // openContactOn(e)
-                    fuc(e);
+                  // openContactOn(e)
+                  fuc(e);
                 }}
               >
                 <Avatar

@@ -6,6 +6,7 @@ import {
   forwardRef,
   useRef,
   useImperativeHandle,
+  useCallback,
 } from "react";
 
 // ** Chat App Component Imports
@@ -71,22 +72,6 @@ const AppChat = (props) => {
     return childdata;
   };
 
-  // const socket = io("https://app.spechy.com", {
-  //   forceNew: true,
-  //   transports: ["websocket"],
-  //   auth: {
-  //     token: "43787DDFFB2C4EE9A82EC554EBB7F",
-  //   },
-  //   query: {
-  //     access: "user",
-  //     cid: decodedToken.cid, //companyId
-  //     uid: decodedToken.uid, //userId
-  //     ns: decodedToken.ns,
-  //     usid: decodedToken.usid,
-  //     ussid: decodedToken.ussid,
-  //   },
-  // });
-
   const [formState, setFormState] = useState({
     chat: [],
     message: [],
@@ -126,161 +111,159 @@ const AppChat = (props) => {
     );
   };
 
-  const chatMessage = (
-    id,
-    channelId,
-    customerId,
-    roomId,
-    name,
-    avatar,
-    logId,
-    mailboxIdTemp
-  ) => {
-    setroomId(roomId);
-    setlogId(logId);
-    setChannelId(channelId);
-    setAvatar(avatar);
-    setFullName(name);
-    setCustomerId(customerId);
-    socket.on("conversation_visitor_close", (data) => {
-      setShowChat(true);
-      // if (data.roomId == activeConversation.roomId && data.channelId == activeConversation.channelId){
-      //     $(".chats").html("");
-      // }
-    });
-    socket.on("panel_set_active_conversation", (data) => {
-      let message = [];
-      if (data.channelId !== 8) {
-        if (data.channelId === 6) {
-        } else if (data.channelId === 5) {
-          if (data.status == 2) {
-            toast.error(
-              <ToastContent
-                type={"error"}
-                content={"This video chat has been ended by the client"}
-                header={"Error !!"}
-              />,
+  const chatMessage = useCallback(
+    (id, channelId, customerId, roomId, name, avatar, logId, mailboxIdTemp) => {
+      setroomId(roomId);
+      setlogId(logId);
+      setChannelId(channelId);
+      setAvatar(avatar);
+      setFullName(name);
+      setCustomerId(customerId);
+      socket.on("conversation_visitor_close", (data) => {
+        setShowChat(true);
+        // if (data.roomId == activeConversation.roomId && data.channelId == activeConversation.channelId){
+        //     $(".chats").html("");
+        // }
+      });
+      console.log("closed22");
 
-              { transition: Slide, hideProgressBar: true, autoClose: 3000 }
-            );
+      socket.once("panel_set_active_conversation", (data) => {
+        console.log("first respond", data);
+        let message = [];
+        if (data.channelId !== 8) {
+          if (data.channelId === 6) {
+          } else if (data.channelId === 5) {
+            if (data.status == 2) {
+              toast.error(
+                <ToastContent
+                  type={"error"}
+                  content={"This video chat has been ended by the client"}
+                  header={"Error !!"}
+                />,
+
+                { transition: Slide, hideProgressBar: true, autoClose: 3000 }
+              );
+            } else {
+              try {
+                const domain = "vchat.teknosa.com";
+                const options = {
+                  roomName: myRoomId,
+                  height: 400,
+                  parentNode: document.getElementById(jitsiContainer),
+                  interfaceConfigOverwrite: {
+                    filmStripOnly: false,
+                    SHOW_JITSI_WATERMARK: false,
+                  },
+                  configOverwrite: {
+                    disableSimulcast: false,
+                  },
+                };
+
+                const api = new JitsiMeetExternalAPI(domain, options);
+                api.addEventListener("videoConferenceJoined", () => {
+                  console.log("Local User Joined");
+                  setLoading(false);
+                  api.executeCommand("displayName", name);
+                });
+              } catch (error) {
+                console.error("Failed to load Jitsi API", error);
+              }
+            }
           } else {
-            try {
-              const domain = "vchat.teknosa.com";
-              const options = {
-                roomName: myRoomId,
-                height: 400,
-                parentNode: document.getElementById(jitsiContainer),
-                interfaceConfigOverwrite: {
-                  filmStripOnly: false,
-                  SHOW_JITSI_WATERMARK: false,
-                },
-                configOverwrite: {
-                  disableSimulcast: false,
-                },
-              };
-
-              const api = new JitsiMeetExternalAPI(domain, options);
-              api.addEventListener("videoConferenceJoined", () => {
-                console.log("Local User Joined");
-                setLoading(false);
-                api.executeCommand("displayName", name);
-              });
-            } catch (error) {
-              console.error("Failed to load Jitsi API", error);
+            for (let i = 0; i < data.messages.length; i++) {
+              if (data.messages[i].type === "T") {
+                message.push({
+                  createdAt: data.messages[i].createdAt,
+                  message: data.messages[i].message,
+                  senderId: data.messages[i].sender,
+                  messageId: data.messages[i].messageId,
+                  senderName: data.messages[i].senderName,
+                  type: "T",
+                });
+              } else if (data[i].type === "I") {
+                message.push({
+                  createdAt: data.messages[i].createdAt,
+                  message: data.messages[i].message,
+                  senderId: data.messages[i].sender,
+                  messageId: data.messages[i].messageId,
+                  senderName: data.messages[i].senderName,
+                  type: "I",
+                  url: "https://app.spechy.com:8000" + data[i].url,
+                });
+              } else if (data[i].type === "A") {
+                message.push({
+                  createdAt: data.messages[i].createdAt,
+                  message: data.messages[i].message,
+                  senderId: data.messages[i].sender,
+                  messageId: data.messages[i].messageId,
+                  senderName: data.messages[i].senderName,
+                  type: "A",
+                  url: "https://app.spechy.com:8000" + data[i].url,
+                });
+              } else if (data[i].type === "V") {
+                message.push({
+                  createdAt: data.messages[i].createdAt,
+                  message: data.messages[i].message,
+                  senderId: data.messages[i].sender,
+                  messageId: data.messages[i].messageId,
+                  senderName: data.messages[i].senderName,
+                  type: "V",
+                  url: "https://app.spechy.com:8000" + data[i].url,
+                });
+              } else if (data[i].type === "D") {
+                message.push({
+                  createdAt: data.messages[i].createdAt,
+                  message: data.messages[i].message,
+                  senderId: data.messages[i].sender,
+                  messageId: data.messages[i].messageId,
+                  senderName: data.messages[i].senderName,
+                  type: "D",
+                  url: "https://app.spechy.com:8000" + data[i].url,
+                });
+              }
             }
           }
         } else {
-          for (let i = 0; i < data.messages.length; i++) {
-            if (data.messages[i].type === "T") {
-              message.push({
-                createdAt: data.messages[i].createdAt,
-                message: data.messages[i].message,
-                senderId: data.messages[i].sender,
-                messageId: data.messages[i].messageId,
-                senderName: data.messages[i].senderName,
-                type: "T",
-              });
-            } else if (data[i].type === "I") {
-              message.push({
-                createdAt: data.messages[i].createdAt,
-                message: data.messages[i].message,
-                senderId: data.messages[i].sender,
-                messageId: data.messages[i].messageId,
-                senderName: data.messages[i].senderName,
-                type: "I",
-                url: "https://app.spechy.com:8000" + data[i].url,
-              });
-            } else if (data[i].type === "A") {
-              message.push({
-                createdAt: data.messages[i].createdAt,
-                message: data.messages[i].message,
-                senderId: data.messages[i].sender,
-                messageId: data.messages[i].messageId,
-                senderName: data.messages[i].senderName,
-                type: "A",
-                url: "https://app.spechy.com:8000" + data[i].url,
-              });
-            } else if (data[i].type === "V") {
-              message.push({
-                createdAt: data.messages[i].createdAt,
-                message: data.messages[i].message,
-                senderId: data.messages[i].sender,
-                messageId: data.messages[i].messageId,
-                senderName: data.messages[i].senderName,
-                type: "V",
-                url: "https://app.spechy.com:8000" + data[i].url,
-              });
-            } else if (data[i].type === "D") {
-              message.push({
-                createdAt: data.messages[i].createdAt,
-                message: data.messages[i].message,
-                senderId: data.messages[i].sender,
-                messageId: data.messages[i].messageId,
-                senderName: data.messages[i].senderName,
-                type: "D",
-                url: "https://app.spechy.com:8000" + data[i].url,
-              });
-            }
-          }
+          axios
+            .post(`${BASE_URL}/api/mail-management/mailbox/get-mail-info`, {
+              email_id: mailboxIdTemp,
+              mailbox_id: id,
+            })
+            .then((response) => {
+              if (response.status === 200) {
+                let retio = {
+                  from_email: response.data.data.from.email_address,
+                  from_name: response.data.data.from.sender_name,
+                  to_email: response.data.data.to[0].email_address,
+                  to_name: response.data.data.to[0].sender_name,
+                  subject: response.data.data.subject,
+                  time: response.data.data.send_at,
+                  content: data.data,
+                  mailbox_id: id,
+                };
+                //setChatContent();
+                setChatContent(retio);
+              }
+            });
         }
-      } else {
-        axios
-          .post(`${BASE_URL}/api/mail-management/mailbox/get-mail-info`, {
-            email_id: mailboxIdTemp,
-            mailbox_id: id,
-          })
-          .then((response) => {
-            if (response.status === 200) {
-              let retio = {
-                from_email: response.data.data.from.email_address,
-                from_name: response.data.data.from.sender_name,
-                to_email: response.data.data.to[0].email_address,
-                to_name: response.data.data.to[0].sender_name,
-                subject: response.data.data.subject,
-                time: response.data.data.send_at,
-                content: data.data,
-                mailbox_id: id,
-              };
-              //setChatContent();
-              setChatContent(retio);
-            }
-          });
-      }
-      setNewMessage([...message]);
-    });
-    let mailboxId = id;
-    let emailId = mailboxIdTemp;
-    let accountId = session;
-    socket.emit("panel_get_active_conversation", {
-      roomId,
-      channelId,
-      session,
-      accountId,
-      from,
-      mailboxId,
-      emailId,
-    });
-  };
+        setNewMessage([...message]);
+      });
+
+      let mailboxId = id;
+      let emailId = mailboxIdTemp;
+      let accountId = session;
+      socket.emit("panel_get_active_conversation", {
+        roomId,
+        channelId,
+        session,
+        accountId,
+        from,
+        mailboxId,
+        emailId,
+      });
+    },
+    []
+  );
 
   const sendMessage = (message, oldMessage) => {
     if (mychannelId == 3) {
@@ -883,7 +866,10 @@ const AppChat = (props) => {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     //--------------
-    socket.on("liveChat_get_message", (data) => {});
+    socket.on("liveChat_get_message", (data) => {
+      // console.log("here the end", data);
+    });
+
     //-----------
     socket.on("panel_remove_only_conversation", (data) => {
       socket.emit("panel_get_active_conversations");

@@ -67,6 +67,7 @@ const PillBasic = forwardRef((props, ref) => {
     start_at: "",
     status: 0,
     country: "",
+    defaultCountry: "",
     city: "",
     district: "",
     allCities: [{}],
@@ -316,7 +317,7 @@ const PillBasic = forwardRef((props, ref) => {
           setCustomerName(response.data.data.profile.name_surname);
           setFormState({
             ...formState,
-            country:
+            defaultCountry:
               response.data.data.profile.country === null
                 ? ""
                 : response.data.data.profile.country.country_name,
@@ -747,7 +748,7 @@ const PillBasic = forwardRef((props, ref) => {
                   className="react-select"
                   classNamePrefix="select"
                   options={listItems}
-                  placeholder={formState.country}
+                  placeholder={formState.defaultCountry}
                   defaultValue={formState.country}
                   onChange={(e) => onChangeCountry(e)}
                 />

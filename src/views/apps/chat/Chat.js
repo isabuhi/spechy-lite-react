@@ -662,7 +662,7 @@ const ChatLog = (props) => {
                     );
                   }}
                 />
-                <h6 className="mb-0">{fullName.slice(0, 6)}</h6>
+                <h6 className="mb-0">{fullName.slice(0, 6)}...</h6>
               </div>
               <div className="d-flex align-items-center">
                 {/* <div style={{ paddingRight: "10px" }}> */}
