@@ -139,7 +139,19 @@ const Login = () => {
             }
           })
           .catch((err) => {
-            if (err.response.status === 403) {
+            const errorPikcer =
+              err.response === undefined ? err.status : err.response.status;
+            if (errorPikcer === 401) {
+              useJwt.removeAuthInfos();
+              toast.error(
+                <ToastContent
+                  type={"error"}
+                  content={"Unauthorized!"}
+                  header={"Error !!"}
+                />,
+                { transition: Slide, hideProgressBar: true, autoClose: 3000 }
+              );
+            } else if (errorPikcer === 403) {
               history.push("/verify");
             } else {
               useJwt.removeAuthInfos();
