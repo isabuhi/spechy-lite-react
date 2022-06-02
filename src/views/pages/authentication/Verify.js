@@ -38,8 +38,7 @@ import useDigitInput from "react-digit-input";
 import { val } from "dom7";
 
 function Register(props) {
-  const emailssss = localStorage.getItem("temp_email");
-  console.log("emailssss", emailssss);
+  const saveInStorageMail = localStorage.getItem("temp_email");
 
   const [skin, setSkin] = useSkin();
   const history = useHistory();
@@ -120,7 +119,7 @@ function Register(props) {
       Axios.post(
         `https://app.spechy.com:8000/api/auth/verify/email/${value}`,
         {
-          email: emailssss,
+          email: saveInStorageMail,
         },
         {
           headers: { "Content-Type": "application/json" },

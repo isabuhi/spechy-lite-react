@@ -58,7 +58,7 @@ const Login = () => {
     password: "",
     request: 0,
   });
-  console.log("email", formState.email);
+  localStorage.getItem("temp_email");
   const [isLoggedin, setIsLoggedin] = useState(false);
   const store = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -138,10 +138,9 @@ const Login = () => {
           })
           .catch((err) => {
             if (err.response.status === 403) {
-              localStorage.setItem("temp_email", formState.email);
-
               history.push("/verify");
             } else {
+              useJwt.removeAuthInfos();
               toast.error(
                 <ToastContent
                   type={"error"}
@@ -152,11 +151,10 @@ const Login = () => {
               );
             }
 
-            useJwt.removeAuthInfos();
-            setFormState({
-              ...formState,
-              request: 0,
-            });
+            // setFormState({
+            //   ...formState,
+            //   request: 0,
+            // });
           });
       } else {
         console.log("Please Wait!");
