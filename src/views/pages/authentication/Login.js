@@ -59,6 +59,7 @@ const Login = () => {
     request: 0,
   });
   localStorage.getItem("temp_email");
+
   const [isLoggedin, setIsLoggedin] = useState(false);
   const store = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -95,6 +96,7 @@ const Login = () => {
   //console.log("thestore", store)
   //console.log("thisisphone", formState)
   // console.log("theobbefore", isObjEmpty(errors))
+  localStorage.setItem("email_not_verified", formState.email);
   const onSubmit = () => {
     if (isObjEmpty(errors)) {
       if (formState.request === 0) {
