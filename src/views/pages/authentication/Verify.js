@@ -39,6 +39,7 @@ import { val } from "dom7";
 
 function Register(props) {
   const saveInStorageMail = localStorage.getItem("temp_email");
+  const email_not_verified = localStorage.getItem("email_not_verified");
 
   const [skin, setSkin] = useSkin();
   const history = useHistory();
@@ -119,7 +120,8 @@ function Register(props) {
       Axios.post(
         `https://app.spechy.com:8000/api/auth/verify/email/${value}`,
         {
-          email: saveInStorageMail,
+          email:
+            saveInStorageMail === null ? email_not_verified : saveInStorageMail,
         },
         {
           headers: { "Content-Type": "application/json" },
