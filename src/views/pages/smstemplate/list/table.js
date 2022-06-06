@@ -3,14 +3,23 @@ import React, { Fragment, useState, useEffect, memo, useContext } from "react";
 
 // ** Table Columns
 import { Columns } from "./columns";
+import Avatar from "../../../../@core/components/avatar";
+import {
+  Check,
+  AlertCircle,
+  ArrowLeft,
+  ChevronDown,
+  Plus,
+  Search,
+} from "react-feather";
 
 // ** Store & Actions
 import { getSmsData, deleteSMS } from "../store/actions";
 import { useSelector, useDispatch } from "react-redux";
+import { Slide, toast } from "react-toastify";
 
 // ** Third Party Components
 import ReactPaginate from "react-paginate";
-import { ChevronDown, Plus, Search } from "react-feather";
 import DataTable from "react-data-table-component";
 import {
   Card,
@@ -31,7 +40,7 @@ import {
 } from "reactstrap";
 import axios from "axios";
 import { BASE_URL } from "../../../../@core/auth/jwt/jwtService";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 import { useHistory } from "react-router";
 import { IntlContext } from "../../../../utility/context/Internationalization";
 import { FormattedMessage } from "react-intl";
@@ -54,6 +63,30 @@ const DataTableServerSide = () => {
   const [tableState, setFormState] = useState({
     renderId: 1,
   });
+
+  const ToastContent = ({ header, content, type }) => {
+    return (
+      <Fragment>
+        <div className="toastify-header">
+          <div className="title-wrapper">
+            {type === "success" ? (
+              <Avatar size="sm" color="success" icon={<Check size={12} />} />
+            ) : (
+              <Avatar
+                size="sm"
+                color="danger"
+                icon={<AlertCircle size={12} />}
+              />
+            )}
+            <h6 className="toast-title font-weight-bold">{header}</h6>
+          </div>
+        </div>
+        <div className="toastify-body">
+          <span>{content}</span>
+        </div>
+      </Fragment>
+    );
+  };
   // ** Function to handle Modal toggle
   const handleModal = () => setModal(!modal);
   useEffect(() => {
@@ -137,16 +170,16 @@ const DataTableServerSide = () => {
     );
   };
 
+  console.log("store.allData.length", store.allData);
+
   // ** Table data to render
   const dataToRender = () => {
     const filters = {
       q: searchValue,
     };
-    console.log("wtf", store.allData);
     const isFiltered = Object.keys(filters).some(function (k) {
       return filters[k].length > 0;
     });
-    console.log("isFiltered", isFiltered);
     if (store.allData.length > 0) {
       return store.allData;
     } else if (store.allData.length === 0 && isFiltered) {
@@ -193,13 +226,21 @@ const DataTableServerSide = () => {
         <ModalFooter>
           <Button.Ripple
             color="danger"
-            onClick={() =>
+            onClick={() => {
               dispatch(
                 deleteSMS(store.isDeleteModalOpen.id),
                 setTimeout(handlePerPageRefresh(), 1000),
                 console.log(1)
-              )
-            }
+              ),
+                toast.success(
+                  <ToastContent
+                    type={"success"}
+                    content={"Deleted"}
+                    header={"Success!"}
+                  />,
+                  { transition: Slide, hideProgressBar: true, autoClose: 3000 }
+                );
+            }}
           >
             Accept
           </Button.Ripple>
@@ -221,11 +262,15 @@ const DataTableServerSide = () => {
           <CardTitle tag="h4">
             <FormattedMessage id="SMS Template List"> </FormattedMessage>
           </CardTitle>
-          <Button className="ml-2" color="primary" onClick={handleAddClick}>
-            <Plus size={15} />
-            <span className="align-middle ml-50">
-              <FormattedMessage id="addsmstemplate"> </FormattedMessage>
-            </span>
+          <Button
+            className="ml-2"
+            color="primary"
+            onClick={() => history.push("/settings/smstemplates/add")}
+          >
+            {/* <Plus size={15} /> */}
+            {/* <span className="align-middle ml-50"> */}
+            <FormattedMessage id="addsmstemplate"> </FormattedMessage>
+            {/* </span> */}
           </Button>
         </CardHeader>
         <Row className="mx-0 mt-1 mb-50">

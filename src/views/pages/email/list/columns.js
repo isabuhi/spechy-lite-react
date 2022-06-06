@@ -13,7 +13,18 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "reactstrap";
-import { MoreVertical, Trash2, Archive } from "react-feather";
+import {
+  MoreVertical,
+  Trash2,
+  Archive,
+  PenTool,
+  Chrome,
+  EyeOff,
+  ShieldOff,
+  PhoneMissed,
+  Edit,
+  Delete,
+} from "react-feather";
 
 const renderClient = (row) => {
   const context = useContext(IntlContext);
@@ -85,23 +96,11 @@ export const Columns = [
     name: <FormattedMessage id="options"></FormattedMessage>,
     minWidth: "100px",
     cell: (row) => (
-      <UncontrolledDropdown>
-        <DropdownToggle tag="div" className="btn btn-sm">
-          <MoreVertical size={14} className="cursor-pointer" />
-        </DropdownToggle>
-        <DropdownMenu right>
-          <DropdownItem
-            tag={Link}
-            to={`/email/edit/${row.template_id}`}
-            className="w-100"
-          >
-            <Archive size={14} className="mr-50" />
-            <span className="align-middle">
-              <FormattedMessage id="Edit"></FormattedMessage>
-            </span>
-          </DropdownItem>
-          <DropdownItem
-            className="w-100"
+      <div className="d-flex justify-content-left align-items-center">
+        <Link className="user-name text-truncate mb-0">
+          <Delete
+            size={14}
+            className="mr-50"
             onClick={() => {
               store.dispatch({
                 type: "CLOSE_EMAIL_MODAL",
@@ -109,14 +108,47 @@ export const Columns = [
                 id: row.template_id,
               });
             }}
-          >
-            <Trash2 size={14} className="mr-50" />
-            <span className="align-middle">
-              <FormattedMessage id="Delete"></FormattedMessage>
-            </span>
-          </DropdownItem>
-        </DropdownMenu>
-      </UncontrolledDropdown>
+          />
+        </Link>
+        <Link
+          to={`/email/edit/${row.template_id}`}
+          className="user-name text-truncate mb-0"
+        >
+          <Edit size={14} className="mr-50" />
+        </Link>
+      </div>
+      // <UncontrolledDropdown>
+      //   <DropdownToggle tag="div" className="btn btn-sm">
+      //     <MoreVertical size={14} className="cursor-pointer" />
+      //   </DropdownToggle>
+      //   <DropdownMenu right>
+      //     <DropdownItem
+      //       tag={Link}
+      //       to={`/email/edit/${row.template_id}`}
+      //       className="w-100"
+      //     >
+      //       <Archive size={14} className="mr-50" />
+      //       <span className="align-middle">
+      //         <FormattedMessage id="Edit"></FormattedMessage>
+      //       </span>
+      //     </DropdownItem>
+      //     <DropdownItem
+      //       className="w-100"
+      //       onClick={() => {
+      //         store.dispatch({
+      //           type: "CLOSE_EMAIL_MODAL",
+      //           data: true,
+      //           id: row.template_id,
+      //         });
+      //       }}
+      //     >
+      //       <Trash2 size={14} className="mr-50" />
+      //       <span className="align-middle">
+      //         <FormattedMessage id="Delete"></FormattedMessage>
+      //       </span>
+      //     </DropdownItem>
+      //   </DropdownMenu>
+      // </UncontrolledDropdown>
     ),
   },
 ];
