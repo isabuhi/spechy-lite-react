@@ -76,10 +76,12 @@ const GeneralInfo = (props) => {
 
           if (response.data.data.phones.length > 0) {
             const pickedPhone = response.data.data.phones.map((x) => {
-              // return
-              setValueOfPhone(x.phone_number);
+              console.log(x.phone_number)
+              return x.phone_number;
             });
-            // setPhoneNumber(pickedPhone);
+            setValueOfPhone(pickedPhone);
+            //setPhoneNumber(pickedPhone);
+            console.log(pickedPhone)
           }
           if (response.data.data.emails.length > 0) {
             const pickedEmail = response.data.data.emails.map((x) => {
@@ -90,6 +92,8 @@ const GeneralInfo = (props) => {
           setMember(response.data.data.members);
           // setEmailAddress(response.data.data.emails);
         }
+        console.log( valueOfPhone, "aaaa")
+       console.log( email_address, "bb")
       });
   }, []);
 
@@ -180,7 +184,13 @@ const GeneralInfo = (props) => {
       [e.target.name]: e.target.value,
     });
   };
-
+  const handleAddEmail = () => {
+    setEmailAddress([...email_address, { email_address: "" }]);
+  };
+  const handleAddPhone = () => {
+    setValueOfPhone([...valueOfPhone,  "" ]);
+    //console.log("a")
+  }
   const ToastContent = ({ header, content, type }) => {
     return (
       <Fragment>
@@ -328,21 +338,35 @@ const GeneralInfo = (props) => {
                   <div
                     style={{
                       display: "inline-block",
+                      paddingTop: "10px"
                     }}
                   >
-                    <PhoneInput
-                      value={valueOfPhone}
-                      country={"tr"}
-                      name="phone_number"
-                      containerStyle={{ marginTop: "15px" }}
-                      searchClass="search-class"
-                      searchStyle={{
-                        margin: "0",
-                        width: "97%",
-                        height: "30px",
-                      }}
-                      onChange={onChangePhoneHandler}
-                    />
+                    {valueOfPhone  &&(
+
+                      valueOfPhone.map((e,i)=>(
+                        <PhoneInput
+                        value={e}
+                        country={"tr"}
+                        name="phone_number"
+                        containerStyle={{ marginTop: "15px" }}
+                        searchClass="search-class"
+                        searchStyle={{
+                          margin: "0",
+                          width: "97%",
+                          height: "30px",
+                        }}
+                        onChange={onChangePhoneHandler}
+                        />
+                        ) 
+                      )) 
+                    }
+                    <div style={{ paddingTop: "10px" }}>
+                      {
+                        <Button.Ripple color="primary" onClick={handleAddPhone}>
+                          <FormattedMessage id="Add"></FormattedMessage>
+                        </Button.Ripple>
+                      }
+                    </div>
                   </div>
                   <div
                     style={{
@@ -354,22 +378,37 @@ const GeneralInfo = (props) => {
             </Col>
             <Col md="4" sm="12">
               <FormGroup>
+                <div>
                 <Label for="email_address">
-                  <FormattedMessage id="Email address"></FormattedMessage>
+                  <FormattedMessage id="Email Address"></FormattedMessage>
                 </Label>
-                <Input
-                  type="text"
-                  id="email_address"
-                  placeholder="Email Address"
-                  defaultValue={email_address}
-                  name="email_address"
-                  onChange={onChanceEmailHandler}
-                  innerRef={register({ required: true })}
-                  invalid={errors.email_address && true}
-                />
+                {email_address &&
+                  email_address.map((e,i)=>(
+                    <Input
+                    type="text"
+                    id="email_address"
+                    placeholder="Email Address"
+                    style={{marginBottom: "12px"}}
+                    defaultValue={e}
+                    name="email_address"
+                    onChange={onChanceEmailHandler}
+                    innerRef={register({ required: true })}
+                    invalid={errors.email_address && true}
+                    />
+                  ))
+                }
+                
+                <div style={{ paddingTop: "10px" }}>
+                      {
+                        <Button.Ripple color="primary" onClick={handleAddEmail}>
+                          <FormattedMessage id="Add"></FormattedMessage>
+                        </Button.Ripple>
+                      }
+                    </div>
                 {errors && errors.email_address && (
                   <FormFeedback>{errors.email_address.message}</FormFeedback>
                 )}
+                </div>
               </FormGroup>
             </Col>
             <Col>

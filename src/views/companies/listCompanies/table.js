@@ -8,11 +8,16 @@ import { columns } from "./columns";
 import { getAllData, deleteCompany, getSmsRole } from "../store/Actions";
 import { useDispatch, useSelector } from "react-redux";
 import ReactPaginate from "react-paginate";
-import { ChevronDown } from "react-feather";
+import { ChevronDown, Plus } from "react-feather";
 import DataTable from "react-data-table-component";
 import {
   Card,
+  CardHeader,
+  CardTitle,
   Input,
+  InputGroup,
+  InputGroupAddon,
+  InputGroupText,
   Row,
   Col,
   Label,
@@ -46,7 +51,7 @@ const CustomHeader = ({
       <Row>
         <Col xl="6" className="d-flex align-items-center p-0">
           <div className="d-flex align-items-center w-100">
-            <FormattedMessage id="companies"></FormattedMessage>
+            <h4>Companies</h4>
           </div>
         </Col>
 
@@ -78,11 +83,8 @@ const CustomHeader = ({
             </div>
           </div>
 
-          <Button.Ripple
-            color="primary"
-            onClick={() => history.push("/companies/add")}
-          >
-            <FormattedMessage id="addnewcompany"></FormattedMessage>
+          <Button.Ripple color="primary" onClick={() => history.push("/companies/add")}>
+            <FormattedMessage id="addnewcompany1"></FormattedMessage>
           </Button.Ripple>
         </Col>
       </Row>
@@ -102,6 +104,7 @@ const CompanyList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
 
   const [currentStatus, setCurrentStatus] = useState({
     value: "Select",
@@ -188,7 +191,9 @@ const CompanyList = () => {
       <ReactPaginate
         previousLabel={""}
         nextLabel={""}
+        breakLabel="..."
         pageCount={count || 1}
+        
         activeClassName="active"
         forcePage={currentPage !== 0 ? currentPage - 1 : 0}
         onPageChange={(page) => handlePagination(page)}
@@ -198,8 +203,10 @@ const CompanyList = () => {
         previousClassName={"page-item prev"}
         previousLinkClassName={"page-link"}
         pageLinkClassName={"page-link"}
+        breakClassName="page-item"
+        breakLinkClassName="page-link"
         containerClassName={
-          "pagination react-paginate justify-content-end my-2 pr-1"
+          "pagination react-paginate separated-pagination pagination-sm justify-content-end pr-1 mt-1"
         }
       />
     );
@@ -241,10 +248,10 @@ const CompanyList = () => {
       2000
     );
   };
-
+  const history = useHistory();
   return (
     <Fragment>
-      <Modal
+       <Modal
         isOpen={store.isDeleteModalOpen.status}
         className="modal-dialog-centered"
         modalClassName="modal-danger"
@@ -277,29 +284,84 @@ const CompanyList = () => {
           </Button.Ripple>
         </ModalFooter>
       </Modal>
-
       <Card>
+      <CardHeader className="border-bottom">
+          <CardTitle tag="h4">
+            <FormattedMessage id="Companies"></FormattedMessage>
+          </CardTitle>
+          <Button className="ml-2" color="primary" onClick={() => history.push("/companies/add")}>
+            <Plus size={15} />
+            <span className="align-middle ml-50">
+              <FormattedMessage id="Add New Company"></FormattedMessage>
+            </span>
+          </Button>
+        </CardHeader>
+        <Row className="mx-0 mt-1">
+          <Col
+            className="d-flex align-items-center justify-content-sm-start mt-sm-0 mt-1"
+            sm="6"
+          >
+            
+            <div className="chat-fixed-search">
+            <div className="d-flex align-items-center w-100">
+            <div className="sidebar-profile-toggle"></div>
+              <InputGroup className="input-group-merge ml-1 w-100 sreach-chat">
+                <InputGroupAddon addonType="prepend">
+                  <InputGroupText className="round">
+                    <Search className="text-muted" size={14} />
+                  </InputGroupText>
+                </InputGroupAddon>
+                <Input
+                  //value={searchValue}
+                  className="round"
+                  placeholder="Search"
+                  onChange={handleFilter}
+                />
+              </InputGroup>
+            </div>
+          </div>
+          </Col>
+          <Col sm="6">
+            <div className="d-flex align-items-center justify-content-sm-end">
+              <Label className='mr-1' for="sort-select" size='lg'>Show entries</Label>
+              <Input
+                style={{width: "75px"}}
+                className="dataTable-select"
+                type="select"
+                id="sort-select"
+                value={rowsPerPage}
+                onChange={(e) => handlePerPage(e)}
+              >
+                <option value={7}>7</option>
+                <option value={10}>10</option>
+                <option value={25}>25</option>
+                <option value={50}>50</option>
+                <option value={75}>75</option>
+                <option value={100}>100</option>
+              </Input>
+            </div>
+          </Col>
+        </Row>
         <DataTable
           noHeader
           pagination
-          subHeader
-          responsive
+          //responsive
           paginationServer
           columns={columns}
-          sortIcon={<ChevronDown />}
+          sortIcon={<ChevronDown size={10} />}
           className="react-dataTable"
           paginationComponent={CustomPagination}
           data={dataToRender()}
-          subHeaderComponent={
-            <CustomHeader
-              toggleSidebar={toggleSidebar}
-              handlePerPage={handlePerPage}
-              rowsPerPage={rowsPerPage}
-              searchTerm={searchTerm}
-              handleFilter={handleFilter}
-              handleChange={handleChange}
-            />
-          }
+          // subHeaderComponent={
+          //   <CustomHeader
+          //     toggleSidebar={toggleSidebar}
+          //     handlePerPage={handlePerPage}
+          //     rowsPerPage={rowsPerPage}
+          //     searchTerm={searchTerm}
+          //     handleFilter={handleFilter}
+          //     handleChange={handleChange}
+          //   />
+          // }
         />
       </Card>
     </Fragment>

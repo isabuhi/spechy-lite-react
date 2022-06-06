@@ -26,6 +26,7 @@ import {
   ArrowLeftCircle,
   Coffee,
   FolderPlus,
+  Plus
 } from "react-feather";
 import axios from "axios";
 import { getCountries } from "../store/Actions";
@@ -60,6 +61,7 @@ const index = (props) => {
 
   const [phone_number, setPhoneNumber] = useState([{}]);
   const [email_address, setEmailAddress] = useState([{}]);
+  const [disabled, setDisabled] = useState(true)
 
   const dispatch = useDispatch();
   const store = useSelector((state) => state.customers);
@@ -73,7 +75,11 @@ const index = (props) => {
       .string()
       .required("Email is a required field.")
       .email("Email must be a valid email."),
-    name_surname: yup.string().required(" name is a required field.").min(5),
+
+    name_surname: yup
+      .string()
+      .required(" name is a required field.")
+      .min(5),
 
     phone_number: yup
       .string()
@@ -112,7 +118,23 @@ const index = (props) => {
 
   useEffect(() => {
     dispatch(getCountries());
+    console.log(email_address)
   }, []);
+
+  useEffect(()=>{
+    //console.log(email_address[0].length, "a")
+    //console.log(phone_number[0].length, "b")
+    if(
+      formState.name_surname &&
+      email_address[0].length > 1 &&
+      phone_number[0].length > 2 &&
+      formState.city &&
+      formState.district &&
+      formState.country 
+      ){
+        setDisabled(false)
+      }else { setDisabled(true) }
+  },[formState, email_address, phone_number])
 
   const options = store.filterItems ? store.filterItems : null;
   if (options != null) {
@@ -301,22 +323,22 @@ const index = (props) => {
       <Col md={12}>
         <Col className="mb-2 d-flex " md={12}>
           <Row md={12}>
-            <Col xs={2}>
+            <Col xs={2} style={{paddingTop: "7px"}}>
               <ArrowLeftCircle
                 size={28}
                 onClick={history.goBack}
                 style={{ cursor: "pointer" }}
               />
             </Col>
-            <Col xs={8} className="d-flex ml-3">
-              <FolderPlus />
-              <h3 className="ml-1">
-                <FormattedMessage id="addNewCustomer"></FormattedMessage>
+            <Col xs={9} className="d-flex mr-1">
+              <FolderPlus size="45px" style={{marginLeft: "-10px"}} />
+              <h3 className="ml-1 text-nowrap" style={{paddingTop: "10px", paddingRight: "5px"}}>
+                Add New Customer
               </h3>
             </Col>
           </Row>
         </Col>
-        <Col md={{ size: 6, offset: 2 }}>
+        <Col md={6} style={{ paddingLeft:"100px"}}>
           <Form onSubmit={handleSubmit(onSubmit)} className="mb-5 pb-5">
             <FormGroup>
               <Label for="name_surname">
@@ -329,11 +351,11 @@ const index = (props) => {
                 id="name_surname"
                 placeholder="Name Surname"
                 className={classnames({ "is-invalid": errors["full-name"] })}
-                defaultValue={formState.name_surname}
+                value={formState.name_surname}
                 onChange={(e) =>
                   setFormState({
                     ...formState,
-                    [e.target.name]: e.target.value,
+                    [e.target.name]: e.target.value.replace(/[^a-zA-Z\s]/g,""),
                   })
                 }
                 innerRef={register({ required: true })}
@@ -390,6 +412,8 @@ const index = (props) => {
                       {email_address.length - 1 === i && (
                         <Button.Ripple color="primary" onClick={handleAddEmail}>
                           <FormattedMessage id="Add"></FormattedMessage>
+                          <Plus size={18} style={{paddingBottom:"3px", paddingLeft:"2px"}} />
+                          
                         </Button.Ripple>
                       )}
                     </div>
@@ -447,6 +471,7 @@ const index = (props) => {
                       {phone_number.length - 1 === i && (
                         <Button.Ripple color="primary" onClick={handleAddPhone}>
                           <FormattedMessage id="Add"></FormattedMessage>
+                          <Plus size={18} style={{paddingBottom:"3px", paddingLeft:"2px"}} />
                         </Button.Ripple>
                       )}
                     </div>
@@ -514,13 +539,14 @@ const index = (props) => {
                 <FormFeedback>{errors.district.message}</FormFeedback>
               )}
             </FormGroup>
-
+            <div class="d-flex justify-content-center" >
             <Button
               onClick={onSubmit}
               type="submit"
-              className="mr-1"
+              className="btn-block mr-1 mt-0"
               color="primary"
               id="submit-data"
+              disabled={disabled}
             >
               <FormattedMessage id="Save"></FormattedMessage>
             </Button>
@@ -529,9 +555,11 @@ const index = (props) => {
               type="reset"
               color="secondary"
               outline
+              className="btn-block mt-0"
             >
               <FormattedMessage id="Cancel"></FormattedMessage>
             </Button>
+            </div>
           </Form>
         </Col>
       </Col>
